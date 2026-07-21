@@ -1,76 +1,76 @@
 """Composio adapter — the hidden breadth layer behind Easy Life "חיבורים".
 
-Wraps Composio's v3 REST API for per-user (=per-tenant) OAuth connections.
-Fully graceful without a key: `configured()` is False → the router runs in a
-local DEMO mode so the UX and brain-event flow are demonstrable offline.
+We hold an MCP consumer key (not a REST project key), so this talks to Composio
+over MCP (see composio_mcp.py) via the COMPOSIO_MANAGE_CONNECTIONS meta-tool:
+  - list   → connected accounts per toolkit
+  - add    → an OAuth/redirect link to connect a toolkit
+  - remove → disconnect an account
 
-When COMPOSIO_API_KEY is set, live methods hit Composio. Each customer is a
-Composio `user_id` = our tenant_id. White-labeling (consent screen shows
-"Easy Life") requires our own OAuth apps registered as custom auth configs —
-tracked separately; here we call whatever auth config is wired per toolkit.
-
-NOTE: exact request/response shapes should be reconciled against live Composio
-docs when the key lands; all HTTP lives here so that's a one-file change.
+NOTE on tenancy: the MCP consumer key is scoped to ONE Composio account (the
+platform owner's), so connections are single-account today — perfect for the
+owner's own business + demo. True per-customer multi-tenancy needs a Composio
+REST *project* key (developer plan); when that lands, swap this module's calls
+for the connected_accounts REST API keyed by user_id=tenant_id. All connection
+records still live in our `channels` table so nothing else changes.
 """
 
 from __future__ import annotations
 
 import logging
 
-import httpx
-
-from app.config import settings
+from app.connections import composio_mcp
+from app.connections.catalog import CATALOG
 
 logger = logging.getLogger("easylife.connections.composio")
 
-_TIMEOUT = httpx.Timeout(20.0)
+COMPOSIO_TOOLKITS = [a.toolkit for a in CATALOG if a.provider == "composio" and a.toolkit]
 
 
 def configured() -> bool:
-    return bool(settings.COMPOSIO_API_KEY)
+    return composio_mcp.configured()
 
 
-def _headers() -> dict:
-    return {"x-api-key": settings.COMPOSIO_API_KEY, "Content-Type": "application/json"}
-
-
-async def initiate_connection(user_id: str, toolkit: str, callback_url: str) -> dict:
-    """Start an OAuth connection for a tenant. Returns {redirect_url, connection_id}."""
-    if not configured():
-        raise RuntimeError("composio_not_configured")
-    async with httpx.AsyncClient(base_url=settings.COMPOSIO_BASE_URL, timeout=_TIMEOUT) as c:
-        resp = await c.post(
-            "/connected_accounts",
-            headers=_headers(),
-            json={
-                "user_id": user_id,
-                "toolkit": {"slug": toolkit},
-                "callback_url": callback_url,
-            },
+async def live_statuses() -> dict[str, dict]:
+    """toolkit slug -> {connected, status, account_id} pulled live from Composio."""
+    if not configured() or not COMPOSIO_TOOLKITS:
+        return {}
+    try:
+        res = await composio_mcp.call_tool(
+            "COMPOSIO_MANAGE_CONNECTIONS",
+            {"toolkits": [{"name": t, "action": "list"} for t in COMPOSIO_TOOLKITS]},
         )
-        resp.raise_for_status()
-        data = resp.json()
-        return {
-            "redirect_url": data.get("redirect_url") or data.get("redirectUrl"),
-            "connection_id": data.get("id") or data.get("connectionId"),
+    except Exception:
+        logger.exception("composio live_statuses failed")
+        return {}
+    results = (res.get("data") or {}).get("results") or {}
+    out: dict[str, dict] = {}
+    for tk, info in results.items():
+        accounts = info.get("accounts") or []
+        active = next((a for a in accounts if a.get("status") == "active"), None)
+        out[tk] = {
+            "connected": bool(active),
+            "status": info.get("status"),
+            "account_id": (active or {}).get("id"),
         }
+    return out
 
 
-async def list_connected(user_id: str) -> list[dict]:
-    if not configured():
-        return []
-    async with httpx.AsyncClient(base_url=settings.COMPOSIO_BASE_URL, timeout=_TIMEOUT) as c:
-        resp = await c.get(
-            "/connected_accounts", headers=_headers(), params={"user_ids": user_id}
+async def initiate_connection(toolkit: str) -> dict:
+    """Return {redirect_url, status} for an OAuth/token connect link."""
+    res = await composio_mcp.call_tool(
+        "COMPOSIO_MANAGE_CONNECTIONS", {"toolkits": [{"name": toolkit, "action": "add"}]}
+    )
+    r = ((res.get("data") or {}).get("results") or {}).get(toolkit) or {}
+    return {"redirect_url": r.get("redirect_url"), "status": r.get("status")}
+
+
+async def disconnect(toolkit: str, account_id: str) -> bool:
+    try:
+        await composio_mcp.call_tool(
+            "COMPOSIO_MANAGE_CONNECTIONS",
+            {"toolkits": [{"name": toolkit, "action": "remove", "account_id": account_id}]},
         )
-        resp.raise_for_status()
-        payload = resp.json()
-        return payload.get("items", payload if isinstance(payload, list) else [])
-
-
-async def disconnect(connection_id: str) -> bool:
-    if not configured():
         return True
-    async with httpx.AsyncClient(base_url=settings.COMPOSIO_BASE_URL, timeout=_TIMEOUT) as c:
-        resp = await c.delete(f"/connected_accounts/{connection_id}", headers=_headers())
-        return resp.status_code < 300
+    except Exception:
+        logger.exception("composio disconnect failed")
+        return False

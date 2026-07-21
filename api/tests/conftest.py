@@ -8,6 +8,9 @@ import os
 os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
 os.environ["APP_ENV"] = "dev"
 os.environ["SECRET_KEY"] = "test-secret-key-0123456789-abcdefghijklmnop"
+# Hermetic tests: no external API calls (override any key from a local .env).
+os.environ["COMPOSIO_API_KEY"] = ""
+os.environ["ANTHROPIC_API_KEY"] = ""
 
 import pytest  # noqa: E402
 from httpx import ASGITransport, AsyncClient  # noqa: E402

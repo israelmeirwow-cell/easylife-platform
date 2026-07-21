@@ -1,13 +1,13 @@
 """Connections — the Easy Life "חיבורים" screen.
 
-Customer connects their own accounts (Instagram/Facebook/TikTok/Gmail/Google/…)
-one-click. Composio powers the OAuth for `provider=composio` apps and is hidden
-behind the Easy Life brand; `provider=native` apps are our own connectors
-(WhatsApp flagship, store, invoicing). Every connection is a `channels` row and
-emits a brain event so it shows in the feed.
+Composio (via MCP — see app/connections/composio_mcp.py) powers OAuth for the
+`provider=composio` apps and is hidden behind the Easy Life brand; `native`
+apps are our own connectors. Every connection is a `channels` row and emits a
+brain event so it shows in the feed.
 
-Without a COMPOSIO_API_KEY the composio apps run in DEMO mode (a local connected
-record) so the flow is demonstrable offline; add the key to go live.
+With a Composio key set, the catalog reflects LIVE connection status and the
+connect button returns a real OAuth link. Without a key, composio apps run in
+DEMO mode so the flow is demonstrable offline.
 """
 
 import uuid
@@ -16,7 +16,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config import settings
 from app.connections import composio_client
 from app.connections.catalog import BY_SLUG, CATALOG, CATEGORIES_HE
 from app.db import get_session
@@ -27,6 +26,8 @@ from app.models import Channel
 router = APIRouter(prefix="/api/connections", tags=["connections"])
 
 CONNECTED_STATUSES = ("connected", "demo_connected")
+# our catalog slug -> composio toolkit, and reverse
+SLUG_BY_TOOLKIT = {a.toolkit: a.slug for a in CATALOG if a.provider == "composio" and a.toolkit}
 
 
 async def _tenant_channels(session: AsyncSession, tenant_id: uuid.UUID) -> dict[str, Channel]:
@@ -35,7 +36,6 @@ async def _tenant_channels(session: AsyncSession, tenant_id: uuid.UUID) -> dict[
         .scalars()
         .all()
     )
-    # last one wins per kind (single connection per app in v1)
     return {c.kind: c for c in rows}
 
 
@@ -45,9 +45,19 @@ async def catalog(
     session: AsyncSession = Depends(get_session),
 ) -> dict:
     existing = await _tenant_channels(session, tenant_id)
+    live = await composio_client.live_statuses()  # {} if not configured / on error
+
     apps = []
     for a in CATALOG:
         ch = existing.get(a.slug)
+        live_info = live.get(a.toolkit) if a.toolkit else None
+        connected = bool(ch and ch.status in CONNECTED_STATUSES)
+        status = ch.status if ch else "disconnected"
+        account_id = (ch.meta or {}).get("account_id") if ch else None
+        if live_info is not None:  # Composio is the source of truth for its apps
+            connected = live_info["connected"]
+            status = "connected" if connected else "disconnected"
+            account_id = live_info.get("account_id") or account_id
         apps.append(
             {
                 "slug": a.slug,
@@ -57,9 +67,10 @@ async def catalog(
                 "provider": a.provider,
                 "icon": a.icon,
                 "note_he": a.note_he,
-                "status": ch.status if ch else "disconnected",
-                "connected": bool(ch and ch.status in CONNECTED_STATUSES),
+                "status": status,
+                "connected": connected,
                 "channel_id": str(ch.id) if ch else None,
+                "account_id": account_id,
             }
         )
     return {
@@ -78,18 +89,27 @@ async def list_connections(
         (
             await session.execute(
                 select(Channel).where(
-                    Channel.tenant_id == tenant_id,
-                    Channel.status.in_(CONNECTED_STATUSES),
+                    Channel.tenant_id == tenant_id, Channel.status.in_(CONNECTED_STATUSES)
                 )
             )
         )
         .scalars()
         .all()
     )
-    return [
-        {"id": str(c.id), "kind": c.kind, "status": c.status, "meta": c.meta}
-        for c in rows
-    ]
+    return [{"id": str(c.id), "kind": c.kind, "status": c.status, "meta": c.meta} for c in rows]
+
+
+async def _upsert_channel(
+    session: AsyncSession, tenant_id: uuid.UUID, slug: str, status: str, meta_updates: dict
+) -> Channel:
+    ch = (await _tenant_channels(session, tenant_id)).get(slug)
+    if ch is None:
+        ch = Channel(tenant_id=tenant_id, kind=slug, status=status, meta={})
+        session.add(ch)
+    ch.status = status
+    ch.meta = {**(ch.meta or {}), **meta_updates}
+    await session.flush()
+    return ch
 
 
 @router.post("/{slug}/connect")
@@ -103,38 +123,22 @@ async def connect(
     if app is None:
         raise HTTPException(status_code=404, detail="Unknown app")
 
-    existing = (await _tenant_channels(session, tenant_id)).get(slug)
-
-    # --- native connectors: return their own onboarding path ---------------
     if app.provider == "native":
-        return {
-            "mode": "native",
-            "slug": slug,
-            "message_he": app.note_he or "חיבור ייעודי — נלווה אותך בהגדרה",
-        }
+        return {"mode": "native", "slug": slug, "message_he": app.note_he or "חיבור ייעודי — נלווה אותך בהגדרה"}
 
-    # --- composio-backed OAuth --------------------------------------------
-    channel = existing or Channel(tenant_id=tenant_id, kind=slug, status="pending", meta={})
-    if existing is None:
-        session.add(channel)
-
+    # composio-backed via MCP
     if composio_client.configured():
-        callback = f"{settings.APP_BASE_URL}/api/connections/callback"
         try:
-            result = await composio_client.initiate_connection(
-                user_id=str(tenant_id), toolkit=app.toolkit or slug, callback_url=callback
-            )
-        except Exception as exc:  # network/api error — surface, don't fake success
+            result = await composio_client.initiate_connection(app.toolkit or slug)
+        except Exception as exc:
             raise HTTPException(status_code=502, detail=f"composio_error: {exc}") from exc
-        channel.status = "pending"
-        channel.meta = {**channel.meta, "composio_connection_id": result.get("connection_id")}
+        redirect = result.get("redirect_url")
+        await _upsert_channel(session, tenant_id, slug, "pending", {"toolkit": app.toolkit})
         await session.commit()
-        return {"mode": "oauth", "redirect_url": result.get("redirect_url"), "channel_id": str(channel.id)}
+        return {"mode": "oauth", "redirect_url": redirect, "slug": slug}
 
-    # --- demo mode (no key): mark connected locally so the flow is visible --
-    channel.status = "demo_connected"
-    channel.meta = {**channel.meta, "demo": True}
-    await session.flush()
+    # demo mode (no key)
+    ch = await _upsert_channel(session, tenant_id, slug, "demo_connected", {"demo": True})
     await emit_event(
         session,
         tenant_id=tenant_id,
@@ -142,49 +146,53 @@ async def connect(
         actor_id=actor_id,
         verb="connection.created",
         entity_type="channel",
-        entity_id=channel.id,
+        entity_id=ch.id,
         payload={"kind": slug, "name_he": app.name_he, "demo": True},
     )
     await session.commit()
     return {
         "mode": "demo",
-        "channel_id": str(channel.id),
+        "channel_id": str(ch.id),
         "message_he": "חובר במצב דמו — הוסיפו מפתח Composio כדי לחבר חשבון אמיתי.",
     }
 
 
-@router.get("/callback")
-async def composio_callback(
-    connectedAccountId: str | None = None,
-    status: str | None = None,
+@router.post("/sync")
+async def sync(
+    tenant_id: uuid.UUID = Depends(get_tenant_id),
+    actor_id: str = Depends(get_actor_id),
     session: AsyncSession = Depends(get_session),
 ) -> dict:
-    """Composio redirects here after the user finishes the OAuth consent."""
-    if not connectedAccountId:
-        return {"ok": False, "message_he": "לא התקבל מזהה חיבור"}
-    row = (
-        await session.execute(
-            select(Channel).where(
-                Channel.meta["composio_connection_id"].as_string() == connectedAccountId
-            )
+    """Pull live Composio statuses and persist newly-connected apps as channels
+    (+ a connection.created event) so the brain/feed reflect real connections."""
+    live = await composio_client.live_statuses()
+    existing = await _tenant_channels(session, tenant_id)
+    created = 0
+    for toolkit, info in live.items():
+        if not info.get("connected"):
+            continue
+        slug = SLUG_BY_TOOLKIT.get(toolkit)
+        if not slug:
+            continue
+        ch = existing.get(slug)
+        if ch and ch.status == "connected":
+            continue
+        ch = await _upsert_channel(
+            session, tenant_id, slug, "connected", {"toolkit": toolkit, "account_id": info.get("account_id")}
         )
-    ).scalar_one_or_none()
-    if row is None:
-        return {"ok": False, "message_he": "החיבור לא נמצא"}
-    row.status = "connected" if (status or "").lower() in ("", "active", "success") else "error"
-    if row.status == "connected":
         await emit_event(
             session,
-            tenant_id=row.tenant_id,
+            tenant_id=tenant_id,
             actor_type="human",
-            actor_id="owner",
+            actor_id=actor_id,
             verb="connection.created",
             entity_type="channel",
-            entity_id=row.id,
-            payload={"kind": row.kind},
+            entity_id=ch.id,
+            payload={"kind": slug, "toolkit": toolkit},
         )
+        created += 1
     await session.commit()
-    return {"ok": row.status == "connected", "kind": row.kind}
+    return {"synced": len(live), "newly_connected": created}
 
 
 @router.post("/{channel_id}/disconnect")
@@ -202,9 +210,10 @@ async def disconnect(
     if channel is None:
         raise HTTPException(status_code=404, detail="Connection not found")
 
-    cid = (channel.meta or {}).get("composio_connection_id")
-    if cid and composio_client.configured():
-        await composio_client.disconnect(cid)
+    meta = channel.meta or {}
+    toolkit, account_id = meta.get("toolkit"), meta.get("account_id")
+    if toolkit and account_id and composio_client.configured():
+        await composio_client.disconnect(toolkit, account_id)
 
     kind = channel.kind
     channel.status = "disconnected"
