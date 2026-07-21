@@ -408,3 +408,38 @@ class UsageEvent(Base):
     ts: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=utcnow)
     created_at: Mapped[datetime] = created_at_col()
 
+
+
+class Finding(Base):
+    """CEO analyst output — one detected, deduped, actionable business insight.
+
+    Numbers live in `metrics` (computed deterministically by the analyst);
+    `summary_he` is a template-rendered sentence containing the exact numbers.
+    The LLM never writes rows here — it only phrases the brief that CITES them.
+    """
+
+    __tablename__ = "findings"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    analyst: Mapped[str] = mapped_column(String(32), nullable=False)  # registry kind
+    kind: Mapped[str] = mapped_column(String(64), nullable=False)  # e.g. pipeline.stalled_deal
+    severity: Mapped[str] = mapped_column(String(16), nullable=False)  # critical|high|medium|low|info
+    title_he: Mapped[str] = mapped_column(String(200), nullable=False)
+    summary_he: Mapped[str] = mapped_column(Text, nullable=False)
+    metrics: Mapped[dict] = mapped_column(JSONVariant, nullable=False, default=dict)
+    evidence: Mapped[list] = mapped_column(JSONVariant, nullable=False, default=list)
+    recommendation: Mapped[dict | None] = mapped_column(JSONVariant, nullable=True)
+    falsifiability: Mapped[dict | None] = mapped_column(JSONVariant, nullable=True)
+    confidence: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    window_from: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    window_to: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    dedupe_key: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    status: Mapped[str] = mapped_column(
+        String(16), nullable=False, default="open"
+    )  # open|acknowledged|acted|resolved|dismissed|falsified|expired
+    outcome: Mapped[dict | None] = mapped_column(JSONVariant, nullable=True)
+    last_seen_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=utcnow
+    )
+    created_at: Mapped[datetime] = created_at_col()

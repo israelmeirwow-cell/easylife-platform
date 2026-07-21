@@ -27,7 +27,7 @@ from app.models import (
     User,
 )
 
-# The 14 brain tables + the 4 CRM tables (accounts, deals, tickets, activities).
+# The 14 brain tables + the 4 CRM tables + the CEO findings table.
 EXPECTED_TABLES = {
     "tenants",
     "users",
@@ -47,6 +47,7 @@ EXPECTED_TABLES = {
     "deals",
     "tickets",
     "activities",
+    "findings",
 }
 
 

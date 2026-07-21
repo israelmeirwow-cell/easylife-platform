@@ -64,3 +64,49 @@ async def test_context_reflects_pending_approvals(session, demo_tenant):
     assert ctx.open_deals_count >= 1
     assert any(t["priority"] == "urgent" for t in ctx.urgent_tickets)
     assert ctx.pipeline_value_agorot >= 500000
+
+
+async def test_brief_runs_analysts_and_returns_findings(client, session, demo_tenant):
+    tid = demo_tenant.id
+    session.add(Approval(
+        tenant_id=tid, requested_by_agent="whatsapp", action_type="refund",
+        payload={}, preview_text="החזר 189 ש\"ח", status="pending",
+    ))
+    await session.commit()
+
+    r = await client.get("/api/ceo/brief")
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert "findings" in data and "run" in data
+    # second call: dedupe — no new findings created for the same state
+    r2 = await client.get("/api/ceo/brief")
+    assert r2.json()["run"]["created"] == 0
+
+
+async def test_finding_actions(client, session, demo_tenant):
+    tid = demo_tenant.id
+    # a deal stuck long enough to trip the static fallback threshold
+    from datetime import datetime, timedelta, timezone
+    old = datetime.now(timezone.utc) - timedelta(days=30)
+    deal = Deal(
+        tenant_id=tid, title="עסקה ישנה", stage="negotiation",
+        value_agorot=900000, currency="ILS", pipeline="sales",
+    )
+    session.add(deal)
+    await session.flush()
+    deal.created_at = old
+    await session.commit()
+
+    r = await client.get("/api/ceo/brief")
+    findings = r.json()["findings"]
+    stalled = [f for f in findings if f["kind"] == "pipeline.stalled_deal"]
+    assert stalled, findings
+    fid = stalled[0]["id"]
+
+    ack = await client.post(f"/api/ceo/findings/{fid}/acknowledge")
+    assert ack.status_code == 200
+    assert ack.json()["status"] == "acknowledged"
+
+    # acknowledged findings leave the open list
+    listing = await client.get("/api/ceo/findings")
+    assert fid not in [f["id"] for f in listing.json()]

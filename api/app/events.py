@@ -126,11 +126,15 @@ async def emit_event(
     entity_type: str | None,
     entity_id,
     payload: dict | None = None,
+    ts=None,
 ) -> Event:
     """Insert an events row in the CALLER's transaction.
 
     The caller owns the commit; publication to the EventBus happens only after
     that commit succeeds (after_commit hook), never on rollback.
+
+    `ts` is optional and exists for historical backfill (seed/demo/imports);
+    live emitters must leave it None so the DB default (now) applies.
     """
     if "." not in verb:
         logger.warning("event verb %r does not follow entity.verb form", verb)
@@ -142,6 +146,7 @@ async def emit_event(
         entity_type=entity_type,
         entity_id=str(entity_id) if entity_id is not None else None,
         payload=payload or {},
+        **({"ts": ts} if ts is not None else {}),
     )
     session.add(event)
     await session.flush()  # assign id inside the caller's transaction

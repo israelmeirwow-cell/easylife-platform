@@ -71,6 +71,25 @@ async def gather_context(session: AsyncSession, tenant_id: uuid.UUID) -> CeoCont
     deal_rows = (
         await session.execute(select(Deal).where(Deal.tenant_id == tenant_id))
     ).scalars().all()
+
+    # "won this month" is dated by the deal.won EVENT ts (close date), not by
+    # Deal.created_at — a deal created months ago and won today counts today.
+    won_id_strings = (
+        (
+            await session.execute(
+                select(Event.entity_id).where(
+                    Event.tenant_id == tenant_id,
+                    Event.verb == "deal.won",
+                    Event.ts >= month_start,
+                    Event.entity_id.is_not(None),
+                )
+            )
+        )
+        .scalars()
+        .all()
+    )
+    won_this_month_ids = set(won_id_strings)
+
     by_stage: dict[str, dict] = {}
     for d in deal_rows:
         b = by_stage.setdefault(d.stage, {"count": 0, "value_agorot": 0})
@@ -79,8 +98,7 @@ async def gather_context(session: AsyncSession, tenant_id: uuid.UUID) -> CeoCont
         if d.stage in OPEN_DEAL_STAGES:
             ctx.open_deals_count += 1
             ctx.pipeline_value_agorot += d.value_agorot or 0
-        created = _aware(d.created_at)
-        if d.stage == "won" and created and created >= month_start:
+        if d.stage == "won" and str(d.id) in won_this_month_ids:
             ctx.won_this_month_agorot += d.value_agorot or 0
     ctx.deals_by_stage = by_stage
 

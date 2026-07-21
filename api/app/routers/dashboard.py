@@ -19,6 +19,7 @@ from app.models import (
     TICKET_OPEN_STATUSES,
     Contact,
     Deal,
+    Event,
     Lead,
     Task,
     Ticket,
@@ -99,16 +100,42 @@ async def dashboard_summary(
         )
     ).scalar_one()
 
+    # "Won this month" is dated by the deal.won EVENT (close date), not by
+    # Deal.created_at — a deal created months ago and won today counts today.
+    # Two portable queries (events.entity_id is a dashed-uuid string; Deal.id
+    # column format differs between sqlite/postgres, so match in Python).
     month_start = _month_start(datetime.now(timezone.utc))
-    won_this_month_agorot = (
-        await session.execute(
-            select(func.coalesce(func.sum(Deal.value_agorot), 0)).where(
-                Deal.tenant_id == tenant_id,
-                Deal.stage == "won",
-                Deal.created_at >= month_start,
+    won_id_strings = (
+        (
+            await session.execute(
+                select(Event.entity_id).where(
+                    Event.tenant_id == tenant_id,
+                    Event.verb == "deal.won",
+                    Event.ts >= month_start,
+                    Event.entity_id.is_not(None),
+                )
             )
         )
-    ).scalar_one()
+        .scalars()
+        .all()
+    )
+    won_ids = []
+    for raw in set(won_id_strings):
+        try:
+            won_ids.append(uuid.UUID(raw))
+        except (ValueError, TypeError):
+            continue
+    won_this_month_agorot = 0
+    if won_ids:
+        won_this_month_agorot = (
+            await session.execute(
+                select(func.coalesce(func.sum(Deal.value_agorot), 0)).where(
+                    Deal.tenant_id == tenant_id,
+                    Deal.stage == "won",
+                    Deal.id.in_(won_ids),
+                )
+            )
+        ).scalar_one()
 
     return DashboardSummary(
         contacts_count=int(contacts_count),

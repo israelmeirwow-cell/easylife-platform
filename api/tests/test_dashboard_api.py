@@ -1,5 +1,6 @@
 """Dashboard summary: counters + pipeline math over deals/leads/tasks/tickets."""
 
+from app.events import emit_event
 from app.models import Contact, Deal, Lead, Task, Ticket
 
 
@@ -21,14 +22,27 @@ async def _seed_dashboard(session, tenant_id):
     )
 
     # Deals: open (lead/qualified/proposal/negotiation) + terminal (won/lost)
+    won_deal = Deal(tenant_id=tenant_id, title="d4", stage="won", value_agorot=5000)
     session.add_all(
         [
             Deal(tenant_id=tenant_id, title="d1", stage="lead", value_agorot=1000),
             Deal(tenant_id=tenant_id, title="d2", stage="qualified", value_agorot=2000),
             Deal(tenant_id=tenant_id, title="d3", stage="negotiation", value_agorot=3000),
-            Deal(tenant_id=tenant_id, title="d4", stage="won", value_agorot=5000),
+            won_deal,
             Deal(tenant_id=tenant_id, title="d5", stage="lost", value_agorot=7000),
         ]
+    )
+    await session.flush()
+    # "won this month" is dated by the deal.won event ts (close date)
+    await emit_event(
+        session,
+        tenant_id=tenant_id,
+        actor_type="system",
+        actor_id="test",
+        verb="deal.won",
+        entity_type="deal",
+        entity_id=won_deal.id,
+        payload={"value_agorot": 5000},
     )
 
     # Tasks: 2 not-done (open + in_progress) + 1 done
