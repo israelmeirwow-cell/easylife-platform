@@ -27,7 +27,7 @@ export function RevenueCounter({
     <div className="relative h-full overflow-hidden p-6">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[10px] uppercase tracking-[0.25em] text-white/50">שווי צינור מכירות</div>
+          <div className="text-[10px] uppercase tracking-[0.25em] text-faint">שווי צינור מכירות</div>
           <div className="mt-2 flex items-baseline gap-1">
             <motion.span
               className="text-4xl font-semibold tracking-tight text-gradient tabular-nums"
@@ -35,10 +35,10 @@ export function RevenueCounter({
             >
               {loading ? '···' : rounded}
             </motion.span>
-            <span className="text-xs text-white/50">₪</span>
+            <span className="text-xs text-faint">₪</span>
           </div>
         </div>
-        <div className="flex items-center gap-1 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2.5 py-1 text-xs text-cyan-200">
+        <div className="flex items-center gap-1 rounded-full border border-border-strong bg-gold-soft px-2.5 py-1 text-xs text-gold-strong">
           <TrendingUp className="h-3 w-3" /> {openDealsCount} עסקאות פתוחות
           <ArrowUpRight className="h-3 w-3" />
         </div>
@@ -48,12 +48,12 @@ export function RevenueCounter({
       <svg viewBox="0 0 300 90" className="mt-6 w-full">
         <defs>
           <linearGradient id="rev-fill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#7ff0ff" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#7ff0ff" stopOpacity="0" />
+            <stop offset="0%" stopColor="#0e8ba0" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#0e8ba0" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="rev-stroke" x1="0" x2="1">
-            <stop offset="0%" stopColor="#7ff0ff" />
-            <stop offset="100%" stopColor="#e6edf3" />
+            <stop offset="0%" stopColor="#0e8ba0" />
+            <stop offset="100%" stopColor="#22b8cf" />
           </linearGradient>
         </defs>
         <motion.path
@@ -73,15 +73,15 @@ export function RevenueCounter({
       </svg>
 
       <div className="mt-4 grid grid-cols-2 gap-3 text-center">
-        <div className="rounded-xl border border-white/5 bg-white/[0.03] py-2">
-          <div className="text-[10px] uppercase tracking-widest text-white/40">נסגר החודש</div>
-          <div className="mt-1 text-sm font-medium tabular-nums" style={{ color: '#7ff0ff' }}>
+        <div className="rounded-xl border border-border bg-surface-raised py-2">
+          <div className="text-[10px] uppercase tracking-widest text-faint">נסגר החודש</div>
+          <div className="mt-1 text-sm font-medium tabular-nums text-gold-strong">
             {loading ? '···' : `₪${formatNumber(wonThisMonthShekels)}`}
           </div>
         </div>
-        <div className="rounded-xl border border-white/5 bg-white/[0.03] py-2">
-          <div className="text-[10px] uppercase tracking-widest text-white/40">עסקאות בצינור</div>
-          <div className="mt-1 text-sm font-medium tabular-nums" style={{ color: '#e6edf3' }}>
+        <div className="rounded-xl border border-border bg-surface-raised py-2">
+          <div className="text-[10px] uppercase tracking-widest text-faint">עסקאות בצינור</div>
+          <div className="mt-1 text-sm font-medium tabular-nums text-ink">
             {loading ? '···' : openDealsCount}
           </div>
         </div>

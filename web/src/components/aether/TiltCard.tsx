@@ -6,10 +6,12 @@ export function TiltCard({
   children,
   className,
   intensity = 8,
+  spotlight = false,
 }: {
   children: ReactNode;
   className?: string;
   intensity?: number;
+  spotlight?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);
@@ -36,7 +38,7 @@ export function TiltCard({
         my.set(0);
       }}
       style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-      className={cn("glass-card relative will-change-transform", className)}
+      className={cn(spotlight ? "glass-spotlight" : "glass-card", "relative will-change-transform", className)}
     >
       <div style={{ transform: "translateZ(20px)" }} className="relative h-full w-full">
         {children}

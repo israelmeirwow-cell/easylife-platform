@@ -40,8 +40,8 @@ export function Dock() {
       transition={{ delay: 0.4, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       onMouseMove={(e) => mouseX.set(e.clientX)}
       onMouseLeave={() => mouseX.set(Infinity)}
-      className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2 rounded-3xl border border-white/10 bg-white/5 p-2.5 backdrop-blur-2xl"
-      style={{ boxShadow: '0 30px 80px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)' }}
+      className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-end gap-2 rounded-3xl border border-border bg-surface/90 p-2.5 backdrop-blur-2xl"
+      style={{ boxShadow: '0 30px 80px -20px rgba(15,23,42,0.18), inset 0 1px 0 rgba(255,255,255,0.7)' }}
       aria-label="סרגל פעולות"
     >
       {items.map((it) => (
@@ -87,18 +87,18 @@ function DockIcon({
       onClick={() => navigate(to)}
       style={{ width: size, height: size }}
       aria-label={label}
-      className={`group relative flex items-center justify-center rounded-2xl border bg-gradient-to-b from-white/10 to-white/[0.02] transition-colors hover:border-cyan-400/40 ${
-        active ? 'border-cyan-400/50 text-cyan-200' : 'border-white/10 text-white/90'
+      className={`group relative flex items-center justify-center rounded-2xl border bg-gradient-to-b from-surface-raised to-surface transition-colors hover:border-gold/40 ${
+        active ? 'border-gold/50 text-gold-strong' : 'border-border text-ink'
       }`}
     >
       <Icon className="h-4 w-4" />
       {active && (
         <span
-          className="absolute -bottom-1 h-1 w-1 rounded-full bg-cyan-300"
-          style={{ boxShadow: '0 0 8px #7ff0ff' }}
+          className="absolute -bottom-1 h-1 w-1 rounded-full bg-gold"
+          style={{ boxShadow: '0 0 8px #0e8ba0' }}
         />
       )}
-      <span className="pointer-events-none absolute -top-9 whitespace-nowrap rounded-md border border-white/10 bg-black/70 px-2 py-1 text-[10px] opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute -top-9 whitespace-nowrap rounded-md border border-border bg-ink px-2 py-1 text-[10px] text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
         {label}
       </span>
     </motion.button>

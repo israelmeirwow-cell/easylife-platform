@@ -51,7 +51,7 @@ export default function Dashboard() {
       {/* Hero: holographic lead sphere + revenue */}
       <div className="grid grid-cols-12 gap-4 md:gap-5">
         <motion.div {...fade(0)} className="col-span-12 lg:col-span-8">
-          <TiltCard className="relative h-[380px] overflow-hidden md:h-[460px]" intensity={5}>
+          <TiltCard className="relative h-[380px] overflow-hidden md:h-[460px]" intensity={5} spotlight>
             <div className="absolute inset-0">
               <Suspense fallback={<div className="h-full w-full" />}>
                 <HoloGlobe />
