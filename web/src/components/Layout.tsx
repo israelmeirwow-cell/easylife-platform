@@ -9,7 +9,7 @@ export default function Layout() {
       <AmbientBg />
       <TopNav />
 
-      <main className="flex-1 px-4 pb-28 pt-6 md:px-8 md:pb-12 md:pt-8">
+      <main className="flex-1 px-4 pb-32 pt-6 md:px-8 md:pt-8">
         <Outlet />
       </main>
 
