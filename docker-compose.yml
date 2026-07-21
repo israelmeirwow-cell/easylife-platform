@@ -1,0 +1,42 @@
+name: easylife
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: easylife
+      POSTGRES_PASSWORD: easylife_dev
+      POSTGRES_DB: easylife
+    ports:
+      - "5442:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U easylife"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6390:6379"
+    volumes:
+      - redisdata:/data
+
+  # Evolution API (WhatsApp gateway) — enabled in Week 2 (connector framework).
+  # evolution:
+  #   image: atendai/evolution-api:v2.2.3
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY}
+  #     - DATABASE_ENABLED=true
+  #     - DATABASE_CONNECTION_URI=postgresql://easylife:easylife_dev@postgres:5432/evolution
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+volumes:
+  pgdata:
+  redisdata:
