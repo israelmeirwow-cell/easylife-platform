@@ -10,11 +10,14 @@ rule-rendered brief. LLM usage is metered into usage_events.
 from __future__ import annotations
 
 import json
+import logging
 import re
 import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy.ext.asyncio import AsyncSession
+
+logger = logging.getLogger("easylife.ceo.synthesis")
 
 from app.ceo.context import CeoContext
 from app.ceo.runner import compact_finding
@@ -83,8 +86,9 @@ def rule_compose(ctx: CeoContext, findings: list[Finding]) -> dict:
 
 _SYSTEM = (
     "אתה סוכן ה-CEO של Easy Life. קיבלת ממצאים מנתחים דטרמיניסטיים (המספרים בהם מדויקים). "
-    "נסח תדריך מנהלים קצר וחד בעברית, לבעל עסק קטן. חוקים: אל תמציא אף מספר — "
-    "צטט מספרים רק כפי שהם מופיעים בממצאים; עד 3 פריטי מיקוד; כל המלצה עם סיבה. "
+    "נסח תדריך מנהלים קצר וחד בעברית, לבעל עסק קטן. חוקים קשיחים: אל תמציא אף מספר, "
+    "אל תמיר יחידות (דקות↔שעות) ואל תחשב מספרים חדשים — העתק מספרים אך ורק כפי שהם "
+    "מופיעים בממצאים, מילה במילה; עד 3 פריטי מיקוד; כל המלצה עם סיבה. "
     'החזר JSON בלבד: {"headline": str, "highlights": [str], "risks": [str], '
     '"recommendations": [{"title": str, "why": str, "priority": "high|medium|low", "finding_id": str}], '
     '"focus_now": [str]}'
@@ -142,7 +146,12 @@ async def compose(
         )
         data = json.loads(text[text.find("{") : text.rfind("}") + 1])
         if not _digits_ok(json.dumps(data, ensure_ascii=False), source_payload):
-            return base  # hallucinated a number → deterministic fallback
+            out_nums = set(
+                re.findall(r"\d[\d,.]*\d|\d{2,}", json.dumps(data, ensure_ascii=False).replace(",", ""))
+            )
+            missing = [n for n in out_nums if n not in source_payload.replace(",", "")]
+            logger.warning("digit guard rejected LLM brief; foreign numbers: %s", missing[:8])
+            return base  # hallucinated/derived a number → deterministic fallback
         base.update(
             {
                 "headline": data.get("headline", base["headline"]),
@@ -155,4 +164,5 @@ async def compose(
         )
         return base
     except Exception:
+        logger.exception("LLM synthesis failed; falling back to rule-rendered brief")
         return base
