@@ -1,45 +1,52 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @theme {
   --font-sans: "Heebo", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Heebo", sans-serif;
+  --font-latin: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  /* Easy Life — clean professional LIGHT theme, gold accent + deep charcoal.
-     Token names kept from the old dark theme so components keep working:
-       background  → app canvas (very light gray)
-       surface     → cards / panels (white)
-       surface-raised → hover / inset fills (subtle gray)
-       border / border-strong → hairlines
-       ivory       → primary ink text (repurposed to dark ink)
+  /* Easy Life — Aether dark-spatial theme, oklch-based.
+     Token names kept from the original design so components keep working:
+       background  → app canvas (deep space black)
+       surface     → cards / panels (glass, translucent)
+       surface-raised → hover / inset fills
+       border / border-strong → hairlines (translucent white)
+       ivory / ink → primary text (near-white)
        muted / faint → secondary / tertiary text
-       gold(+hover/soft) → signature accent
+       gold(+hover/soft) → signature accent (now cyan glow, keeps "gold" name for compat)
   */
-  --color-background: #f7f8fa;
-  --color-surface: #ffffff;
-  --color-surface-raised: #f1f3f6;
-  --color-border: #e7e9ee;
-  --color-border-strong: #d7dae1;
-  --color-ivory: #1a1d24; /* primary ink (name kept for compat) */
-  --color-ink: #1a1d24;
-  --color-charcoal: #22262f;
-  --color-muted: #6b7280;
-  --color-faint: #9aa1ad;
-  --color-gold: #c9a96a;
-  --color-gold-hover: #b8965a;
-  --color-gold-strong: #a9843f;
-  --color-gold-soft: rgba(201, 169, 106, 0.14);
-  --color-success: #2f9e6f;
-  --color-success-soft: rgba(47, 158, 111, 0.12);
-  --color-danger: #d1483f;
-  --color-danger-soft: rgba(209, 72, 63, 0.1);
-  --color-warning: #d9962b;
-  --color-warning-soft: rgba(217, 150, 43, 0.12);
-  --color-info: #3576c9;
-  --color-info-soft: rgba(53, 118, 201, 0.12);
+  --color-background: oklch(0.14 0.02 260);
+  --color-surface: oklch(0.19 0.03 265 / 0.55);
+  --color-surface-raised: oklch(0.25 0.03 265 / 0.5);
+  --color-border: oklch(0.85 0.05 240 / 0.14);
+  --color-border-strong: oklch(0.85 0.05 240 / 0.24);
+  --color-ivory: oklch(0.97 0.01 240);
+  --color-ink: oklch(0.97 0.01 240);
+  --color-charcoal: oklch(0.19 0.03 265);
+  --color-muted: oklch(0.78 0.02 250);
+  --color-faint: oklch(0.62 0.03 250);
+  --color-gold: oklch(0.82 0.18 200);
+  --color-gold-hover: oklch(0.87 0.16 200);
+  --color-gold-strong: oklch(0.85 0.19 200);
+  --color-gold-soft: oklch(0.82 0.18 200 / 0.14);
+  --color-success: #4ade80;
+  --color-success-soft: rgba(74, 222, 128, 0.12);
+  --color-danger: #f87171;
+  --color-danger-soft: rgba(248, 113, 113, 0.1);
+  --color-warning: #fbbf24;
+  --color-warning-soft: rgba(251, 191, 36, 0.12);
+  --color-info: #7ff0ff;
+  --color-info-soft: rgba(127, 240, 255, 0.12);
 
-  --shadow-glow: 0 0 0 1px rgba(201, 169, 106, 0.35);
-  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
-  --shadow-raised: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.04);
-  --shadow-pop: 0 12px 32px rgba(16, 24, 40, 0.14), 0 4px 8px rgba(16, 24, 40, 0.06);
+  --color-cyan-glow: oklch(0.85 0.19 200);
+  --color-magenta-glow: oklch(0.68 0.26 340);
+  --color-violet-glow: oklch(0.62 0.24 300);
+
+  --shadow-glow: 0 0 40px -10px rgba(56, 220, 255, 0.55);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.24);
+  --shadow-raised: 0 4px 12px rgba(0, 0, 0, 0.32), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-pop: 0 20px 60px -20px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.3);
 
   --animate-feed-in: feed-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
@@ -70,7 +77,7 @@
   @keyframes drawer-in {
     from {
       opacity: 0;
-      transform: translateX(-24px);
+      transform: translateX(24px);
     }
     to {
       opacity: 1;
@@ -90,19 +97,21 @@
 
 html {
   height: 100%;
+  color-scheme: dark;
 }
 
 body {
   min-height: 100%;
-  background-color: var(--color-background);
+  background-color: #07090e;
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: rgba(201, 169, 106, 0.28);
+  background: rgba(127, 240, 255, 0.28);
 }
 
 * {
@@ -131,4 +140,112 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Aether visual system — glass, glows, gradients, ambient motion       */
+/* ------------------------------------------------------------------ */
+
+@utility glass-card {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 40px rgba(120, 220, 255, 0.03),
+    0 20px 60px -20px rgba(0, 0, 0, 0.6);
+  border-radius: 1.25rem;
+}
+
+@utility glow-cyan {
+  box-shadow: 0 0 40px -10px rgba(56, 220, 255, 0.55), inset 0 0 20px rgba(56, 220, 255, 0.08);
+}
+
+@utility glow-magenta {
+  box-shadow: 0 0 40px -10px rgba(230, 237, 243, 0.5), inset 0 0 20px rgba(230, 237, 243, 0.08);
+}
+
+@utility glow-violet {
+  box-shadow: 0 0 40px -10px rgba(142, 163, 181, 0.5), inset 0 0 20px rgba(142, 163, 181, 0.08);
+}
+
+@utility text-gradient {
+  background: linear-gradient(120deg, #7ff0ff 0%, #ffffff 60%, #a8b3bd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes float-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(6%, -4%) scale(1.08);
+  }
+  66% {
+    transform: translate(-4%, 6%) scale(0.95);
+  }
+}
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@keyframes caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blob {
+  animation: float-blob 18s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+.animate-caret {
+  animation: caret 1s steps(2) infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-pulse-ring,
+  .animate-caret,
+  .animate-feed-in,
+  .animate-pulse-dot,
+  .animate-drawer-in,
+  .animate-fade-in {
+    animation: none !important;
+  }
+  * {
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -14,7 +14,7 @@ export default function CrmLayout() {
     <div className="mx-auto w-full max-w-7xl">
       {/* Secondary sub-nav */}
       <nav
-        className="mb-6 flex flex-wrap items-center gap-1 border-b border-border"
+        className="mb-6 flex flex-wrap items-center gap-1 rounded-2xl border border-border bg-white/[0.03] p-1.5 backdrop-blur-xl"
         aria-label="ניווט CRM"
       >
         {TABS.map(({ to, label }) => (
@@ -22,19 +22,17 @@ export default function CrmLayout() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `relative -mb-px rounded-t-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? 'text-ink'
-                  : 'text-muted hover:text-ink'
+              `relative rounded-xl px-4 py-2 text-sm font-medium transition-colors ${
+                isActive ? 'text-white' : 'text-muted hover:text-ink'
               }`
             }
           >
             {({ isActive }) => (
               <>
-                {label}
                 {isActive && (
-                  <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-gold" />
+                  <span className="absolute inset-0 rounded-xl border border-gold/30 bg-gold-soft" />
                 )}
+                <span className="relative z-10">{label}</span>
               </>
             )}
           </NavLink>

@@ -16,7 +16,7 @@ import type { Deal, DealStage } from '../../lib/types';
 import { DEAL_STAGES } from '../../lib/crmMeta';
 import { formatAgorot, formatDate } from '../../lib/format';
 import { PageHeader } from '../../components/PageHeader';
-import { Avatar, Badge, Button, Field, Input, Modal, Select, SkeletonRow } from '../../components/ui';
+import { Badge, Button, Field, Input, Modal, Select, SkeletonRow } from '../../components/ui';
 
 /* ------------------------------ Deal card -------------------------------- */
 
@@ -38,12 +38,6 @@ function DealCardBody({ deal, dragging = false }: { deal: Deal; dragging?: boole
           <span className="text-[11px] text-faint">{formatDate(deal.expected_close)}</span>
         )}
       </div>
-      {deal.owner_user_id && (
-        <div className="mt-2.5 flex items-center gap-1.5 border-t border-border pt-2">
-          <Avatar name={deal.owner_user_id} size="sm" />
-          <span className="truncate text-[11px] text-muted">{deal.owner_user_id}</span>
-        </div>
-      )}
     </div>
   );
 }

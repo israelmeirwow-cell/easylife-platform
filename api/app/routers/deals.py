@@ -14,10 +14,38 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db import get_session
 from app.deps import get_actor_id, get_tenant_id
 from app.events import emit_event
-from app.models import Deal
+from app.models import Account, Contact, Deal
 from app.schemas import DealCreate, DealOut, DealUpdate
 
 router = APIRouter(prefix="/api/deals", tags=["deals"])
+
+
+async def _enrich(
+    session: AsyncSession, tenant_id: uuid.UUID, deals: list[Deal]
+) -> list[Deal]:
+    """Attach friendly account_name / contact_name so the UI never shows a raw id."""
+    account_ids = {d.account_id for d in deals if d.account_id}
+    contact_ids = {d.contact_id for d in deals if d.contact_id}
+    accounts: dict = {}
+    contacts: dict = {}
+    if account_ids:
+        rows = await session.execute(
+            select(Account.id, Account.name).where(
+                Account.tenant_id == tenant_id, Account.id.in_(account_ids)
+            )
+        )
+        accounts = {r.id: r.name for r in rows}
+    if contact_ids:
+        rows = await session.execute(
+            select(Contact.id, Contact.name).where(
+                Contact.tenant_id == tenant_id, Contact.id.in_(contact_ids)
+            )
+        )
+        contacts = {r.id: r.name for r in rows}
+    for d in deals:
+        d.account_name = accounts.get(d.account_id) if d.account_id else None
+        d.contact_name = contacts.get(d.contact_id) if d.contact_id else None
+    return deals
 
 
 async def _get_deal_or_404(
@@ -46,7 +74,7 @@ async def list_deals(
     if pipeline is not None:
         query = query.where(Deal.pipeline == pipeline)
     result = await session.execute(query.order_by(Deal.created_at.desc()).limit(limit))
-    return list(result.scalars().all())
+    return await _enrich(session, tenant_id, list(result.scalars().all()))
 
 
 @router.post("", response_model=DealOut, status_code=201)
@@ -86,7 +114,9 @@ async def get_deal(
     tenant_id: uuid.UUID = Depends(get_tenant_id),
     session: AsyncSession = Depends(get_session),
 ) -> Deal:
-    return await _get_deal_or_404(session, tenant_id, deal_id)
+    deal = await _get_deal_or_404(session, tenant_id, deal_id)
+    (enriched,) = await _enrich(session, tenant_id, [deal])
+    return enriched
 
 
 @router.patch("/{deal_id}", response_model=DealOut)
