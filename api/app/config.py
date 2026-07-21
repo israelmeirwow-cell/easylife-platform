@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     META_APP_SECRET: str = ""
     META_WEBHOOK_VERIFY_TOKEN: str = ""
 
+    # --- Connections aggregator (Composio) — breadth layer for IG/FB/TikTok/Gmail/... ---
+    COMPOSIO_API_KEY: str = ""
+    COMPOSIO_BASE_URL: str = "https://backend.composio.dev/api/v3"
+
     # --- Billing (Israel) ---
     GROW_API_KEY: str = ""
     GREEN_INVOICE_API_KEY: str = ""

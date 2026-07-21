@@ -5,6 +5,7 @@ import { Spinner } from './components/ui';
 import Login from './pages/Login';
 import Feed from './pages/Feed';
 import Inbox from './pages/Inbox';
+import Connections from './pages/Connections';
 import Approvals from './pages/Approvals';
 import Cashflow from './pages/Cashflow';
 import Settings from './pages/Settings';
@@ -55,6 +56,7 @@ export default function App() {
         </Route>
 
         <Route path="/inbox" element={<Inbox />} />
+        <Route path="/connections" element={<Connections />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/approvals" element={<Approvals />} />
         <Route path="/cashflow" element={<Cashflow />} />

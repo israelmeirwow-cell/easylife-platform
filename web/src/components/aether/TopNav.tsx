@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
-import { Search, Bell, Sparkles } from 'lucide-react';
+import { Search, Bell, Sparkles, Plug } from 'lucide-react';
 import type { ComponentType } from 'react';
 import {
   BoltIcon,
@@ -24,6 +24,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/inbox', label: 'אינבוקס', Icon: InboxIcon },
   { to: '/approvals', label: 'אישורים', Icon: CheckCircleIcon },
   { to: '/crm', label: 'CRM', Icon: CrmIcon },
+  { to: '/connections', label: 'חיבורים', Icon: Plug },
   { to: '/cashflow', label: 'תזרים', Icon: ChartIcon },
   { to: '/settings', label: 'הגדרות', Icon: CogIcon },
 ];
