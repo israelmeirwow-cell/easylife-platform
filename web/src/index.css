@@ -3,32 +3,53 @@
 @theme {
   --font-sans: "Heebo", "Segoe UI", system-ui, -apple-system, sans-serif;
 
-  /* Luxury dark — warm charcoal + champagne gold */
-  --color-background: #16130f;
-  --color-surface: #1f1b15;
-  --color-surface-raised: #262019;
-  --color-border: #2e2820;
-  --color-border-strong: #3b3325;
-  --color-ivory: #f2ede4;
-  --color-muted: #a89f8f;
-  --color-faint: #6f6759;
+  /* Easy Life — clean professional LIGHT theme, gold accent + deep charcoal.
+     Token names kept from the old dark theme so components keep working:
+       background  → app canvas (very light gray)
+       surface     → cards / panels (white)
+       surface-raised → hover / inset fills (subtle gray)
+       border / border-strong → hairlines
+       ivory       → primary ink text (repurposed to dark ink)
+       muted / faint → secondary / tertiary text
+       gold(+hover/soft) → signature accent
+  */
+  --color-background: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f1f3f6;
+  --color-border: #e7e9ee;
+  --color-border-strong: #d7dae1;
+  --color-ivory: #1a1d24; /* primary ink (name kept for compat) */
+  --color-ink: #1a1d24;
+  --color-charcoal: #22262f;
+  --color-muted: #6b7280;
+  --color-faint: #9aa1ad;
   --color-gold: #c9a96a;
-  --color-gold-hover: #d9bc80;
-  --color-gold-soft: rgba(201, 169, 106, 0.12);
-  --color-success: #85b98a;
-  --color-danger: #d07a72;
-  --color-warning: #d9a75b;
+  --color-gold-hover: #b8965a;
+  --color-gold-strong: #a9843f;
+  --color-gold-soft: rgba(201, 169, 106, 0.14);
+  --color-success: #2f9e6f;
+  --color-success-soft: rgba(47, 158, 111, 0.12);
+  --color-danger: #d1483f;
+  --color-danger-soft: rgba(209, 72, 63, 0.1);
+  --color-warning: #d9962b;
+  --color-warning-soft: rgba(217, 150, 43, 0.12);
+  --color-info: #3576c9;
+  --color-info-soft: rgba(53, 118, 201, 0.12);
 
-  --shadow-glow: 0 0 0 1px rgba(201, 169, 106, 0.22), 0 0 18px rgba(201, 169, 106, 0.14);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.22);
+  --shadow-glow: 0 0 0 1px rgba(201, 169, 106, 0.35);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --shadow-raised: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.04);
+  --shadow-pop: 0 12px 32px rgba(16, 24, 40, 0.14), 0 4px 8px rgba(16, 24, 40, 0.06);
 
-  --animate-feed-in: feed-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-feed-in: feed-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-drawer-in: drawer-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.2s ease both;
 
   @keyframes feed-in {
     from {
       opacity: 0;
-      transform: translateY(-10px) scale(0.98);
+      transform: translateY(-8px) scale(0.99);
     }
     to {
       opacity: 1;
@@ -45,6 +66,26 @@
       opacity: 0.35;
     }
   }
+
+  @keyframes drawer-in {
+    from {
+      opacity: 0;
+      transform: translateX(-24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 html {
@@ -54,21 +95,14 @@ html {
 body {
   min-height: 100%;
   background-color: var(--color-background);
-  /* faint champagne wash from the top corner — keeps the dark from feeling flat */
-  background-image: radial-gradient(
-    1100px 480px at 88% -8%,
-    rgba(201, 169, 106, 0.07),
-    transparent 62%
-  );
-  background-attachment: fixed;
-  color: var(--color-ivory);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(201, 169, 106, 0.32);
+  background: rgba(201, 169, 106, 0.28);
 }
 
 * {
@@ -77,13 +111,17 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-border-strong);
   border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-faint);
 }
 
 ::-webkit-scrollbar-track {

@@ -22,13 +22,18 @@ from app.db import Base, async_session_maker, engine
 from app.deps import DEMO_TENANT_NAME
 from app.events import emit_event
 from app.models import (
+    Account,
+    Activity,
     Approval,
     Channel,
     Contact,
     Conversation,
+    Deal,
     Lead,
     Message,
+    Task,
     Tenant,
+    Ticket,
     User,
 )
 
@@ -94,6 +99,117 @@ APPROVALS = [
         "payload": {"discount_pct": 10, "contact_name": "דוד לוי"},
         "preview_text": "לשלוח לדוד לוי קוד הנחה של 10% כדי לסגור את הליד (מתלבט בין שני צבעים)?",
     },
+]
+
+# --- CRM demo data (fashion wholesale/retail) -----------------------------
+
+# name, kind, phone, email, website, industry, tags
+ACCOUNTS = [
+    {
+        "name": "בוטיק לובלי אשדוד",
+        "kind": "business",
+        "phone": "+97286221100",
+        "email": "orders@lovely-ashdod.co.il",
+        "website": "lovely-ashdod.co.il",
+        "industry": "קמעונאות אופנה",
+        "tags": ["לקוח סיטונאי", "דרום"],
+    },
+    {
+        "name": "רשת סטייל בע\"מ",
+        "kind": "business",
+        "phone": "+97239500200",
+        "email": "purchasing@style-chain.co.il",
+        "website": "style-chain.co.il",
+        "industry": "רשת חנויות",
+        "tags": ["רשת", "VIP"],
+    },
+    {
+        "name": "דניז קולקשן",
+        "kind": "business",
+        "phone": "+97248880055",
+        "email": "deniz@deniz-collection.co.il",
+        "website": "deniz-collection.co.il",
+        "industry": "יבוא אופנה",
+        "tags": ["צפון"],
+    },
+    {
+        "name": "אאוטלט פאשן חיפה",
+        "kind": "business",
+        "phone": "+97248123123",
+        "email": "info@outlet-haifa.co.il",
+        "website": "outlet-haifa.co.il",
+        "industry": "אאוטלט",
+        "tags": ["מחיר", "צפון"],
+    },
+    {
+        "name": "חנות הג'ינס של רוני",
+        "kind": "business",
+        "phone": "+97297771234",
+        "email": "roni@roni-jeans.co.il",
+        "website": "roni-jeans.co.il",
+        "industry": "קמעונאות אופנה",
+        "tags": ["מרכז"],
+    },
+    {
+        "name": "מיכל אברמוב (פרטי)",
+        "kind": "person",
+        "phone": "+972523333333",
+        "email": "michal.abramov@gmail.com",
+        "website": None,
+        "industry": None,
+        "tags": ["מידות מיוחדות"],
+    },
+]
+
+# title, account_idx, contact_idx (or None), stage, value_agorot, source
+DEALS = [
+    ("הזמנת קיץ — 120 ג'ינסים גזרה גבוהה", 0, 0, "lead", 3600000, "whatsapp"),
+    ("קולקציית סתיו לרשת — 8 חנויות", 1, None, "qualified", 12800000, "email"),
+    ("מארז ג'ינס בויפרנד סיטונאי", 2, None, "proposal", 5400000, "instagram"),
+    ("ריאורדר דגם סקיני שחור x200", 1, None, "negotiation", 4200000, "whatsapp"),
+    ("עסקת אאוטלט — עודפי מלאי חורף", 3, None, "negotiation", 2900000, "email"),
+    ("הזמנה ראשונה חנות רוני", 4, None, "won", 1850000, "whatsapp"),
+    ("מכירת סטוק ג'ינס בהיר", 0, 0, "won", 990000, "instagram"),
+    ("הצעת מחיר קולקציית גברים", 2, None, "lost", 3100000, "email"),
+    ("חבילת מידות פלוס לבוטיק", 0, 5, "proposal", 2450000, "whatsapp"),
+    ("דגם חדש — פיילוט 30 יחידות", 4, None, "qualified", 720000, "instagram"),
+]
+
+# title, status, priority, contact_idx (or None), account_idx (or None), deal_idx (or None), description
+TASKS = [
+    ("להתקשר לבוטיק לובלי לגבי הזמנת הקיץ", "open", "high", 0, 0, 0, "לסגור כמויות וצבעים"),
+    ("לשלוח קטלוג סתיו לרשת סטייל", "in_progress", "high", None, 1, 1, "כולל מחירון סיטונאי מעודכן"),
+    ("להכין הצעת מחיר למארז בויפרנד", "open", "normal", None, 2, 2, None),
+    ("מעקב אחרי משא ומתן ריאורדר סקיני", "in_progress", "normal", None, 1, 3, "ממתין לאישור כמות"),
+    ("לתאם משלוח עסקת אאוטלט", "open", "normal", None, 3, 4, None),
+    ("לשלוח חשבונית לחנות רוני", "done", "normal", None, 4, 5, "עסקה נסגרה"),
+    ("לעדכן מלאי אחרי מכירת הסטוק", "done", "low", 0, 0, 6, None),
+    ("לחזור למיכל לגבי מידות פלוס", "open", "high", 5, 0, 8, "מתלבטת בין שני דגמים"),
+]
+
+# subject, body, status, priority, contact_idx, channel_kind
+TICKETS = [
+    ("משלוח התעכב — הזמנה #1042", "הלקוחה מדווחת שהחבילה לא הגיעה תוך 3 ימים", "open", "high", 0, "whatsapp"),
+    ("בקשה להחזר כספי — מידה לא מתאימה", "הג'ינס קטן, מבקשת החזר במקום החלפה", "pending", "normal", 2, "whatsapp"),
+    ("שאלה על זמינות מלאי בז' מידה 42", "מתעניין אם נשאר במלאי", "resolved", "low", 1, "instagram"),
+    ("תלונה על תפר פגום", "התקבל פריט עם תפר פתוח, מבקשת החלפה דחופה", "new", "urgent", 6, "email"),
+    ("עדכון כתובת למשלוח הזמנה 1051", "לקוח ביקש לשנות כתובת אחרי ההזמנה", "closed", "normal", 3, "whatsapp"),
+]
+
+# kind, body, contact_idx (or None), account_idx (or None), deal_idx (or None), hours_ago
+ACTIVITIES = [
+    ("call", "שיחת טלפון עם הבוטיק — סוכם על 120 יח' בגזרה גבוהה, ממתין להזמנה רשמית", 0, 0, 0, 30),
+    ("meeting", "פגישת זום עם רשת סטייל להצגת קולקציית הסתיו", None, 1, 1, 48),
+    ("email", "נשלחה הצעת מחיר למארז הבויפרנד הסיטונאי", None, 2, 2, 26),
+    ("whatsapp", "התכתבות עם דניז לגבי מארז — ביקשו הנחת כמות", None, 2, 2, 20),
+    ("note", "רשת סטייל מעדיפה אספקה בפעימות — לפצל משלוח ל-2", None, 1, 1, 18),
+    ("call", "שיחה עם חנות רוני — סגרנו את ההזמנה הראשונה!", None, 4, 5, 72),
+    ("note", "אאוטלט חיפה לחוץ על מחיר, לבדוק גמישות על עודפי חורף", None, 3, 4, 12),
+    ("email", "נשלחה חשבונית לחנות רוני על הזמנה שנסגרה", None, 4, 5, 70),
+    ("whatsapp", "מיכל שאלה על מידות פלוס — שלחתי תמונות של שני דגמים", 5, 0, 8, 8),
+    ("meeting", "פגישת היכרות עם חנות רוני בעפולה", None, 4, None, 96),
+    ("note", "ליד חדש מאינסטגרם — פיילוט 30 יח' לדגם החדש", None, 4, 9, 6),
+    ("call", "שיחת מעקב עם בוטיק לובלי על עסקת הסטוק שנסגרה", 0, 0, 6, 68),
 ]
 
 LIVE_INBOUND = [
@@ -302,8 +418,182 @@ async def seed(session: AsyncSession) -> Tenant:
             },
         )
 
+    # --- CRM: accounts / deals / tasks / tickets / activities --------------
+    accounts: list[Account] = []
+    for spec in ACCOUNTS:
+        account = Account(
+            tenant_id=tenant.id,
+            name=spec["name"],
+            kind=spec["kind"],
+            phone=spec["phone"],
+            email=spec["email"],
+            website=spec["website"],
+            industry=spec["industry"],
+            owner_user_id=owner.id,
+            tags=spec["tags"],
+        )
+        session.add(account)
+        await session.flush()
+        accounts.append(account)
+        await emit_event(
+            session,
+            tenant_id=tenant.id,
+            actor_type="human",
+            actor_id=owner.id,
+            verb="account.created",
+            entity_type="account",
+            entity_id=account.id,
+            payload={"name": account.name, "kind": account.kind},
+        )
+
+    deals: list[Deal] = []
+    for title, account_idx, contact_idx, stage, value_agorot, source in DEALS:
+        deal = Deal(
+            tenant_id=tenant.id,
+            title=title,
+            account_id=accounts[account_idx].id,
+            contact_id=contacts[contact_idx].id if contact_idx is not None else None,
+            pipeline="sales",
+            stage=stage,
+            value_agorot=value_agorot,
+            source_channel=source,
+            owner_user_id=owner.id,
+        )
+        session.add(deal)
+        await session.flush()
+        deals.append(deal)
+        deal_payload = {
+            "title": deal.title,
+            "stage": deal.stage,
+            "pipeline": deal.pipeline,
+            "value_agorot": deal.value_agorot,
+            "account_id": str(deal.account_id) if deal.account_id else None,
+            "contact_id": str(deal.contact_id) if deal.contact_id else None,
+        }
+        await emit_event(
+            session,
+            tenant_id=tenant.id,
+            actor_type="human",
+            actor_id=owner.id,
+            verb="deal.created",
+            entity_type="deal",
+            entity_id=deal.id,
+            payload=deal_payload,
+        )
+        if stage in ("won", "lost"):
+            await emit_event(
+                session,
+                tenant_id=tenant.id,
+                actor_type="human",
+                actor_id=owner.id,
+                verb=f"deal.{stage}",
+                entity_type="deal",
+                entity_id=deal.id,
+                payload=deal_payload,
+            )
+
+    for title, status, priority, contact_idx, account_idx, deal_idx, description in TASKS:
+        task = Task(
+            tenant_id=tenant.id,
+            title=title,
+            description=description,
+            status=status,
+            priority=priority,
+            contact_id=contacts[contact_idx].id if contact_idx is not None else None,
+            account_id=accounts[account_idx].id if account_idx is not None else None,
+            deal_id=deals[deal_idx].id if deal_idx is not None else None,
+            assignee_user_id=owner.id,
+            created_by=owner.id,
+        )
+        session.add(task)
+        await session.flush()
+        await emit_event(
+            session,
+            tenant_id=tenant.id,
+            actor_type="human",
+            actor_id=owner.id,
+            verb="task.created",
+            entity_type="task",
+            entity_id=task.id,
+            payload={"title": task.title, "status": task.status, "priority": task.priority},
+        )
+        if status == "done":
+            await emit_event(
+                session,
+                tenant_id=tenant.id,
+                actor_type="human",
+                actor_id=owner.id,
+                verb="task.completed",
+                entity_type="task",
+                entity_id=task.id,
+                payload={"title": task.title, "status": task.status},
+            )
+
+    for subject, body, status, priority, contact_idx, channel_kind in TICKETS:
+        ticket = Ticket(
+            tenant_id=tenant.id,
+            subject=subject,
+            body=body,
+            status=status,
+            priority=priority,
+            contact_id=contacts[contact_idx].id if contact_idx is not None else None,
+            channel_kind=channel_kind,
+            assignee_user_id=owner.id,
+        )
+        session.add(ticket)
+        await session.flush()
+        await emit_event(
+            session,
+            tenant_id=tenant.id,
+            actor_type="human",
+            actor_id=owner.id,
+            verb="ticket.created",
+            entity_type="ticket",
+            entity_id=ticket.id,
+            payload={
+                "subject": ticket.subject,
+                "status": ticket.status,
+                "priority": ticket.priority,
+                "contact_id": str(ticket.contact_id) if ticket.contact_id else None,
+            },
+        )
+
+    for kind, body, contact_idx, account_idx, deal_idx, hours_ago in ACTIVITIES:
+        activity = Activity(
+            tenant_id=tenant.id,
+            kind=kind,
+            body=body,
+            contact_id=contacts[contact_idx].id if contact_idx is not None else None,
+            account_id=accounts[account_idx].id if account_idx is not None else None,
+            deal_id=deals[deal_idx].id if deal_idx is not None else None,
+            actor_user_id=owner.id,
+            occurred_at=now - timedelta(hours=hours_ago),
+        )
+        session.add(activity)
+        await session.flush()
+        await emit_event(
+            session,
+            tenant_id=tenant.id,
+            actor_type="human",
+            actor_id=owner.id,
+            verb="activity.logged",
+            entity_type="activity",
+            entity_id=activity.id,
+            payload={
+                "kind": activity.kind,
+                "body": activity.body,
+                "contact_id": str(activity.contact_id) if activity.contact_id else None,
+                "account_id": str(activity.account_id) if activity.account_id else None,
+                "deal_id": str(activity.deal_id) if activity.deal_id else None,
+            },
+        )
+
     await session.commit()
     print(f"Seeded demo tenant {tenant.id}: 8 contacts, 5 leads, 3 conversations, 2 pending approvals")
+    print(
+        f"  CRM: {len(ACCOUNTS)} accounts, {len(DEALS)} deals, {len(TASKS)} tasks, "
+        f"{len(TICKETS)} tickets, {len(ACTIVITIES)} activities"
+    )
     print(f"Owner login: {DEMO_EMAIL} / {DEMO_PASSWORD}")
     return tenant
 

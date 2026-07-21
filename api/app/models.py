@@ -180,18 +180,120 @@ class Lead(Base):
     created_at: Mapped[datetime] = created_at_col()
 
 
+class Account(Base):
+    """CRM company/person record (Fireberry "Account")."""
+
+    __tablename__ = "accounts"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    kind: Mapped[str] = mapped_column(String(16), nullable=False, default="business")  # business|person
+    phone: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    email: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    website: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    industry: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    owner_user_id: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)
+    tags: Mapped[list] = mapped_column(JSONVariant, nullable=False, default=list)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    custom: Mapped[dict] = mapped_column(JSONVariant, nullable=False, default=dict)
+    created_at: Mapped[datetime] = created_at_col()
+
+
+class Deal(Base):
+    """CRM opportunity moving through a pipeline (Fireberry "Deal")."""
+
+    __tablename__ = "deals"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    title: Mapped[str] = mapped_column(String(500), nullable=False)
+    account_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("accounts.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    contact_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("contacts.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    pipeline: Mapped[str] = mapped_column(String(32), nullable=False, default="sales")
+    # lead|qualified|proposal|negotiation|won|lost
+    stage: Mapped[str] = mapped_column(String(16), nullable=False, default="lead", index=True)
+    value_agorot: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    currency: Mapped[str] = mapped_column(String(8), nullable=False, default="ILS")
+    expected_close: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    owner_user_id: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)
+    source_channel: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    custom: Mapped[dict] = mapped_column(JSONVariant, nullable=False, default=dict)
+    created_at: Mapped[datetime] = created_at_col()
+
+
 class Task(Base):
     __tablename__ = "tasks"
 
     id: Mapped[uuid.UUID] = uuid_pk()
     tenant_id: Mapped[uuid.UUID] = tenant_fk()
     title: Mapped[str] = mapped_column(String(500), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
     due_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    status: Mapped[str] = mapped_column(String(16), nullable=False, default="open")
+    status: Mapped[str] = mapped_column(
+        String(16), nullable=False, default="open", index=True
+    )  # open|in_progress|done
+    priority: Mapped[str] = mapped_column(String(16), nullable=False, default="normal")  # low|normal|high
     contact_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("contacts.id", ondelete="SET NULL"), nullable=True
     )
+    account_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("accounts.id", ondelete="SET NULL"), nullable=True
+    )
+    deal_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("deals.id", ondelete="SET NULL"), nullable=True
+    )
+    assignee_user_id: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)
     created_by: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)  # user id
+    created_at: Mapped[datetime] = created_at_col()
+
+
+class Ticket(Base):
+    """CRM support ticket (Fireberry "Ticket / Case")."""
+
+    __tablename__ = "tickets"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    subject: Mapped[str] = mapped_column(String(500), nullable=False)
+    body: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # new|open|pending|resolved|closed
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="new", index=True)
+    priority: Mapped[str] = mapped_column(String(16), nullable=False, default="normal")  # low|normal|high|urgent
+    contact_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("contacts.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    channel_kind: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    assignee_user_id: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)
+    created_at: Mapped[datetime] = created_at_col()
+
+
+class Activity(Base):
+    """CRM logged interaction: call/meeting/note/email/whatsapp (Fireberry "Activity")."""
+
+    __tablename__ = "activities"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    kind: Mapped[str] = mapped_column(String(16), nullable=False)  # call|meeting|note|email|whatsapp
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    contact_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("contacts.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    account_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("accounts.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    deal_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("deals.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    actor_user_id: Mapped[uuid.UUID | None] = mapped_column(sa.Uuid, nullable=True)
+    occurred_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=utcnow, index=True
+    )
     created_at: Mapped[datetime] = created_at_col()
 
 
@@ -218,6 +320,14 @@ APPROVAL_TRANSITIONS: dict[str, set[str]] = {
     "pending": {"approved", "rejected", "expired"},
     "approved": {"executed", "failed"},
 }
+
+# CRM enums (validated at the schema layer; kept here so seed + routers agree).
+DEAL_STAGES: tuple[str, ...] = ("lead", "qualified", "proposal", "negotiation", "won", "lost")
+DEAL_OPEN_STAGES: tuple[str, ...] = ("lead", "qualified", "proposal", "negotiation")
+TASK_STATUSES: tuple[str, ...] = ("open", "in_progress", "done")
+TICKET_STATUSES: tuple[str, ...] = ("new", "open", "pending", "resolved", "closed")
+TICKET_OPEN_STATUSES: tuple[str, ...] = ("new", "open", "pending")
+ACTIVITY_KINDS: tuple[str, ...] = ("call", "meeting", "note", "email", "whatsapp")
 
 
 class Event(Base):

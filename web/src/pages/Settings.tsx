@@ -26,7 +26,7 @@ export default function Settings() {
               {icon}
             </span>
             <div className="min-w-0 flex-1">
-              <div className="text-sm font-medium text-ivory">{title}</div>
+              <div className="text-sm font-medium text-ink">{title}</div>
               <div className="mt-0.5 truncate text-xs text-muted">{desc}</div>
             </div>
             <span className="text-faint" aria-hidden="true">

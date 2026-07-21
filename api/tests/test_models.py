@@ -7,11 +7,14 @@ from sqlalchemy import select
 
 from app.db import Base
 from app.models import (
+    Account,
+    Activity,
     AgentConfig,
     Approval,
     Channel,
     Contact,
     Conversation,
+    Deal,
     Document,
     Event,
     Lead,
@@ -19,10 +22,12 @@ from app.models import (
     Message,
     Task,
     Tenant,
+    Ticket,
     UsageEvent,
     User,
 )
 
+# The 14 brain tables + the 4 CRM tables (accounts, deals, tickets, activities).
 EXPECTED_TABLES = {
     "tenants",
     "users",
@@ -38,10 +43,14 @@ EXPECTED_TABLES = {
     "agent_configs",
     "documents",
     "usage_events",
+    "accounts",
+    "deals",
+    "tickets",
+    "activities",
 }
 
 
-def test_all_14_tables_registered():
+def test_all_tables_registered():
     assert set(Base.metadata.tables.keys()) == EXPECTED_TABLES
 
 
@@ -72,12 +81,49 @@ async def test_insert_every_table(session):
     session.add_all([user, channel, contact])
     await session.flush()
 
+    account = Account(tenant_id=tenant.id, name="בוטיק לובלי", kind="business")
     conversation = Conversation(
         tenant_id=tenant.id, contact_id=contact.id, channel_id=channel.id
     )
     lead = Lead(tenant_id=tenant.id, contact_id=contact.id, value_agorot=19900)
-    task = Task(tenant_id=tenant.id, title="להתקשר ללקוח", contact_id=contact.id)
-    session.add_all([conversation, lead, task])
+    session.add_all([account, conversation, lead])
+    await session.flush()
+
+    deal = Deal(
+        tenant_id=tenant.id,
+        title="הזמנת קיץ",
+        account_id=account.id,
+        contact_id=contact.id,
+        stage="proposal",
+        value_agorot=3600000,
+    )
+    session.add(deal)
+    await session.flush()
+
+    task = Task(
+        tenant_id=tenant.id,
+        title="להתקשר ללקוח",
+        contact_id=contact.id,
+        account_id=account.id,
+        deal_id=deal.id,
+        priority="high",
+    )
+    ticket = Ticket(
+        tenant_id=tenant.id,
+        subject="משלוח התעכב",
+        status="open",
+        priority="urgent",
+        contact_id=contact.id,
+    )
+    activity = Activity(
+        tenant_id=tenant.id,
+        kind="call",
+        body="שיחת מכירה",
+        contact_id=contact.id,
+        account_id=account.id,
+        deal_id=deal.id,
+    )
+    session.add_all([task, ticket, activity])
     await session.flush()
 
     message = Message(
@@ -142,6 +188,12 @@ async def test_insert_every_table(session):
     stored_memory = (await session.execute(select(Memory))).scalars().one()
     assert stored_memory.embedding == [0.1] * 8
     assert (await session.execute(select(UsageEvent))).scalars().one().cost_usd_micros == 1234
+    assert (await session.execute(select(Account))).scalars().one().name == "בוטיק לובלי"
+    stored_deal = (await session.execute(select(Deal))).scalars().one()
+    assert stored_deal.value_agorot == 3600000
+    assert stored_deal.currency == "ILS"  # server/model default
+    assert (await session.execute(select(Ticket))).scalars().one().priority == "urgent"
+    assert (await session.execute(select(Activity))).scalars().one().kind == "call"
 
 
 async def test_uuid_pks_and_tenant_scoping(session):

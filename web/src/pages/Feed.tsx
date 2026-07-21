@@ -29,10 +29,10 @@ const ACTOR_LABEL: Record<ActorType, string> = {
 };
 
 const ACTOR_STYLE: Record<ActorType, string> = {
-  agent: 'border-gold/40 bg-gold-soft text-gold',
-  human: 'border-border-strong bg-surface-raised text-ivory',
+  agent: 'border-gold/40 bg-gold-soft text-gold-strong',
+  human: 'border-border-strong bg-surface-raised text-ink',
   system: 'border-border bg-surface text-muted',
-  contact: 'border-success/40 bg-success/10 text-success',
+  contact: 'border-success/40 bg-success-soft text-success',
 };
 
 function eventSummary(ev: EventItem): string | null {
@@ -104,7 +104,7 @@ function EventCard({ ev, isNew, now }: { ev: EventItem; isNew: boolean; now: num
   const summary = eventSummary(ev);
   return (
     <article
-      className={`flex items-start gap-4 rounded-xl border border-border bg-surface p-4 shadow-card ${
+      className={`flex items-start gap-4 rounded-2xl border border-border bg-surface p-4 shadow-card ${
         isNew ? 'animate-feed-in' : ''
       }`}
     >
@@ -113,7 +113,7 @@ function EventCard({ ev, isNew, now }: { ev: EventItem; isNew: boolean; now: num
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-ivory">{meta.label}</span>
+          <span className="text-sm font-medium text-ink">{meta.label}</span>
           <ActorBadge type={ev.actor_type} />
           {ev.actor_id && <span className="text-xs text-faint">{ev.actor_id}</span>}
           <time className="ms-auto shrink-0 text-xs text-faint" dateTime={ev.ts}>
@@ -128,7 +128,7 @@ function EventCard({ ev, isNew, now }: { ev: EventItem; isNew: boolean; now: num
 
 function SkeletonCard() {
   return (
-    <div className="flex animate-pulse items-start gap-4 rounded-xl border border-border bg-surface p-4">
+    <div className="flex animate-pulse items-start gap-4 rounded-2xl border border-border bg-surface p-4">
       <div className="h-10 w-10 rounded-full bg-surface-raised" />
       <div className="flex-1 space-y-2.5 py-1">
         <div className="h-3 w-1/3 rounded bg-surface-raised" />
@@ -140,11 +140,11 @@ function SkeletonCard() {
 
 function EmptyState({ apiDown }: { apiDown: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border-strong bg-surface/40 px-6 py-16 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-gold/40 text-2xl shadow-glow">
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border-strong bg-surface/60 px-6 py-16 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-soft text-2xl">
         ⚡
       </span>
-      <p className="text-base font-medium text-ivory">עדיין אין אירועים</p>
+      <p className="text-base font-medium text-ink">עדיין אין אירועים</p>
       <p className="max-w-sm text-sm leading-relaxed text-muted">
         כשהסוכנים יתחילו לעבוד, כל פעולה בעסק — הודעות, לידים, אישורים ותשלומים — תופיע כאן
         בזמן אמת.

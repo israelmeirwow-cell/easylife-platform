@@ -13,7 +13,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth import UserCreate, UserRead, auth_backend, fastapi_users, me_router
 from app.config import settings
 from app.events import pg_notify_listener
-from app.routers import approvals, contacts, conversations, feed, leads
+from app.routers import (
+    accounts,
+    activities,
+    approvals,
+    contacts,
+    conversations,
+    dashboard,
+    deals,
+    feed,
+    leads,
+    tasks,
+    tickets,
+)
 
 
 @asynccontextmanager
@@ -48,6 +60,15 @@ app.include_router(contacts.router)
 app.include_router(leads.router)
 app.include_router(conversations.router)
 app.include_router(approvals.router)
+
+# CRM routers (Fireberry feature-parity — accounts / deals / tasks / tickets /
+# activities / dashboard)
+app.include_router(accounts.router)
+app.include_router(deals.router)
+app.include_router(tasks.router)
+app.include_router(tickets.router)
+app.include_router(activities.router)
+app.include_router(dashboard.router)
 
 
 @app.get("/api/health")
