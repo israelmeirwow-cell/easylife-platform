@@ -17,6 +17,7 @@ from app.routers import (
     accounts,
     activities,
     approvals,
+    ceo,
     contacts,
     conversations,
     dashboard,
@@ -69,6 +70,7 @@ app.include_router(tasks.router)
 app.include_router(tickets.router)
 app.include_router(activities.router)
 app.include_router(dashboard.router)
+app.include_router(ceo.router)
 
 
 @app.get("/api/health")
