@@ -45,7 +45,7 @@ async def catalog(
     session: AsyncSession = Depends(get_session),
 ) -> dict:
     existing = await _tenant_channels(session, tenant_id)
-    live = await composio_client.live_statuses()  # {} if not configured / on error
+    live = await composio_client.live_statuses(str(tenant_id))  # {} if not configured / on error
 
     apps = []
     for a in CATALOG:
@@ -126,16 +126,21 @@ async def connect(
     if app.provider == "native":
         return {"mode": "native", "slug": slug, "message_he": app.note_he or "חיבור ייעודי — נלווה אותך בהגדרה"}
 
-    # composio-backed via MCP
+    # composio-backed via REST (per-tenant OAuth)
     if composio_client.configured():
         try:
-            result = await composio_client.initiate_connection(app.toolkit or slug)
+            result = await composio_client.initiate_connection(str(tenant_id), app.toolkit or slug)
         except Exception as exc:
             raise HTTPException(status_code=502, detail=f"composio_error: {exc}") from exc
-        redirect = result.get("redirect_url")
-        await _upsert_channel(session, tenant_id, slug, "pending", {"toolkit": app.toolkit})
+        await _upsert_channel(
+            session,
+            tenant_id,
+            slug,
+            "pending",
+            {"toolkit": app.toolkit, "account_id": result.get("connected_account_id")},
+        )
         await session.commit()
-        return {"mode": "oauth", "redirect_url": redirect, "slug": slug}
+        return {"mode": "oauth", "redirect_url": result.get("redirect_url"), "slug": slug}
 
     # demo mode (no key)
     ch = await _upsert_channel(session, tenant_id, slug, "demo_connected", {"demo": True})
@@ -165,7 +170,7 @@ async def sync(
 ) -> dict:
     """Pull live Composio statuses and persist newly-connected apps as channels
     (+ a connection.created event) so the brain/feed reflect real connections."""
-    live = await composio_client.live_statuses()
+    live = await composio_client.live_statuses(str(tenant_id))
     existing = await _tenant_channels(session, tenant_id)
     created = 0
     for toolkit, info in live.items():
@@ -211,9 +216,9 @@ async def disconnect(
         raise HTTPException(status_code=404, detail="Connection not found")
 
     meta = channel.meta or {}
-    toolkit, account_id = meta.get("toolkit"), meta.get("account_id")
-    if toolkit and account_id and composio_client.configured():
-        await composio_client.disconnect(toolkit, account_id)
+    account_id = meta.get("account_id")
+    if account_id and composio_client.configured():
+        await composio_client.disconnect(account_id)
 
     kind = channel.kind
     channel.status = "disconnected"
