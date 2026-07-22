@@ -410,6 +410,142 @@ class UsageEvent(Base):
 
 
 
+class VideoJob(Base):
+    """One requested reel: brief -> 3-scene plan -> keyframes -> videos -> stitch.
+
+    `scene_plan` is THE contract (docs/video-agent-blueprint.md §4): the LLM
+    writes it once, deterministic stages enrich it in place, scenes reference it
+    by index. Two-phase cancel: API sets `cancel_requested`, the worker polls it
+    at checkpoints (never kill mid-provider-call).
+    """
+
+    __tablename__ = "video_jobs"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    brief: Mapped[str] = mapped_column(Text, nullable=False)
+    product_ref: Mapped[dict] = mapped_column(JSONVariant, nullable=False, default=dict)
+    status: Mapped[str] = mapped_column(String(24), nullable=False, default="draft", index=True)
+    scene_plan: Mapped[dict | None] = mapped_column(JSONVariant, nullable=True)
+    cancel_requested: Mapped[bool] = mapped_column(sa.Boolean, nullable=False, default=False)
+    final_video_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    thumbnail_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    srt_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = created_at_col()
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=utcnow, onupdate=utcnow
+    )
+
+
+class VideoScene(Base):
+    """Atomic, independently replaceable unit of a reel (hook/product/cta).
+
+    A rejection regenerates ONE scene; stitch only ever sees approved scenes.
+    `provider_request_id` is UNIQUE — the webhook/poll correlation key, written
+    at submit time BEFORE the first poll so a crash can't orphan the upstream
+    job (blueprint §4 step 4).
+    """
+
+    __tablename__ = "video_scenes"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    job_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("video_jobs.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    index: Mapped[int] = mapped_column(Integer, nullable=False)
+    role: Mapped[str] = mapped_column(String(16), nullable=False)  # hook|product|cta
+    status: Mapped[str] = mapped_column(String(24), nullable=False, default="pending", index=True)
+    keyframe_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    video_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    spritesheet_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    provider: Mapped[str] = mapped_column(String(32), nullable=False, default="higgsfield")
+    provider_request_id: Mapped[str | None] = mapped_column(String(255), nullable=True, unique=True)
+    attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    critic_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    critic_weak_spots: Mapped[list | None] = mapped_column(JSONVariant, nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = created_at_col()
+
+
+class CreditTopup(Base):
+    """Prepaid credit purchase — FIFO pool that survives plan periods.
+
+    Hybrid model (founder decision 2026-07-22): plan quota expires monthly,
+    top-ups roll and expire `expires_at` (purchase + 12 months).
+    """
+
+    __tablename__ = "credit_topups"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    credits_total: Mapped[int] = mapped_column(Integer, nullable=False)
+    credits_consumed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    source: Mapped[str] = mapped_column(String(32), nullable=False, default="purchase")
+    created_at: Mapped[datetime] = created_at_col()
+
+
+class CreditLedger(Base):
+    """Reserve -> commit/release accounting row (ported from openshorts metering).
+
+    Reservation CONSUMES immediately (plan first, then top-ups FIFO) under the
+    per-tenant row lock, so concurrent reservations can never oversell. Plan
+    rows are tagged with `period_end`; when the period rolls they stop counting
+    automatically — monthly reset needs NO cron. `topup_allocations` records the
+    exact split so release refunds precisely.
+    """
+
+    __tablename__ = "credit_ledger"
+
+    id: Mapped[uuid.UUID] = uuid_pk()
+    tenant_id: Mapped[uuid.UUID] = tenant_fk()
+    job_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("video_jobs.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+    scene_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("video_scenes.id", ondelete="SET NULL"), nullable=True
+    )
+    operation: Mapped[str] = mapped_column(String(32), nullable=False)
+    credits: Mapped[int] = mapped_column(Integer, nullable=False)
+    credits_from_plan: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    credits_from_topup: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    topup_allocations: Mapped[list | None] = mapped_column(JSONVariant, nullable=True)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="reserved", index=True)
+    period_end: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    provider_cost_usd_micros: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    created_at: Mapped[datetime] = created_at_col()
+
+
+# Video state machines (blueprint §3/§4; extends api/prototypes/video_agent_machine.py).
+VIDEO_JOB_TRANSITIONS: dict[str, set[str]] = {
+    "draft": {"planning", "cancelled"},
+    "planning": {"keyframes", "failed", "cancelled"},
+    "keyframes": {"reviewing_keyframes", "blocked_no_credits", "failed", "cancelled"},
+    "reviewing_keyframes": {"keyframes", "generating", "cancelled"},
+    "generating": {"reviewing_scenes", "blocked_no_credits", "failed", "cancelled"},
+    "reviewing_scenes": {"generating", "stitching", "cancelled"},
+    "stitching": {"done", "failed"},
+    "blocked_no_credits": {"keyframes", "generating", "cancelled"},
+}
+
+VIDEO_SCENE_TRANSITIONS: dict[str, set[str]] = {
+    "pending": {"keyframe_generating"},
+    "keyframe_generating": {"keyframe_ready", "failed"},
+    "keyframe_ready": {"keyframe_approved", "keyframe_rejected"},
+    "keyframe_rejected": {"keyframe_generating"},
+    "keyframe_approved": {"generating"},
+    "generating": {"ready", "failed"},
+    "ready": {"approved", "rejected"},
+    "rejected": {"generating"},
+    "failed": {"keyframe_generating", "generating"},
+}
+
+VIDEO_SCENE_ROLES: tuple[str, ...] = ("hook", "product", "cta")
+CREDIT_LEDGER_STATUSES: tuple[str, ...] = ("reserved", "committed", "released")
+
+
 class Finding(Base):
     """CEO analyst output — one detected, deduped, actionable business insight.
 

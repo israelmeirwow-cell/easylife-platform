@@ -1,0 +1,322 @@
+# Easy Life Video Agent — Build Blueprint
+### Synthesized from verified code analysis of 24 open-source repos (2026-07-22)
+
+> Every major choice below is attributed to the reference repo whose *actual code* validated it.
+> Local clones: `~/chatbot/logs/reference-repos/`. Recovered analyses: session scratchpad `recovered_analyses.json`.
+
+---
+
+## 1. Executive summary
+
+The video agent turns a brief + a real product into an approved, stitched marketing reel through a
+**3-scene pipeline** (hook / product-in-action / CTA) with **two cheap approval gates before every
+expensive call**: the client approves still keyframes (~10% of video cost) before any video generation,
+and an automated critic filters weak scenes before the client ever sees them. Each scene is an
+**independent, restart-safe job row** (Postgres queue, `FOR UPDATE SKIP LOCKED`) so a rejection
+regenerates ONE scene, and final assembly is a **zero-cost FFmpeg stream-copy concat**. Credits are
+**reserved before submission and committed/released after**, using the hybrid model (monthly quota
+auto-expiring by period tag + FIFO top-ups) ported from openshorts' production `metering.py`.
+Higgsfield is hidden behind a provider registry so it stays swappable (HyperFrames = free tier).
+
+---
+
+## 2. Architecture (full flow)
+
+```
+  brief + product (from store/catalog connector)
+        │
+        ▼
+ ┌─────────────────┐   plan JSON = THE contract (NarratoAI)
+ │ 1. PLAN (LLM)   │──► scene_plan: [{role, visual_desc, motion_desc,
+ └─────────────────┘        narration, duration∈provider enum}] ×3
+        │  validate plan vs ground truth, repair once (NarratoAI)
+        ▼
+ ┌─────────────────┐   cheap T2I/I2I stills, product photo as
+ │ 2. KEYFRAMES    │──► reference image in EVERY scene
+ └─────────────────┘   (Micro-Drama consistency chain)
+        │  critic scores vs brief (instagram-ai-agent) → auto-regen weak
+        ▼
+ ┌────────────────────────┐
+ │ 3. CLIENT APPROVAL #1  │  approve/reject/edit per keyframe
+ │    (cheap gate)        │  via existing Approval model + SSE feed
+ └────────────────────────┘
+        │  only approved keyframes proceed
+        ▼
+ ┌─────────────────┐   per-scene async job rows; reserve credits →
+ │ 4. GENERATE     │──► submit to provider (requestId saved at submit) →
+ │    (Higgsfield) │   webhook + lazy-poll fallback → commit/release
+ └─────────────────┘   (Open-AI-UGC, MoneyPrinter, Automated-UGC-Ad)
+        │  image-to-video conditioned on approved keyframe
+        ▼
+ ┌────────────────────────┐
+ │ 5. CLIENT APPROVAL #2  │  per-scene video: approve / remix / regen
+ └────────────────────────┘  (remix-before-regenerate: ad-factory-agent)
+        │  all 3 approved
+        ▼
+ ┌─────────────────┐   ffmpeg concat -c copy (no re-encode; safe because
+ │ 6. STITCH       │──► same provider/encode params) + captions burn as
+ └─────────────────┘   SEPARATE stage + music → final bundle
+        │  (StoryGen-Atelier, ad-factory-agent, ai-video-generator)
+        ▼
+   deliverable: mp4 + thumbnail + spritesheet + srt + scene metadata
+   [phase 2: Instagram Graph publish via ChannelConnector]
+```
+
+---
+
+## 3. Data model (SQLAlchemy, follows existing conventions)
+
+All tables: `tenant_id` FK + index (sacred isolation), money in **agorot**, provider costs in
+**usd_micros**, every state change **emits an event** on the EventBus.
+
+```python
+class VideoJob(Base):                      # the reel as a whole
+    __tablename__ = "video_jobs"
+    id: uuid; tenant_id: FK
+    brief: Text                            # what the customer asked for
+    product_ref: JSON                      # {name, image_urls[], source: catalog|upload}
+    status: Enum("draft","planning","keyframes","reviewing_keyframes",
+                 "generating","reviewing_scenes","stitching","done",
+                 "blocked_no_credits","failed","cancelled")
+    scene_plan: JSON                       # THE contract (NarratoAI) — enriched in place
+    cancel_requested: bool = False         # two-phase cancel (MoneyPrinter)
+    final_video_url / thumbnail_url / srt_url: str | None
+    created_at / updated_at
+
+class VideoScene(Base):                    # atomic replaceable unit (ad-factory-agent)
+    __tablename__ = "video_scenes"
+    id: uuid; tenant_id: FK; job_id: FK
+    index: int; role: Enum("hook","product","cta")
+    status: Enum("pending","keyframe_generating","keyframe_ready",
+                 "keyframe_approved","keyframe_rejected",
+                 "generating","ready","approved","rejected","failed")
+    keyframe_url: str | None               # cheap still, approved first
+    video_url: str | None
+    spritesheet_url: str | None            # 6 sampled frames → LLM QC + UI preview
+    provider: str                          # "higgsfield" | "hyperframes"
+    provider_request_id: str | None        # UNIQUE — webhook correlation (Open-AI-UGC)
+    attempts: int = 0
+    critic_score: float | None; critic_weak_spots: JSON | None
+    last_error: Text | None
+
+class CreditTopup(Base):                   # FIFO pool, persists across periods (openshorts)
+    __tablename__ = "credit_topups"
+    id: uuid; tenant_id: FK
+    credits_total: int; credits_consumed: int = 0
+    expires_at: datetime                   # purchase + 12 months (founder decision)
+    source: str                            # "purchase" | "grant" | "founders_pilot"
+    created_at
+
+class CreditLedger(Base):                  # reserve→commit/release (openshorts metering.py)
+    __tablename__ = "credit_ledger"
+    id: uuid; tenant_id: FK
+    job_id: FK; scene_id: FK | None
+    operation: str                         # "keyframe" | "scene_video" | "remix" | "stitch"
+    credits: int
+    credits_from_plan: int; credits_from_topup: int
+    topup_allocations: JSON | None         # exact refund map
+    status: Enum("reserved","committed","released")
+    period_end: datetime | None            # plan rows tagged by period → auto-reset, NO cron
+    provider_cost_usd_micros: int | None   # reconciled actual cost
+    created_at
+```
+
+Existing tables reused: **Approval** (both approval gates land in the approvals inbox),
+**UsageEvent** (per-generation provider cost metering, as today for LLM), **AgentConfig**
+(per-tenant video agent settings: default style, music mood, caption position),
+**Event/EventBus** (every transition → SSE feed).
+
+---
+
+## 4. The pipeline, step by step
+
+Numbers = credit motion. States = `VideoScene.status` / `VideoJob.status`.
+
+### Step 1 — PLAN (`POST /api/video/jobs`)
+* LLM (Sonnet) emits the scene-plan JSON. **Rigid schema, exactly 3 segments in fixed order** —
+  openshorts proved rigid beats flexible. Two-stage: skeleton first, creative fill second with
+  verbatim-copy contract on ids/durations (NarratoAI).
+* **Deterministic validation + one repair re-prompt** (NarratoAI `check_script.py` pattern):
+  durations ∈ provider's allowed enum — validated **before any debit** (StoryGen-Atelier bug-fix
+  lesson), narration length vs duration, product mentioned in product scene.
+* Plan itself costs 0 credits (LLM cost → `usage_events` as today).
+
+### Step 2 — KEYFRAMES (auto after plan)
+* Per scene: **T2I/I2I still with the customer's product photo as reference image**
+  (Micro-Drama chain: product identity = `static_features` in every prompt; scene context =
+  `dynamic_features`). This keeps the product looking identical across all 3 scenes.
+* Reserve → generate → commit ~1 credit per keyframe. Scene: `pending → keyframe_generating → keyframe_ready`.
+* **Critic pass before the client sees anything** (instagram-ai-agent): LLM scores each keyframe
+  vs the brief on scored dimensions, Python recomputes/clamps (never trust LLM arithmetic),
+  three-band verdict: auto-approve-to-review / auto-regen (bounded, max 2) / flag.
+* **Consistency expectation management:** even reference-conditioned I2V morphs products — worst
+  on packaging text/logos. (a) UI copy promises "וידאו ברוח המוצר", never an exact replica;
+  (b) the critic gets a dedicated **product-fidelity dimension** (checked on the spritesheet frames,
+  not just the keyframe) tuned to catch extreme morphing; (c) prompt guidance prefers medium-shot /
+  angled product framing over close-ups of legible text.
+
+### Step 3 — APPROVAL GATE #1 (keyframes) — cheap
+* Creates an **Approval** row (existing model/state machine) + SSE feed card: 3 stills, per-scene
+  **4 verbs: approve / reject / edit-prompt / free-text** (social-media-agent's HumanInterrupt
+  contract; free text → LLM router with closed enum, unknown → re-open with banner, never fail).
+* Rejected keyframe → regenerate (≈1 credit) → back to gate. Approved → eligible for video.
+
+### Step 4 — GENERATE (video, the expensive step)
+* Worker claims scenes via **`FOR UPDATE SKIP LOCKED`** on Postgres — no Celery/Redis needed
+  (MoneyPrinter). Session discipline: claim in short session, run pipeline session-free, fresh
+  session per status write.
+* **Preflight before every billable call** (MoneyPrinterTurbo): provider enabled, key present,
+  prompt within limits, `cancel_requested` check, **credit reserve** — 403 with exact shortfall
+  ("נדרשים X קרדיטים, יש לך Y" — Open-AI-UGC UX pattern) → job `blocked_no_credits`, resumable
+  after top-up.
+* Submit **image-to-video conditioned on the approved keyframe** (`instance.image` pattern,
+  StoryGen-Atelier). Persist `provider_request_id` **at submit time, before first poll**
+  (Automated-UGC-Ad's orphan-task lesson). Scene → `generating`.
+* Completion: **webhook + lazy-poll-on-read fallback** (Open-AI-UGC — lost webhooks self-heal when
+  the client polls) + poll loop with terminal-failure branch, max attempts, backoff
+  (Automated-UGC-Ad's infinite-loop lesson). Success → commit reservation, store video +
+  **spritesheet + thumbnail + last_frame sidecars** (ad-factory-agent). Failure → **release
+  reservation** (provider failure = house absorbs; `CHARGE_ON_FAILURE=False` per prototype),
+  auto-retry once, then `failed` with human-readable error.
+
+### Step 5 — APPROVAL GATE #2 (scene videos)
+* Same Approval mechanics. Rejected scene: **remix-before-regenerate** (ad-factory-agent) —
+  provider-side remix of the existing video with adjusted prompt (cheaper) before a full
+  regenerate. All-approved → stitch.
+
+### Step 6 — STITCH + DELIVER
+* Concat: **probe first, then pick the path.** ffprobe every clip and compare codec / resolution /
+  fps / pix_fmt / timebase. Identical → `-c copy` fast path (StoryGen-Atelier). ANY mismatch →
+  fallback **normalize-transcode** (one re-encode to a canonical profile: H.264 high, 1080×1920,
+  30fps CFR, yuv420p, AAC 48k). Never let a 29.97-vs-30fps drift reach the customer.
+  Reality check: if captions are **burned** (default for reels) the final pass re-encodes anyway —
+  so `-c copy` only optimizes the intermediate concat; the burn+audio-mix pass is the true cost.
+* Audio: voiceover + music mixed with **ducking** — `sidechaincompress` (music dips under VO) —
+  then `loudnorm` (EBU R128, ≈ -14 LUFS) so reels match social loudness. No ducking = amateur feel.
+* Captions: transcribe the **generated** voiceover (not the input text) for accurate timing
+  (short-video-maker); keep `.srt` sidecar + burned variant as separate outputs so caption fixes
+  never regenerate scenes (ai-video-generator). Music per AgentConfig mood.
+* Deliverable bundle: mp4 + thumbnail + spritesheet + srt + scene metadata. Job → `done`,
+  `video_job.completed` event → feed.
+
+---
+
+## 5. Provider abstraction
+
+Registry dict + thin engine wrapper (FullyAutomatedRedditVideoMakerBot's TTS registry shape —
+smallest proven pattern; OpenMontage's scored 7-dimension selector is the scale-up path, not v1):
+
+```python
+class VideoProvider(Protocol):                     # one adapter per provider
+    slug: str; cost_table: dict[Operation, int]    # credits, priced per op
+    caps: Capabilities                              # durations enum, i2v support…
+    async def submit(op, payload) -> ProviderRequest   # returns request_id
+    async def poll(request_id) -> ProviderStatus       # {state, urls, error}
+
+PROVIDERS = {"higgsfield": HiggsfieldProvider(), "hyperframes": HyperframesProvider()}
+```
+
+* Uniform submit/poll envelope regardless of vendor quirks (Automated-UGC-Ad found TWO completion
+  conventions in ONE vendor — normalize at the adapter).
+* Provider failures → typed exceptions + **freeze-with-expiry cooldown** column per tenant/provider
+  (instagrapi), and postiz's three-way taxonomy: transient-retry / auth-pause-resume / permanent-fail.
+* One **bounded-concurrency queue per provider** (postiz): Higgsfield worker concurrency = its
+  rate cap.
+
+## 6. Credit engine — build-vs-adopt verdict
+
+**Verdict: BUILD, by porting openshorts `cloud/metering.py` (374 lines, Python/SQLAlchemy/asyncpg —
+our exact stack).** OpenMeter/Lago are Go/multi-service — wrong weight for a solo founder; LibreChat
+confirms the same balance+ledger shape in-app. What the port gives us for free:
+
+* Per-tenant `SELECT … FOR UPDATE` serialization → concurrent reservations can never oversell.
+* Plan quota rows tagged with `period_end` → **monthly reset with no cron**.
+* Top-ups FIFO with exact-refund allocation map.
+* Reserve **consumes immediately**; `commit` flips status; `release` refunds precisely.
+* Startup orphan-release + stuck-reservation sweeper (restart-safe).
+
+Changes in the port: minutes→integer credits, user→tenant, plus `operation` pricing table per
+provider (Open-AI-UGC's rate-before-submit), plus OpenMontage's reconcile step writing actual
+`provider_cost_usd_micros` for margin tracking.
+
+## 7. Approval/HITL — integration with what exists
+
+No new approval infrastructure. Both gates create **Approval** rows (existing state machine),
+render in the approvals inbox + dashboard feed (SSE), and follow the 4-verb contract with per-item
+allowed-verbs config (social-media-agent). The scene machine already validated in
+`api/prototypes/video_agent_machine.py` extends with the keyframe states — same loop, one extra
+cheap gate. WhatsApp "1/2" approval later plugs into the same rows.
+
+## 8. Phase 2 — Instagram publishing (deferred; blocked on Meta verification)
+
+* Official **Graph API only** (instagrapi = reference, never a production dependency).
+* postiz's exact publish sequence: create media container → poll status → publish → fetch permalink,
+  hard attempt budget (18×30s). Isolated poster module behind `ChannelConnector`.
+* Reconciliation sweeper re-kicks stuck publishes (postiz). Randomized `run_at` scheduling.
+* v1 boundary: video delivered in dashboard; the customer posts manually.
+
+## 8b. Storage & retention policy
+
+Video artifacts are the storage cost driver — without lifecycle rules they balloon fast.
+
+* **Store:** object storage, recommendation **Cloudflare R2** (zero egress fees — customers will
+  stream/download reels repeatedly; S3 egress would eat margin). Bucket layout:
+  `{tenant_id}/video_jobs/{job_id}/…` — tenant prefix keeps isolation + per-tenant usage metering.
+* **Artifact classes + lifecycle:**
+  | Class | Examples | Retention |
+  |---|---|---|
+  | Deliverable | final mp4, thumbnail, srt | as long as tenant is active (their asset) |
+  | Approved intermediates | approved keyframes, approved scene clips | 90 days (enables cheap re-stitch/remix) |
+  | Rejected takes | rejected keyframes/clips, failed generations | 7 days, then delete |
+  | QC sidecars | spritesheets, last_frame | 30 days |
+* DB rows keep the URLs + a `purged_at` timestamp — history/audit survives file deletion.
+* Per-tenant storage quota tied to plan tier; storage usage surfaces in `usage_events` like
+  everything else.
+
+## 9. Build order — 2-week sprint (smallest demoable first)
+
+| Day | Deliverable | Steal from |
+|---|---|---|
+| 1 | `VideoJob`/`VideoScene` models + migration 004 + state machine (lift prototype) | prototype, MoneyPrinter |
+| 2 | Credit tables + ported metering (reserve/commit/release + tests) | openshorts `metering.py` |
+| 3 | Provider registry + Higgsfield adapter (submit/poll, request_id at submit) | Open-AI-UGC, Automated-UGC-Ad |
+| 4 | Plan step: LLM scene-plan + validate-and-repair | NarratoAI, openshorts schema |
+| 5 | Keyframe step with product-reference consistency | Micro-Drama chain |
+| 6 | Approval gate #1 wired to Approval model + SSE + React cards | social-media-agent verbs |
+| 7 | **DEMO CHECKPOINT: brief → 3 approved keyframes, live in dashboard** | — |
+| 8 | Video generation worker (SKIP LOCKED claim, preflight, webhook+lazy poll) | MoneyPrinter, MPTurbo |
+| 9 | Approval gate #2 + remix-before-regenerate | ad-factory-agent |
+| 10 | Stitch (`-c copy`) + captions stage + bundle + feed event | StoryGen-Atelier, s-v-m |
+| 11 | Critic pass + bounded auto-regen | instagram-ai-agent |
+| 12 | **REAL RUN: bakeware-shop product → finished reel → show the customer** | — |
+
+## 10. Steal map (component → source)
+
+| Our component | Repo | File |
+|---|---|---|
+| Job queue claim + cancel | MoneyPrinter | `Backend/repository.py`, `worker.py` |
+| Staged pipeline + preflight + patch-vs-upsert | MoneyPrinterTurbo | `app/services/task.py`, `state.py` |
+| Scene-plan schema + validate-repair | NarratoAI | `app/utils/check_script.py`, validation svc |
+| Rigid 5-segment LLM schema | openshorts | `saasshorts.py` |
+| Credit metering (whole module) | openshorts | `cloud/metering.py` |
+| Gateway + request_id + webhook + rate-before-submit | Open-AI-UGC | `src/app/api/generate`, `webhook/muapi` |
+| Submit/poll envelope + keyframe-description-injection | Automated-UGC-Ad | workflow JSON |
+| Keyframe-first + i2v conditioning + `-c copy` concat | StoryGen-Atelier | `llmService.js`, `videoService.js` |
+| Product-reference consistency chain + SSE progress | Micro-Drama | `server/pipelines/script2video.py`, `api.py` |
+| Segment sidecars + remix + zero-cost swap | ad-factory-agent | `ugc_agent/tools/*` |
+| Critic rubric + defensive recompute + bounded regen | instagram-ai-agent | `content/critic.py`, `pipeline.py` |
+| 4-verb review contract + free-text router | social-media-agent | `human-node.ts`, `route-response.ts` |
+| Audio-is-clock stitch + captions from generated audio | short-video-maker | `ShortCreator.ts` |
+| Provider registry + engine wrapper + key rotation | FARVMB | `voices.py`, `engine_wrapper.py` |
+| Cost estimate→reserve→reconcile + budget modes | OpenMontage | `tools/cost_tracker.py`, `lib/scoring.py` |
+| Error taxonomy + provider queues + IG publish (P2) | postiz | `social.abstract.ts`, `instagram.provider.ts` |
+| Session persistence + typed exceptions (P2) | instagrapi | `mixins/auth.py`, `private.py` |
+
+## 11. Open founder decisions
+
+1. **Keyframe gate ON by default?** (recommended: yes — validated by 3 repos; rejection at ~10% cost)
+2. **Credit prices per operation** — keyframe / scene-video / remix / regenerate (needs Higgsfield
+   Studio actual per-job cost to price ≥80% margin).
+3. **Included monthly quota per tier** (₪349/₪690/₪1,290 — how many reels each includes).
+4. **Remix pricing** — free retry once, or charge reduced credits?
+5. **Critic strictness** — auto-regen threshold (looser = fewer credits burned, more weak scenes shown).
