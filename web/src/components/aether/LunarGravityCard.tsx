@@ -329,8 +329,15 @@ export default function LunarGravityCard({ className, title, description }: Luna
         </p>
       </div>
 
-      {/* light scrim so text stays legible over the scene (left in RTL) */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden h-full w-[55%] bg-gradient-to-l from-transparent via-white/50 to-white md:block" />
+      {/* one continuous full-width scrim — fades smoothly from the art side to
+          the text side, so there is no visible seam anywhere on the card */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{
+          background:
+            'linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 42%, rgba(255,255,255,0.55) 62%, rgba(255,255,255,0.92) 100%)',
+        }}
+      />
 
       {/* 3D side */}
       <div className="pointer-events-auto absolute inset-0 z-0 flex items-center justify-center md:right-auto md:left-0 md:w-[65%]">

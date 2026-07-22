@@ -5,6 +5,7 @@ export default function Cashflow() {
   return (
     <div className="mx-auto w-full max-w-6xl">
       <PageHeader
+        kicker="Cash Intelligence"
         title="תזרים"
         subtitle="תמונת מזומנים חיה מחשבוניות, סליקה והזמנות מהחנות — בלי חיבור לבנק ובלי אקסל."
         badge="בקרוב"

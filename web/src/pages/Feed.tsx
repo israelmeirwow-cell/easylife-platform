@@ -1,25 +1,39 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import {
+  MessageCircle,
+  Send,
+  Target,
+  TrendingUp,
+  Hand,
+  CheckCircle2,
+  ShoppingCart,
+  Coins,
+  Brain,
+  Pin,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
 import { api } from '../lib/api';
 import type { ActorType, EventItem } from '../lib/types';
 import { relativeTimeHe } from '../lib/time';
 import { PageHeader } from '../components/PageHeader';
 
-/* ---------- verb / actor presentation ---------- */
+/* ---------- verb / actor presentation (Lucide icons — never emoji) ---------- */
 
-const VERB_META: Record<string, { icon: string; label: string }> = {
-  'message.received': { icon: '💬', label: 'הודעה נכנסת' },
-  'message.sent': { icon: '📤', label: 'הודעה יוצאת' },
-  'lead.seen': { icon: '🎯', label: 'ליד חדש' },
-  'lead.stage_changed': { icon: '📈', label: 'שלב ליד עודכן' },
-  'approval.requested': { icon: '✋', label: 'בקשת אישור' },
-  'approval.decided': { icon: '✅', label: 'החלטת אישור' },
-  'order.created': { icon: '🛒', label: 'הזמנה חדשה' },
-  'payment.received': { icon: '💰', label: 'תשלום התקבל' },
-  'memory.written': { icon: '🧠', label: 'זיכרון נשמר' },
+const VERB_META: Record<string, { icon: LucideIcon; label: string; tint: string }> = {
+  'message.received': { icon: MessageCircle, label: 'הודעה נכנסת', tint: 'var(--color-info)' },
+  'message.sent': { icon: Send, label: 'הודעה יוצאת', tint: 'var(--color-gold)' },
+  'lead.seen': { icon: Target, label: 'ליד חדש', tint: 'var(--color-gold)' },
+  'lead.stage_changed': { icon: TrendingUp, label: 'שלב ליד עודכן', tint: 'var(--color-violet-glow)' },
+  'approval.requested': { icon: Hand, label: 'בקשת אישור', tint: 'var(--color-warning)' },
+  'approval.decided': { icon: CheckCircle2, label: 'החלטת אישור', tint: 'var(--color-success)' },
+  'order.created': { icon: ShoppingCart, label: 'הזמנה חדשה', tint: 'var(--color-gold)' },
+  'payment.received': { icon: Coins, label: 'תשלום התקבל', tint: 'var(--color-success)' },
+  'memory.written': { icon: Brain, label: 'זיכרון נשמר', tint: 'var(--color-magenta-glow)' },
 };
 
-const FALLBACK_META = { icon: '📌', label: 'אירוע' };
+const FALLBACK_META = { icon: Pin, label: 'אירוע', tint: 'var(--color-faint)' };
 
 const ACTOR_LABEL: Record<ActorType, string> = {
   agent: 'סוכן',
@@ -101,22 +115,25 @@ function ActorBadge({ type }: { type: ActorType }) {
 
 function EventCard({ ev, isNew, now }: { ev: EventItem; isNew: boolean; now: number }) {
   const meta = VERB_META[ev.verb] ?? FALLBACK_META;
+  const Icon = meta.icon;
   const summary = eventSummary(ev);
   return (
     <article
-      className={`flex items-start gap-4 rounded-2xl border border-border bg-surface p-4 shadow-card ${
-        isNew ? 'animate-feed-in' : ''
-      }`}
+      className={`group relative flex items-start gap-4 ps-2 ${isNew ? 'animate-feed-in' : ''}`}
     >
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-soft text-lg">
-        <span aria-hidden="true">{meta.icon}</span>
+      {/* timeline node — sits on the rail */}
+      <div
+        className="relative z-10 mt-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface shadow-card ring-1 ring-border"
+        style={{ color: meta.tint }}
+      >
+        <Icon className="h-4 w-4" aria-hidden="true" />
       </div>
-      <div className="min-w-0 flex-1">
+      <div className="glass-card min-w-0 flex-1 p-4 transition-shadow group-hover:shadow-pop">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-ink">{meta.label}</span>
+          <span className="text-sm font-semibold text-ink">{meta.label}</span>
           <ActorBadge type={ev.actor_type} />
           {ev.actor_id && <span className="text-xs text-faint">{ev.actor_id}</span>}
-          <time className="ms-auto shrink-0 text-xs text-faint" dateTime={ev.ts}>
+          <time className="ms-auto shrink-0 text-xs text-faint tabular-nums" dateTime={ev.ts}>
             {relativeTimeHe(ev.ts, now)}
           </time>
         </div>
@@ -141,8 +158,8 @@ function SkeletonCard() {
 function EmptyState({ apiDown }: { apiDown: boolean }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border-strong bg-surface/60 px-6 py-16 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-soft text-2xl">
-        ⚡
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-soft text-gold">
+        <Zap className="h-6 w-6" aria-hidden="true" />
       </span>
       <p className="text-base font-medium text-ink">עדיין אין אירועים</p>
       <p className="max-w-sm text-sm leading-relaxed text-muted">
@@ -191,35 +208,47 @@ export default function Feed() {
   return (
     <div className="mx-auto w-full max-w-3xl">
       <PageHeader
+        kicker="Live Stream"
         title="פיד חי"
         subtitle="כל מה שקורה בעסק — סוכנים, אנשים ולקוחות — בזרם אחד, ברגע שזה קורה."
+        actions={
+          <span className="flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs shadow-card">
+            <span
+              className={`h-2 w-2 rounded-full ${
+                connected ? 'animate-pulse-dot bg-success shadow-[0_0_8px_rgba(18,128,92,0.6)]' : 'bg-danger'
+              }`}
+            />
+            <span className={connected ? 'text-success' : 'text-danger'}>
+              {connected ? 'מחובר' : 'מתחבר מחדש...'}
+            </span>
+          </span>
+        }
       />
 
-      <div className="mb-5 flex items-center gap-2 text-xs">
-        <span
-          className={`h-2.5 w-2.5 rounded-full ${
-            connected ? 'animate-pulse-dot bg-success shadow-[0_0_8px_rgba(133,185,138,0.7)]' : 'bg-danger'
-          }`}
+      {/* timeline: a vertical rail behind the event nodes */}
+      <div className="relative">
+        <div
+          className="pointer-events-none absolute bottom-2 top-2 start-[25px] w-px"
+          style={{
+            background:
+              'linear-gradient(to bottom, var(--color-gold) 0%, rgba(14,139,160,0.25) 18%, rgba(15,23,42,0.07) 100%)',
+          }}
         />
-        <span className={connected ? 'text-success' : 'text-danger'}>
-          {connected ? 'מחובר' : 'מנותק — מתחבר מחדש...'}
-        </span>
-      </div>
-
-      <div className="space-y-3">
-        {query.isLoading ? (
-          <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-          </>
-        ) : events.length === 0 ? (
-          <EmptyState apiDown={query.isError && !connected} />
-        ) : (
-          events.map((ev) => (
-            <EventCard key={ev.id} ev={ev} isNew={liveIds.has(ev.id)} now={now} />
-          ))
-        )}
+        <div className="space-y-3">
+          {query.isLoading ? (
+            <>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </>
+          ) : events.length === 0 ? (
+            <EmptyState apiDown={query.isError && !connected} />
+          ) : (
+            events.map((ev) => (
+              <EventCard key={ev.id} ev={ev} isNew={liveIds.has(ev.id)} now={now} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
