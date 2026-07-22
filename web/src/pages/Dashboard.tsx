@@ -1,7 +1,6 @@
-import { lazy, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Activity, Globe2, Radar } from 'lucide-react';
+import { Radar } from 'lucide-react';
 import { dashboardSummary, listDeals } from '../lib/crm';
 import { formatNumber } from '../lib/format';
 import { TiltCard } from '../components/aether/TiltCard';
@@ -9,11 +8,8 @@ import { RevenueCounter } from '../components/aether/RevenueCounter';
 import { InsightsWidget } from '../components/aether/InsightsWidget';
 import { Pipeline } from '../components/aether/Pipeline';
 import { AIChat } from '../components/aether/AIChat';
-
-// HoloGlobe pulls in three.js — load it lazily so it never blocks the first paint.
-const HoloGlobe = lazy(() =>
-  import('../components/aether/HoloGlobe').then((m) => ({ default: m.HoloGlobe })),
-);
+import { BusinessAnalytics } from '../components/aether/BusinessAnalytics';
+import LunarGravityCard from '../components/aether/LunarGravityCard';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -51,51 +47,33 @@ export default function Dashboard() {
       {/* Hero: holographic lead sphere + revenue */}
       <div className="grid grid-cols-12 gap-4 md:gap-5">
         <motion.div {...fade(0)} className="col-span-12 lg:col-span-8">
-          <TiltCard className="relative h-[380px] overflow-hidden md:h-[460px]" intensity={5} spotlight>
-            <div className="absolute inset-0">
-              <Suspense fallback={<div className="h-full w-full" />}>
-                <HoloGlobe />
-              </Suspense>
-            </div>
+          <div className="relative h-[380px] overflow-hidden rounded-[2rem] md:h-[460px]">
+            <LunarGravityCard
+              title={
+                <>
+                  הכנסה ב
+                  <span className="bg-gradient-to-b from-white via-zinc-300 to-zinc-500 bg-clip-text text-transparent">
+                    מהירות המחשבה
+                  </span>
+                </>
+              }
+              description="כל הסוכנים חולקים מוח אחד — לידים, שיחות ועסקאות זורמים אליכם בזמן אמת. לחצו על הירח."
+            />
 
-            {/* HUD overlays */}
-            <div className="pointer-events-none absolute inset-0 p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-cyan-200/80">
-                    <Globe2 className="h-3 w-3" /> ספירת לידים חיה
-                  </div>
-                  <h1
-                    className="mt-2 max-w-md text-2xl font-semibold leading-tight tracking-tight text-white md:text-3xl"
-                    style={{ fontFamily: "'Space Grotesk','Heebo',sans-serif" }}
-                  >
-                    הכנסה ב<span className="text-gradient">מהירות המחשבה</span>
-                  </h1>
-                  <p className="mt-2 max-w-sm text-sm text-white/60">
-                    כל הסוכנים חולקים מוח אחד — לידים, שיחות ועסקאות זורמים אליכם בזמן אמת.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 text-left text-[11px]">
-                  <Hud color="#7ff0ff" label="אנשי קשר" value={formatNumber(s?.contacts_count)} loading={loading} />
-                  <Hud color="#8ea3b5" label="לידים חדשים" value={formatNumber(s?.leads_count)} loading={loading} />
-                  <Hud color="#e6edf3" label="עסקאות פתוחות" value={formatNumber(s?.open_deals_count)} loading={loading} />
-                </div>
+            {/* live HUD stats overlaid on the lunar scene (moon stays clickable) */}
+            <div className="pointer-events-none absolute inset-x-6 bottom-6 z-30 flex items-end justify-between gap-2">
+              <div className="flex flex-wrap gap-2 text-[11px]">
+                <Hud color="#7ff0ff" label="אנשי קשר" value={formatNumber(s?.contacts_count)} loading={loading} />
+                <Hud color="#8ea3b5" label="לידים" value={formatNumber(s?.leads_count)} loading={loading} />
+                <Hud color="#e6edf3" label="עסקאות" value={formatNumber(s?.open_deals_count)} loading={loading} />
               </div>
-
-              <div className="absolute inset-x-6 bottom-6 flex items-center justify-between">
-                <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] backdrop-blur">
-                  <Radar className="h-3 w-3 text-cyan-300" />
-                  <span className="text-white/70">מוח מרכזי</span>
-                  <span className="text-cyan-200">מחובר</span>
-                </div>
-                <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] backdrop-blur">
-                  <Activity className="h-3 w-3 text-slate-300" />
-                  <span className="text-white/70">משימות פתוחות</span>
-                  <span className="text-white tabular-nums">{formatNumber(s?.tasks_open_count)}</span>
-                </div>
+              <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[11px] shadow-card backdrop-blur">
+                <Radar className="h-3 w-3 text-gold" />
+                <span className="text-muted">מוח מרכזי</span>
+                <span className="font-medium text-gold">מחובר</span>
               </div>
             </div>
-          </TiltCard>
+          </div>
         </motion.div>
 
         <motion.div {...fade(0.1)} className="col-span-12 lg:col-span-4">
@@ -136,6 +114,11 @@ export default function Dashboard() {
           </TiltCard>
         </motion.div>
       </div>
+
+      {/* Detailed business analytics — animated charts, live refetch */}
+      <motion.div {...fade(0.5)} className="mt-4 md:mt-5">
+        <BusinessAnalytics />
+      </motion.div>
     </div>
   );
 }
@@ -152,10 +135,10 @@ function Hud({
   loading?: boolean;
 }) {
   return (
-    <div className="pointer-events-auto flex items-center justify-start gap-2 rounded-full border border-white/10 bg-black/40 px-2.5 py-1 backdrop-blur">
+    <div className="pointer-events-auto flex items-center justify-start gap-2 rounded-full border border-border bg-surface/80 px-2.5 py-1 shadow-card backdrop-blur">
       <span className="h-1.5 w-1.5 rounded-full animate-pulse-ring" style={{ background: color, boxShadow: `0 0 10px ${color}` }} />
-      <span className="font-medium text-white tabular-nums">{loading ? '···' : value}</span>
-      <span className="text-white/50">{label}</span>
+      <span className="font-medium text-ink tabular-nums">{loading ? '···' : value}</span>
+      <span className="text-muted">{label}</span>
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { api } from '../lib/api';
+import { FrameSequence } from '../components/FrameSequence';
+
+/* Split login: form on the right (RTL first), a rendered-3D brand animation
+   panel on the left. The art panel hides on mobile — form stays first-class. */
 
 export default function Login() {
   const navigate = useNavigate();
@@ -32,77 +37,103 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        {/* logo */}
-        <div className="mb-8 flex flex-col items-center gap-3">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-charcoal shadow-card">
-            <span className="h-3 w-3 rounded-full bg-gold" />
-          </span>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
-            Easy<span className="text-gold-strong"> Life</span>
-          </h1>
-          <p className="text-sm text-muted">הסוכנים החכמים של העסק שלך</p>
-        </div>
-
-        <form
-          onSubmit={onSubmit}
-          className="space-y-4 rounded-2xl border border-border bg-surface p-6 shadow-raised"
+    <div className="grid min-h-dvh lg:grid-cols-2">
+      {/* form side */}
+      <div className="flex items-center justify-center px-4 py-10">
+        <motion.div
+          initial={{ opacity: 0.001, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-sm"
         >
-          <div>
-            <label htmlFor="email" className="mb-1.5 block text-sm text-muted">
-              אימייל
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              dir="ltr"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
-              placeholder="you@business.co.il"
-            />
+          <div className="mb-8 flex flex-col items-center gap-3">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-charcoal shadow-card">
+              <span className="h-3 w-3 rounded-full bg-gold animate-pulse-dot" />
+            </span>
+            <h1 className="text-2xl font-semibold tracking-tight text-ink">
+              Easy<span className="text-gold-strong"> Life</span>
+            </h1>
+            <p className="text-sm text-muted">הסוכנים החכמים של העסק שלך</p>
           </div>
-          <div>
-            <label htmlFor="password" className="mb-1.5 block text-sm text-muted">
-              סיסמה
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              dir="ltr"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
-              placeholder="••••••••"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-gold-hover disabled:opacity-60"
-          >
-            {loading ? 'מתחברים...' : 'כניסה'}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard')}
-            className="w-full rounded-xl border border-border-strong px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-raised"
-          >
-            כניסת דמו
-          </button>
-        </form>
 
-        <p className="mt-6 text-center text-xs text-faint">
-          עסק אחד. מוח אחד. שקט בראש.
-        </p>
+          <form
+            onSubmit={onSubmit}
+            className="glass-card space-y-4 p-6"
+          >
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm text-muted">
+                אימייל
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                dir="ltr"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                placeholder="you@business.co.il"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm text-muted">
+                סיסמה
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                dir="ltr"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                placeholder="••••••••"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full cursor-pointer rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-gold-hover active:scale-[0.99] disabled:opacity-60"
+            >
+              {loading ? 'מתחברים...' : 'כניסה'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard')}
+              className="w-full cursor-pointer rounded-xl border border-border-strong px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-raised active:scale-[0.99]"
+            >
+              כניסת דמו
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-xs text-faint">
+            עסק אחד. מוח אחד. שקט בראש.
+          </p>
+        </motion.div>
       </div>
 
-      {/* error toast */}
+      {/* rendered-3D art side (desktop only) */}
+      <div className="relative hidden overflow-hidden lg:block">
+        <FrameSequence
+          base="/art/seq/growth/f_"
+          count={61}
+          fps={12}
+          className="absolute inset-0 h-full w-full"
+          ariaLabel="אנימציית תלת-ממד — צמיחה עסקית"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-background/70" />
+        <div className="absolute bottom-10 start-10 max-w-sm">
+          <div className="glass-card p-5">
+            <div className="text-sm font-semibold text-ink">העסק שלך, על אוטומט</div>
+            <p className="mt-1 text-xs leading-relaxed text-muted">
+              סוכני AI שעונים ללקוחות, מסדרים את הלידים ומייצרים תוכן — מחוברים למוח עסקי אחד.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {toast && (
         <div
           role="alert"

@@ -192,3 +192,37 @@ export interface DashboardSummary {
   tickets_open_count: number;
   won_this_month_agorot: number;
 }
+
+/* ------------------------------------------------------------------ */
+/* Dashboard analytics (rich business aggregates)                      */
+/* ------------------------------------------------------------------ */
+
+export interface MonthBucket {
+  month: string; // "YYYY-MM"
+  created_count: number;
+  won_count: number;
+  won_agorot: number;
+}
+
+export interface CountBucket {
+  key: string;
+  count: number;
+}
+
+export interface TopDeal {
+  id: string;
+  title: string;
+  stage: DealStage;
+  value_agorot: number;
+}
+
+export interface DashboardAnalytics {
+  monthly: MonthBucket[];
+  leads_funnel: CountBucket[];
+  tickets_by_status: CountBucket[];
+  activity_by_weekday: CountBucket[];
+  top_open_deals: TopDeal[];
+  won_total_agorot: number;
+  avg_deal_agorot: number;
+  win_rate_pct: number;
+}

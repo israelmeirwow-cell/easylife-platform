@@ -317,3 +317,37 @@ class DashboardSummary(BaseModel):
     tasks_open_count: int
     tickets_open_count: int
     won_this_month_agorot: int
+
+
+class MonthBucket(BaseModel):
+    """One calendar month of deal flow (labels are 'YYYY-MM')."""
+
+    month: str
+    created_count: int
+    won_count: int
+    won_agorot: int
+
+
+class CountBucket(BaseModel):
+    key: str
+    count: int
+
+
+class TopDeal(BaseModel):
+    id: str
+    title: str
+    stage: str
+    value_agorot: int
+
+
+class DashboardAnalytics(BaseModel):
+    """Rich business analytics for the dashboard (blueprint: detailed, not basic)."""
+
+    monthly: list[MonthBucket]
+    leads_funnel: list[CountBucket]
+    tickets_by_status: list[CountBucket]
+    activity_by_weekday: list[CountBucket]
+    top_open_deals: list[TopDeal]
+    won_total_agorot: int
+    avg_deal_agorot: int
+    win_rate_pct: float

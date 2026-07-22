@@ -198,3 +198,7 @@ export function listLeads(): Promise<import('./types').Lead[]> {
 export function dashboardSummary(): Promise<DashboardSummary> {
   return api<DashboardSummary>('/api/dashboard/summary');
 }
+
+export function dashboardAnalytics(): Promise<import('./types').DashboardAnalytics> {
+  return api<import('./types').DashboardAnalytics>('/api/dashboard/analytics');
+}
