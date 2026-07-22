@@ -38,6 +38,17 @@ class Settings(BaseSettings):
     COMPOSIO_API_KEY: str = ""
     COMPOSIO_BASE_URL: str = "https://backend.composio.dev/api/v3"
 
+    # White-label OAuth: bring-your-own provider apps so the consent screen shows
+    # "Easy Life", not Composio. When a provider's creds are set, that provider's
+    # toolkits use a custom auth config; otherwise they fall back to Composio-managed.
+    GOOGLE_OAUTH_CLIENT_ID: str = ""  # gmail / calendar / drive
+    GOOGLE_OAUTH_CLIENT_SECRET: str = ""
+    SLACK_OAUTH_CLIENT_ID: str = ""
+    SLACK_OAUTH_CLIENT_SECRET: str = ""
+    SHOPIFY_OAUTH_CLIENT_ID: str = ""
+    SHOPIFY_OAUTH_CLIENT_SECRET: str = ""
+    # Meta (instagram / facebook) reuses META_APP_ID / META_APP_SECRET above.
+
     # --- Billing (Israel) ---
     GROW_API_KEY: str = ""
     GREEN_INVOICE_API_KEY: str = ""

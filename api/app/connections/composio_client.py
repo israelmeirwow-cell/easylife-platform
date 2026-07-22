@@ -37,6 +37,24 @@ def configured() -> bool:
     return bool(settings.COMPOSIO_API_KEY)
 
 
+def _custom_credentials(toolkit: str) -> dict | None:
+    """Bring-your-own OAuth creds for a toolkit's provider, or None (→ managed).
+
+    When present, the connection is white-labeled: the provider consent screen
+    shows the platform's own app ("Easy Life"), never Composio.
+    """
+    google = ("gmail", "googlecalendar", "googledrive", "googledocs", "google_search_console")
+    if toolkit in google and settings.GOOGLE_OAUTH_CLIENT_ID and settings.GOOGLE_OAUTH_CLIENT_SECRET:
+        return {"client_id": settings.GOOGLE_OAUTH_CLIENT_ID, "client_secret": settings.GOOGLE_OAUTH_CLIENT_SECRET}
+    if toolkit in ("instagram", "facebook") and settings.META_APP_ID and settings.META_APP_SECRET:
+        return {"client_id": settings.META_APP_ID, "client_secret": settings.META_APP_SECRET}
+    if toolkit == "slack" and settings.SLACK_OAUTH_CLIENT_ID and settings.SLACK_OAUTH_CLIENT_SECRET:
+        return {"client_id": settings.SLACK_OAUTH_CLIENT_ID, "client_secret": settings.SLACK_OAUTH_CLIENT_SECRET}
+    if toolkit == "shopify" and settings.SHOPIFY_OAUTH_CLIENT_ID and settings.SHOPIFY_OAUTH_CLIENT_SECRET:
+        return {"client_id": settings.SHOPIFY_OAUTH_CLIENT_ID, "client_secret": settings.SHOPIFY_OAUTH_CLIENT_SECRET}
+    return None
+
+
 def _headers() -> dict:
     return {"x-api-key": settings.COMPOSIO_API_KEY, "Content-Type": "application/json"}
 
@@ -46,28 +64,44 @@ def _client() -> httpx.AsyncClient:
 
 
 async def ensure_auth_config(toolkit: str) -> str:
-    """Return the auth_config id for a toolkit, creating a Composio-managed one once."""
-    if toolkit in _AUTH_CONFIG_CACHE:
-        return _AUTH_CONFIG_CACHE[toolkit]
+    """Return the auth_config id for a toolkit.
+
+    Uses a WHITE-LABELED custom config when the provider's OAuth creds are set
+    (consent shows "Easy Life"), else a Composio-managed one. Reuses an existing
+    config of the matching kind; caches per process.
+    """
+    creds = _custom_credentials(toolkit)
+    want_managed = creds is None
+    cache_key = f"{toolkit}:{'managed' if want_managed else 'custom'}"
+    if cache_key in _AUTH_CONFIG_CACHE:
+        return _AUTH_CONFIG_CACHE[cache_key]
+
     async with _client() as c:
-        # reuse an existing config for this toolkit if present
+        # reuse an existing config of the matching kind (managed vs custom)
         r = await c.get("/auth_configs", params={"toolkit_slug": toolkit})
         if r.status_code < 300:
-            items = r.json().get("items", [])
-            for it in items:
+            for it in r.json().get("items", []):
                 tk = it.get("toolkit")
                 tk_slug = tk.get("slug") if isinstance(tk, dict) else tk
-                if tk_slug == toolkit and it.get("id"):
-                    _AUTH_CONFIG_CACHE[toolkit] = it["id"]
+                if tk_slug == toolkit and it.get("id") and bool(it.get("is_composio_managed")) == want_managed:
+                    _AUTH_CONFIG_CACHE[cache_key] = it["id"]
                     return it["id"]
-        # else create a managed-OAuth config
-        r = await c.post(
-            "/auth_configs",
-            json={"toolkit": {"slug": toolkit}, "auth_config": {"type": "use_composio_managed_auth"}},
-        )
+
+        if want_managed:
+            body = {"toolkit": {"slug": toolkit}, "auth_config": {"type": "use_composio_managed_auth"}}
+        else:
+            body = {
+                "toolkit": {"slug": toolkit},
+                "auth_config": {
+                    "type": "use_custom_auth",
+                    "authScheme": "OAUTH2",
+                    "credentials": creds,
+                },
+            }
+        r = await c.post("/auth_configs", json=body)
         r.raise_for_status()
         ac_id = r.json()["auth_config"]["id"]
-        _AUTH_CONFIG_CACHE[toolkit] = ac_id
+        _AUTH_CONFIG_CACHE[cache_key] = ac_id
         return ac_id
 
 
