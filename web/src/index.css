@@ -44,10 +44,10 @@
   --color-magenta-glow: #7c6cf0;
   --color-violet-glow: #6d8bf0;
 
-  --shadow-glow: 0 0 40px -12px rgba(34, 184, 207, 0.35);
-  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 2px 8px rgba(15, 23, 42, 0.06);
-  --shadow-raised: 0 4px 12px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.05);
-  --shadow-pop: 0 24px 60px -24px rgba(15, 23, 42, 0.22), 0 6px 16px rgba(15, 23, 42, 0.08);
+  --shadow-glow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-raised: 0 1px 3px rgba(15, 23, 42, 0.07);
+  --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.1);
 
   --animate-feed-in: feed-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
@@ -147,29 +147,22 @@ body {
 /* Aether visual system — glass, glows, gradients, ambient motion       */
 /* ------------------------------------------------------------------ */
 
-/* Light frosted-white card — the default surface across the app. */
+/* Quiet SaaS card (Linear/Stripe language): flat white, hairline border,
+   small radius, whisper shadow. The name "glass-card" is kept so every
+   existing usage flattens automatically. */
 @utility glass-card {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.78));
-  backdrop-filter: blur(20px) saturate(140%);
-  border: 1px solid rgba(15, 23, 42, 0.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 16px 40px -20px rgba(15, 23, 42, 0.16);
-  border-radius: 1.25rem;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  border-radius: 0.625rem;
 }
 
-/* Dark "spotlight" panel — reserved for the holographic globe hero, which needs
-   a dark backdrop to glow. Kept as an intentional accent on the light canvas. */
+/* Dark accent panel — flat, quiet (kept for any dark-surface needs). */
 @utility glass-spotlight {
-  background:
-    radial-gradient(120% 120% at 80% 0%, rgba(34, 184, 207, 0.16), transparent 55%),
-    linear-gradient(150deg, #0b1220, #0e1a2b);
-  border: 1px solid rgba(34, 184, 207, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 20px 50px -24px rgba(11, 18, 32, 0.5);
-  border-radius: 1.25rem;
+  background: #0e1a2b;
+  border: 1px solid rgba(34, 184, 207, 0.15);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
+  border-radius: 0.75rem;
   color: #eef4fb;
 }
 

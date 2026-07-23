@@ -14,7 +14,7 @@ import {
   Zap,
   type LucideIcon,
 } from 'lucide-react';
-import { api } from '../lib/api';
+import { api, IS_DEMO } from '../lib/api';
 import type { ActorType, EventItem } from '../lib/types';
 import { relativeTimeHe } from '../lib/time';
 import { PageHeader } from '../components/PageHeader';
@@ -66,6 +66,12 @@ function useFeedStream(onEvent: (ev: EventItem) => void): boolean {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    // Demo build has no backend / SSE — show "connected" and let the /api/feed
+    // fixture render the stream.
+    if (IS_DEMO) {
+      setConnected(true);
+      return;
+    }
     let es: EventSource | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let disposed = false;
