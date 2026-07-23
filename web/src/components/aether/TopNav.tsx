@@ -1,14 +1,15 @@
 import { NavLink } from 'react-router-dom';
-import { Search, Bell, Sparkles, Plug } from 'lucide-react';
+import { Search, Bell, Sparkles } from 'lucide-react';
 import type { ComponentType } from 'react';
 import {
   BoltIcon,
-  ChartIcon,
-  CheckCircleIcon,
+  ChatBubbleIcon,
+  ConnectIcon,
   CogIcon,
   CrmIcon,
   GridIcon,
   InboxIcon,
+  TrendUpIcon,
 } from '@/components/icons';
 
 /* Quiet SaaS chrome (Linear/Stripe language): flat white bar, hairline border,
@@ -20,14 +21,16 @@ interface NavItem {
   Icon: ComponentType<{ className?: string }>;
 }
 
+// Order + icons match design_files/crmChrome.js exactly. Approvals now
+// happen inline in the Agents chat, so it's not a top-level tab.
 export const NAV_ITEMS: NavItem[] = [
   { to: '/dashboard', label: 'סקירה', Icon: GridIcon },
   { to: '/feed', label: 'פיד חי', Icon: BoltIcon },
   { to: '/inbox', label: 'אינבוקס', Icon: InboxIcon },
-  { to: '/approvals', label: 'אישורים', Icon: CheckCircleIcon },
+  { to: '/agents', label: 'סוכנים', Icon: ChatBubbleIcon },
   { to: '/crm', label: 'CRM', Icon: CrmIcon },
-  { to: '/connections', label: 'חיבורים', Icon: Plug },
-  { to: '/cashflow', label: 'תזרים', Icon: ChartIcon },
+  { to: '/connections', label: 'חיבורים', Icon: ConnectIcon },
+  { to: '/cashflow', label: 'תזרים', Icon: TrendUpIcon },
   { to: '/settings', label: 'הגדרות', Icon: CogIcon },
 ];
 

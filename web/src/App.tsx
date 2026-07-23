@@ -5,6 +5,7 @@ import { Spinner } from './components/ui';
 import Login from './pages/Login';
 import Feed from './pages/Feed';
 import Inbox from './pages/Inbox';
+import Agents from './pages/Agents';
 import Connections from './pages/Connections';
 import Approvals from './pages/Approvals';
 import Cashflow from './pages/Cashflow';
@@ -56,8 +57,11 @@ export default function App() {
         </Route>
 
         <Route path="/inbox" element={<Inbox />} />
+        <Route path="/agents" element={<Agents />} />
         <Route path="/connections" element={<Connections />} />
         <Route path="/feed" element={<Feed />} />
+        {/* Approvals now happen inline in Agents chat (design handoff);
+            route kept reachable, just not in the primary nav. */}
         <Route path="/approvals" element={<Approvals />} />
         <Route path="/cashflow" element={<Cashflow />} />
         <Route path="/settings" element={<Settings />} />

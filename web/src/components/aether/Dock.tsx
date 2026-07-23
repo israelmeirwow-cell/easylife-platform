@@ -1,23 +1,19 @@
 import { NavLink } from 'react-router-dom';
-import {
-  LayoutGrid,
-  Zap,
-  Inbox,
-  Layers,
-  Settings,
-  type LucideIcon,
-} from 'lucide-react';
+import { LayoutGrid, Zap, Settings, type LucideIcon } from 'lucide-react';
+import { ChatBubbleIcon, CrmIcon } from '@/components/icons';
+import type { ComponentType } from 'react';
 
 /* Mobile bottom navigation — the standard app tab bar (≤5 items, labels under
    icons, flat). Desktop navigation lives in TopNav; this renders md:hidden.
-   (Replaces the macOS-style magnifying dock — decorative, and 8 items broke
-   the bottom-nav-limit UX rule.) */
+   The 5 highest-priority destinations; Inbox/Connections/Cashflow stay
+   reachable via the (horizontally scrollable) TopNav — a mobile "more" entry
+   to reach those directly is a good follow-up. */
 
-const items: { icon: LucideIcon; label: string; to: string }[] = [
+const items: { icon: LucideIcon | ComponentType<{ className?: string }>; label: string; to: string }[] = [
   { icon: LayoutGrid, label: 'סקירה', to: '/dashboard' },
   { icon: Zap, label: 'פיד', to: '/feed' },
-  { icon: Inbox, label: 'אינבוקס', to: '/inbox' },
-  { icon: Layers, label: 'CRM', to: '/crm/deals' },
+  { icon: ChatBubbleIcon, label: 'סוכנים', to: '/agents' },
+  { icon: CrmIcon, label: 'CRM', to: '/crm/deals' },
   { icon: Settings, label: 'הגדרות', to: '/settings' },
 ];
 
@@ -39,7 +35,7 @@ export function Dock() {
         >
           {({ isActive }) => (
             <>
-              <Icon className="h-5 w-5" aria-hidden="true" />
+              <Icon className="h-5 w-5" />
               <span>{label}</span>
               {isActive && <span className="absolute top-0 h-0.5 w-8 rounded-full bg-gold" />}
             </>

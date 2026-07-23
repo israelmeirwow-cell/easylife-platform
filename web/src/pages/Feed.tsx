@@ -1,39 +1,30 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import {
-  MessageCircle,
-  Send,
-  Target,
-  TrendingUp,
-  Hand,
-  CheckCircle2,
-  ShoppingCart,
-  Coins,
-  Brain,
-  Pin,
-  Zap,
-  type LucideIcon,
-} from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { api, IS_DEMO } from '../lib/api';
 import type { ActorType, EventItem } from '../lib/types';
 import { relativeTimeHe } from '../lib/time';
 import { PageHeader } from '../components/PageHeader';
 
-/* ---------- verb / actor presentation (Lucide icons — never emoji) ---------- */
+/* ---------- verb / actor presentation -----------------------------------
+   Per the Claude Design handoff: "emoji verb glyph... Emoji here is
+   intentional (event verbs) — keep it." Structural/interactive icons
+   elsewhere in the app stay Lucide/SVG; this is the deliberate exception. */
 
-const VERB_META: Record<string, { icon: LucideIcon; label: string; tint: string }> = {
-  'message.received': { icon: MessageCircle, label: 'הודעה נכנסת', tint: 'var(--color-info)' },
-  'message.sent': { icon: Send, label: 'הודעה יוצאת', tint: 'var(--color-gold)' },
-  'lead.seen': { icon: Target, label: 'ליד חדש', tint: 'var(--color-gold)' },
-  'lead.stage_changed': { icon: TrendingUp, label: 'שלב ליד עודכן', tint: 'var(--color-violet-glow)' },
-  'approval.requested': { icon: Hand, label: 'בקשת אישור', tint: 'var(--color-warning)' },
-  'approval.decided': { icon: CheckCircle2, label: 'החלטת אישור', tint: 'var(--color-success)' },
-  'order.created': { icon: ShoppingCart, label: 'הזמנה חדשה', tint: 'var(--color-gold)' },
-  'payment.received': { icon: Coins, label: 'תשלום התקבל', tint: 'var(--color-success)' },
-  'memory.written': { icon: Brain, label: 'זיכרון נשמר', tint: 'var(--color-magenta-glow)' },
+const VERB_META: Record<string, { emoji: string; label: string; tint: string }> = {
+  'message.received': { emoji: '💬', label: 'הודעה נכנסת', tint: 'var(--color-info)' },
+  'message.sent': { emoji: '📤', label: 'הודעה יוצאת', tint: 'var(--color-gold)' },
+  'lead.seen': { emoji: '🎯', label: 'ליד חדש', tint: 'var(--color-gold)' },
+  'lead.stage_changed': { emoji: '📈', label: 'שלב ליד עודכן', tint: 'var(--color-violet-glow)' },
+  'deal.won': { emoji: '🏆', label: 'עסקה נסגרה', tint: 'var(--color-success)' },
+  'approval.requested': { emoji: '✋', label: 'בקשת אישור', tint: 'var(--color-warning)' },
+  'approval.decided': { emoji: '✅', label: 'החלטת אישור', tint: 'var(--color-success)' },
+  'order.created': { emoji: '🛒', label: 'הזמנה חדשה', tint: 'var(--color-gold)' },
+  'payment.received': { emoji: '💰', label: 'תשלום התקבל', tint: 'var(--color-success)' },
+  'memory.written': { emoji: '🧠', label: 'זיכרון נשמר', tint: 'var(--color-magenta-glow)' },
 };
 
-const FALLBACK_META = { icon: Pin, label: 'אירוע', tint: 'var(--color-faint)' };
+const FALLBACK_META = { emoji: '📌', label: 'אירוע', tint: 'var(--color-faint)' };
 
 const ACTOR_LABEL: Record<ActorType, string> = {
   agent: 'סוכן',
@@ -121,18 +112,17 @@ function ActorBadge({ type }: { type: ActorType }) {
 
 function EventCard({ ev, isNew, now }: { ev: EventItem; isNew: boolean; now: number }) {
   const meta = VERB_META[ev.verb] ?? FALLBACK_META;
-  const Icon = meta.icon;
   const summary = eventSummary(ev);
   return (
     <article
       className={`group relative flex items-start gap-4 ps-2 ${isNew ? 'animate-feed-in' : ''}`}
     >
-      {/* timeline node — sits on the rail */}
+      {/* timeline node — sits on the rail; emoji verb glyph per design spec */}
       <div
-        className="relative z-10 mt-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface shadow-card ring-1 ring-border"
-        style={{ color: meta.tint }}
+        className="relative z-10 mt-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base shadow-card ring-1 ring-border"
+        style={{ background: `color-mix(in srgb, ${meta.tint} 12%, white)` }}
       >
-        <Icon className="h-4 w-4" aria-hidden="true" />
+        <span aria-hidden="true">{meta.emoji}</span>
       </div>
       <div className="glass-card min-w-0 flex-1 p-4 transition-shadow group-hover:shadow-pop">
         <div className="flex flex-wrap items-center gap-2">
