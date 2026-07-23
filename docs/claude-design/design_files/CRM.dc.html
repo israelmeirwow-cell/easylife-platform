@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .crm-row:hover { background:rgba(241,245,249,.6); }
+</style>
+</helmet>
+<div dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <span style="position:absolute; top:6px; inset-inline-end:6px; width:6px; height:6px; border-radius:999px; background:#0e8ba0;"></span>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <main style="max-width:1200px; margin:0 auto; padding:28px 28px 56px;">
+    <div style="margin-bottom:18px; display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px;">
+      <div>
+        <h1 style="margin:0; font-size:26px; font-weight:600; letter-spacing:-.01em; font-family:'Space Grotesk','Heebo',sans-serif;">{{ tabTitle }}</h1>
+        <p style="margin:7px 0 0; font-size:14px; color:#55627a; max-width:44em; line-height:1.5;">{{ tabSub }}</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="position:relative;">
+          <span style="pointer-events:none; position:absolute; inset-inline-start:12px; top:50%; transform:translateY(-50%); color:#94a3b8;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+          </span>
+          <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="חיפוש…" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:12px; padding:9px 12px 9px 34px; font-family:inherit; font-size:13.5px; outline:none; width:220px;">
+        </div>
+        <button style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:12px; background:#0e8ba0; color:#fff; padding:9px 16px; font-size:14px; font-weight:600;"><span style="font-size:16px; line-height:1;">+</span> חדש</button>
+      </div>
+    </div>
+
+    <!-- tabs -->
+    <div style="display:flex; gap:4px; border-bottom:1px solid rgba(15,23,42,.08); margin-bottom:16px;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}<span style="margin-inline-start:6px; font-size:11px; color:#94a3b8;" class="tabular-nums">{{ t.count }}</span></button>
+      </sc-for>
+    </div>
+
+    <!-- table -->
+    <div class="glass-card" style="overflow:hidden; padding:0;">
+      <div style="overflow-x:auto;">
+        <table style="width:100%; min-width:680px; border-collapse:collapse; font-size:14px; text-align:start;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(15,23,42,.08); background:rgba(241,245,249,.5);">
+              <sc-for list="{{ columns }}" as="col" hint-placeholder-count="5">
+                <th style="padding:12px 16px; text-align:start; font-size:12px; font-weight:600; color:#55627a;">{{ col }}</th>
+              </sc-for>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+              <tr class="crm-row" style="border-bottom:1px solid rgba(15,23,42,.06); cursor:pointer; transition:background .15s ease;">
+                <td style="padding:13px 16px;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="flex:none; width:30px; height:30px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; background:{{ r.tint }};">{{ r.initials }}</span>
+                    <span style="font-weight:600; color:#0f172a;">{{ r.name }}</span>
+                  </div>
+                </td>
+                <td style="padding:13px 16px;"><span style="{{ r.badgeStyle }}">{{ r.badge }}</span></td>
+                <td style="padding:13px 16px; color:#55627a;">{{ r.c3 }}</td>
+                <td style="padding:13px 16px; color:#55627a;" dir="ltr"><span style="display:block; text-align:end;">{{ r.c4 }}</span></td>
+                <td style="padding:13px 16px; color:#55627a;">{{ r.c5 }}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:56px 24px; text-align:center;">
+          <span style="width:52px; height:52px; border-radius:999px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:24px;">🏢</span>
+          <p style="margin:0; font-size:15px; font-weight:600;">לא נמצאו תוצאות</p>
+          <p style="margin:0; font-size:13px; color:#55627a;">נסו מונח חיפוש אחר.</p>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { nav: [], tab: 'accounts', search: '' };
+
+  _data() {
+    const tint = (s) => { const t=['#0e8ba0','#1666a8','#12805c','#b26a00','#7c6cf0','#0e7490']; let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))|0; return t[Math.abs(h)%t.length]; };
+    const ini = (s) => s.replace(/[״׳]/g,'').split(' ').slice(0,2).map(w=>w[0]).join('');
+    const accounts = [
+      { name:'קליניקת נועה', kind:'עסק', industry:'בריאות', phone:'050-123-4567', created:'22.7.2026' },
+      { name:'מוסך דהן ובניו', kind:'עסק', industry:'רכב', phone:'052-998-7766', created:'19.7.2026' },
+      { name:'סטודיו מיכל', kind:'עסק', industry:'עיצוב', phone:'054-321-9988', created:'15.7.2026' },
+      { name:'רשת אופנה URBAN', kind:'עסק', industry:'קמעונאות', phone:'03-555-1234', created:'11.7.2026' },
+      { name:'בית קפה עלית', kind:'עסק', industry:'מסעדנות', phone:'050-777-2211', created:'8.7.2026' },
+      { name:'יוסי אברהם', kind:'אדם פרטי', industry:'—', phone:'058-444-5566', created:'3.7.2026' },
+    ];
+    const contacts = [
+      { name:'נועה לוי', role:'מנהלת', account:'קליניקת נועה', phone:'050-123-4567', last:'לפני יום' },
+      { name:'יוסי דהן', role:'בעלים', account:'מוסך דהן ובניו', phone:'052-998-7766', last:'לפני 3 ימים' },
+      { name:'מיכל ברק', role:'מעצבת ראשית', account:'סטודיו מיכל', phone:'054-321-9988', last:'לפני שבוע' },
+      { name:'דנה כהן', role:'רכש', account:'רשת אופנה URBAN', phone:'03-555-1234', last:'לפני יומיים' },
+      { name:'אבי מזרחי', role:'מנהל', account:'בית קפה עלית', phone:'050-777-2211', last:'היום' },
+    ];
+    const deals = [
+      { name:'חבילת סוכנים שנתית', stage:'משא ומתן', account:'קליניקת נועה', value:'₪ 42K', close:'31.7.2026' },
+      { name:'אוטומציית וואטסאפ', stage:'הצעה', account:'רשת אופנה URBAN', value:'₪ 64K', close:'5.8.2026' },
+      { name:'חבילת פרו + API', stage:'משא ומתן', account:'חברת שיפוצים', value:'₪ 84K', close:'2.8.2026' },
+      { name:'ניהול סושיאל', stage:'מוכשר', account:'בית קפה עלית', value:'₪ 12K', close:'12.8.2026' },
+      { name:'שדרוג אתר תדמית', stage:'ליד', account:'סטודיו מיכל', value:'₪ 18K', close:'—' },
+    ];
+    return { accounts, contacts, deals, tint, ini };
+  }
+
+  renderVals() {
+    const d = this._data();
+    const badge = (bg, fg) => `border-radius:999px; padding:2px 10px; font-size:11px; font-weight:600; background:${bg}; color:${fg};`;
+    const stageBadge = { 'ליד':badge('rgba(14,116,144,.1)','#0e7490'), 'מוכשר':badge('rgba(14,139,160,.1)','#0b7688'), 'הצעה':badge('rgba(178,106,0,.1)','#b26a00'), 'משא ומתן':badge('rgba(15,23,42,.06)','#0f172a'), 'זכייה':badge('rgba(18,128,92,.1)','#12805c') };
+    const kindBadge = { 'עסק':badge('rgba(14,116,144,.1)','#0e7490'), 'אדם פרטי':badge('#f1f5f9','#55627a') };
+
+    const tab = this.state.tab;
+    const q = this.state.search.trim();
+    const filt = (arr, keys) => q ? arr.filter(o => keys.some(k => (o[k]||'').includes(q))) : arr;
+
+    let columns, rows, tabTitle, tabSub;
+    if (tab === 'accounts') {
+      tabTitle = 'חשבונות'; tabSub = 'הארגונים והלקוחות של העסק — כל חשבון מרכז אנשי קשר, עסקאות ופעילות תחת גג אחד.';
+      columns = ['שם','סוג','תחום','טלפון','נוצר'];
+      rows = filt(d.accounts, ['name','industry']).map(a => ({ name:a.name, initials:d.ini(a.name), tint:d.tint(a.name), badge:a.kind, badgeStyle:kindBadge[a.kind], c3:a.industry, c4:a.phone, c5:a.created }));
+    } else if (tab === 'contacts') {
+      tabTitle = 'אנשי קשר'; tabSub = 'האנשים שמאחורי החשבונות — כל מי שאתם בקשר איתו, עם היסטוריה מלאה.';
+      columns = ['שם','תפקיד','חשבון','טלפון','קשר אחרון'];
+      rows = filt(d.contacts, ['name','account','role']).map(c => ({ name:c.name, initials:d.ini(c.name), tint:d.tint(c.name), badge:c.role, badgeStyle:badge('#f1f5f9','#55627a'), c3:c.account, c4:c.phone, c5:c.last }));
+    } else {
+      tabTitle = 'עסקאות'; tabSub = 'צינור המכירות ברמת השורה — שווי, שלב ותאריך סגירה צפוי לכל עסקה.';
+      columns = ['עסקה','שלב','חשבון','שווי','סגירה צפויה'];
+      rows = filt(d.deals, ['name','account']).map(x => ({ name:x.name, initials:d.ini(x.account), tint:d.tint(x.account), badge:x.stage, badgeStyle:stageBadge[x.stage]||badge('#f1f5f9','#55627a'), c3:x.account, c4:x.value, c5:x.close }));
+    }
+
+    const tabDef = [
+      { key:'accounts', label:'חשבונות', count:d.accounts.length },
+      { key:'contacts', label:'אנשי קשר', count:d.contacts.length },
+      { key:'deals', label:'עסקאות', count:d.deals.length },
+    ];
+    const tabOn = 'cursor:pointer; font-family:inherit; position:relative; border:none; background:none; padding:11px 16px; font-size:14px; font-weight:600; color:#0f172a; box-shadow:inset 0 -2px 0 #0e8ba0;';
+    const tabOff = 'cursor:pointer; font-family:inherit; position:relative; border:none; background:none; padding:11px 16px; font-size:14px; font-weight:500; color:#55627a;';
+    const tabs = tabDef.map(t => ({ label:t.label, count:t.count, style: tab === t.key ? tabOn : tabOff, onClick: () => this.setState({ tab:t.key }) }));
+
+    return {
+      navItems: this.state.nav, tabs, columns, rows, tabTitle, tabSub,
+      search: this.state.search, isEmpty: rows.length === 0,
+      onSearch: (e) => this.setState({ search: e.target.value }),
+    };
+  }
+
+  componentDidMount() { import('./crmChrome.js').then(m => this.setState({ nav: m.navItems('CRM') })); }
+}
+</script>
+</body>
+</html>

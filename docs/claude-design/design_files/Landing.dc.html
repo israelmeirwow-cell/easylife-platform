@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #f5f7fb; color: #0f172a; font-family: "Heebo", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0b7688; text-decoration: none; }
+  a:hover { color: #0e8ba0; }
+  .el-tilt { transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .3s ease; will-change: transform; }
+  .el-underline { position: relative; }
+  .el-underline::after { content:""; position:absolute; inset-inline-start:0; bottom:-2px; height:2px; width:0; background:#0e8ba0; transition:width .25s ease; }
+  .el-underline:hover::after { width:100%; }
+  @keyframes el-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes el-float-slow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(14px); } }
+  @keyframes el-rise { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform:none; } }
+  .el-rise { animation: el-rise .7s cubic-bezier(.16,1,.3,1) both; }
+  @keyframes brain-flow { to { stroke-dashoffset:-24; } }
+  @keyframes brain-pulse { 0%,100% { transform:scale(1); opacity:.45; } 50% { transform:scale(1.14); opacity:.12; } }
+  .brain-line { stroke-dasharray:4 8; animation:brain-flow 1.3s linear infinite; }
+  .brain-pulse { animation:brain-pulse 3s ease-in-out infinite; }
+  .brain-node { animation:el-float 6s ease-in-out infinite; }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb; color:#0f172a; overflow-x:hidden;">
+
+  <!-- ============ TOP NAV ============ -->
+  <header style="position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(12px); background:rgba(245,247,251,.82); border-bottom:1px solid rgba(15,23,42,.08);">
+    <nav style="max-width:1280px; margin:0 auto; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="#top" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:34px; height:34px; border-radius:10px; background:#0e8ba0; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(14,139,160,.35);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:19px; letter-spacing:-.01em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="display:flex; align-items:center; gap:28px; font-size:14px; color:#55627a;" class="el-navlinks">
+        <a href="#agents" class="el-underline" style="color:#55627a;">הסוכנים</a>
+        <a href="#brain" class="el-underline" style="color:#55627a;">מוח אחד</a>
+        <a href="#how" class="el-underline" style="color:#55627a;">איך זה עובד</a>
+        <a href="#product" class="el-underline" style="color:#55627a;">המערכת</a>
+        <a href="#pricing" class="el-underline" style="color:#55627a;">תמחור</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <a href="Dashboard.dc.html" style="font-size:14px; font-weight:600; color:#0f172a; padding:9px 14px; border-radius:12px;">התחברות</a>
+        <a href="Dashboard.dc.html" style="font-size:14px; font-weight:600; color:#fff; background:#0e8ba0; padding:9px 18px; border-radius:12px; box-shadow:0 4px 12px rgba(14,139,160,.28); transition:background .18s ease;" onmouseover="this.style.background='#0b7688'" onmouseout="this.style.background='#0e8ba0'">התחלה חינם</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="top" style="max-width:1280px; margin:0 auto; padding:72px 32px 40px; display:grid; grid-template-columns:1.05fr 1fr; gap:56px; align-items:center;">
+    <div class="el-rise">
+      <span style="display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.16em; color:#0b7688; background:rgba(14,139,160,.1); padding:6px 12px; border-radius:999px; font-weight:600;">
+        <span style="width:7px; height:7px; border-radius:999px; background:#12805c;" class="animate-pulse-dot"></span>
+        CRM שממלא את עצמו · מבוסס סוכני AI
+      </span>
+      <h1 style="margin:22px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-weight:600; font-size:60px; line-height:1.08; letter-spacing:-.02em;">
+        העסק שלך,<br><span class="text-gradient">על אוטומט.</span>
+      </h1>
+      <p style="margin:22px 0 0; font-size:19px; line-height:1.6; color:#55627a; max-width:30em;">
+        ספרייה של סוכני AI מוכנים מראש — וידאו, וואטסאפ, אינסטגרם, לידים — שמתחברים בלחיצה אחת למוח מרכזי אחד. כל מה שקורה בעסק זורם ל‑CRM שממלא את עצמו.
+      </p>
+      <div style="margin-top:30px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <a href="Dashboard.dc.html" style="font-size:16px; font-weight:700; color:#fff; background:#0e8ba0; padding:15px 28px; border-radius:14px; box-shadow:0 8px 22px rgba(14,139,160,.32); transition:transform .15s ease, background .18s ease;" onmouseover="this.style.background='#0b7688';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#0e8ba0';this.style.transform='none'">כניסה למערכת ←</a>
+        <a href="#how" style="font-size:16px; font-weight:600; color:#0f172a; padding:15px 24px; border-radius:14px; border:1px solid rgba(15,23,42,.16); background:#fff; transition:background .18s ease;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#fff'">איך זה עובד</a>
+      </div>
+      <div style="margin-top:36px; display:flex; align-items:center; gap:28px; flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; color:#0f172a;" class="tabular-nums" data-countup data-to="2400" data-suffix="+">0</div>
+          <div style="font-size:13px; color:#94a3b8; margin-top:2px;">עסקים על אוטומט</div>
+        </div>
+        <div style="width:1px; height:38px; background:rgba(15,23,42,.1);"></div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; color:#0f172a;" class="tabular-nums" data-countup data-to="14" data-suffix=" שע׳">0</div>
+          <div style="font-size:13px; color:#94a3b8; margin-top:2px;">נחסכות בשבוע</div>
+        </div>
+        <div style="width:1px; height:38px; background:rgba(15,23,42,.1);"></div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; color:#0f172a;" class="tabular-nums" data-countup data-to="1" data-prefix="לחיצה " data-suffix="">0</div>
+          <div style="font-size:13px; color:#94a3b8; margin-top:2px;">לחיבור סוכן</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D glass hero -->
+    <div style="position:relative;">
+      <div ref="{{ heroTiltRef }}" class="el-tilt" style="position:relative; border-radius:26px; overflow:hidden; border:1px solid rgba(15,23,42,.08); box-shadow:0 30px 80px -30px rgba(14,139,160,.45), 0 1px 2px rgba(15,23,42,.06); aspect-ratio:16/11; background:#eef3f6;">
+        <image-slot id="hero-visual" shape="rect" fit="cover" src="assets/hero/f_54.jpg" placeholder="גררו לכאן תמונה יוקרתית — מוצר, אווירה או צוות" style="position:absolute; inset:0; width:100%; height:100%;"></image-slot>
+        <!-- floating KPI chip -->
+        <div style="position:absolute; top:20px; inset-inline-start:20px; background:rgba(255,255,255,.82); backdrop-filter:blur(10px); border:1px solid rgba(15,23,42,.06); border-radius:14px; padding:12px 14px; box-shadow:0 12px 32px rgba(15,23,42,.14); animation:el-float 6s ease-in-out infinite;">
+          <div style="font-size:11px; color:#55627a; display:flex; align-items:center; gap:6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0e8ba0" stroke-width="1.7" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941"/></svg>
+            נסגר החודש
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; margin-top:3px;" class="tabular-nums">₪ 128K</div>
+        </div>
+        <!-- floating live chip -->
+        <div style="position:absolute; bottom:22px; inset-inline-end:20px; background:rgba(255,255,255,.82); backdrop-filter:blur(10px); border:1px solid rgba(15,23,42,.06); border-radius:14px; padding:11px 14px; box-shadow:0 12px 32px rgba(15,23,42,.14); display:flex; align-items:center; gap:10px; animation:el-float-slow 7s ease-in-out infinite;">
+          <span style="width:34px; height:34px; border-radius:10px; background:rgba(14,139,160,.1); display:flex; align-items:center; justify-content:center; font-size:16px;">💬</span>
+          <div>
+            <div style="font-size:12px; font-weight:600;">סוכן וואטסאפ ענה ללקוח</div>
+            <div style="font-size:11px; color:#94a3b8;">לפני 3 דק׳ · אוטומטי</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ TRUST STRIP ============ -->
+  <section style="max-width:1280px; margin:0 auto; padding:20px 32px 24px;">
+    <div style="text-align:center; font-size:12px; letter-spacing:.14em; color:#94a3b8; margin-bottom:18px;">מחובר לכל הערוצים שכבר יש לך</div>
+    <div style="display:flex; justify-content:center; gap:44px; flex-wrap:wrap; color:#55627a; font-weight:600; font-size:15px; opacity:.85;">
+      <span>WhatsApp</span><span>Instagram</span><span>Facebook</span><span>Email</span><span>החנות שלך</span><span>Google</span>
+    </div>
+  </section>
+
+  <!-- ============ AGENTS ============ -->
+  <section id="agents" style="max-width:1280px; margin:0 auto; padding:72px 32px;">
+    <div style="max-width:38em;">
+      <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">הסוכנים</span>
+      <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:40px; font-weight:600; letter-spacing:-.02em; line-height:1.15;">צוות עובדים דיגיטלי, מוכן מהיום הראשון</h2>
+      <p style="margin:14px 0 0; font-size:17px; color:#55627a; line-height:1.6;">מפעילים סוכן בלחיצה, והוא מתחיל לעבוד. כל סוכן מחובר לאותו מוח — אז הם יודעים מה קורה, ומעדכנים אחד את השני.</p>
+    </div>
+    <div style="margin-top:40px; display:grid; grid-template-columns:repeat(3,1fr); gap:20px;">
+      <sc-for list="{{ agents }}" as="a" hint-placeholder-count="6">
+        <div class="glass-card el-tilt" onMouseMove="{{ onTilt }}" onMouseLeave="{{ offTilt }}" style="padding:26px; border-radius:16px; cursor:default;">
+          <span style="width:48px; height:48px; border-radius:13px; display:flex; align-items:center; justify-content:center; background:rgba(14,139,160,.1);">
+            <span style="color:#0e8ba0;" dangerouslySetInnerHTML="{{ a.icon }}"></span>
+          </span>
+          <h3 style="margin:18px 0 0; font-size:19px; font-weight:600;">{{ a.title }}</h3>
+          <p style="margin:8px 0 0; font-size:14.5px; color:#55627a; line-height:1.6;">{{ a.desc }}</p>
+          <div style="margin-top:16px; display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:#0b7688;">
+            <span style="width:6px; height:6px; border-radius:999px; background:#12805c;"></span>{{ a.status }}
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ ONE BRAIN ============ -->
+  <section id="brain" style="background:#fff; border-block:1px solid rgba(15,23,42,.08);">
+    <div style="max-width:1280px; margin:0 auto; padding:80px 32px; display:grid; grid-template-columns:1fr 1.1fr; gap:56px; align-items:center;">
+      <div style="position:relative;">
+        <div class="el-tilt" onMouseMove="{{ onTilt }}" onMouseLeave="{{ offTilt }}" style="position:relative; border-radius:24px; overflow:hidden; border:1px solid rgba(15,23,42,.08); box-shadow:0 24px 60px -28px rgba(14,139,160,.4); aspect-ratio:1/1; background:#eef3f6;">
+          <image-slot id="brain-visual" shape="rect" fit="cover" src="assets/hero/f_44.jpg" placeholder="גררו לכאן תמונה שמשדרת חדשנות ויוקרה" style="position:absolute; inset:0; width:100%; height:100%;"></image-slot>
+        </div>
+      </div>
+      <div>
+        <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">מוח אחד</span>
+        <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:40px; font-weight:600; letter-spacing:-.02em; line-height:1.15;">עסק אחד. מוח אחד.<br>שקט בראש.</h2>
+        <p style="margin:16px 0 0; font-size:17px; color:#55627a; line-height:1.65;">כל הסוכנים והאנשים בעסק שלך חולקים מצב אחד ורשומת אירועים אחת. אין העתקות, אין "שכחתי לעדכן" — ה‑CRM מתמלא לבד מכל שיחה, ליד ומכירה.</p>
+        <div style="margin-top:28px; display:flex; flex-direction:column; gap:16px;">
+          <sc-for list="{{ brainPoints }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex; gap:14px; align-items:flex-start;">
+              <span style="flex:none; width:28px; height:28px; border-radius:9px; background:rgba(18,128,92,.1); display:flex; align-items:center; justify-content:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#12805c" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+              </span>
+              <div>
+                <div style="font-weight:600; font-size:15.5px;">{{ p.title }}</div>
+                <div style="font-size:14px; color:#55627a; margin-top:2px; line-height:1.55;">{{ p.desc }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" style="max-width:1280px; margin:0 auto; padding:80px 32px;">
+    <div style="text-align:center; max-width:34em; margin:0 auto;">
+      <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">איך זה עובד</span>
+      <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:40px; font-weight:600; letter-spacing:-.02em;">שלושה צעדים לעסק על אוטומט</h2>
+    </div>
+    <div style="margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="position:relative; padding:32px 28px; border-radius:18px; background:#fff; border:1px solid rgba(15,23,42,.08); box-shadow:0 1px 2px rgba(15,23,42,.04);">
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; color:#0e8ba0;">{{ s.num }}</div>
+          <h3 style="margin:14px 0 0; font-size:20px; font-weight:600;">{{ s.title }}</h3>
+          <p style="margin:10px 0 0; font-size:15px; color:#55627a; line-height:1.6;">{{ s.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT SHOWCASE ============ -->
+  <section id="product" style="background:#0e1a2b; color:#eef4fb;">
+    <div style="max-width:1280px; margin:0 auto; padding:84px 32px;">
+      <div style="text-align:center; max-width:40em; margin:0 auto;">
+        <span style="font-size:12px; letter-spacing:.16em; color:#22b8cf; font-weight:600;">המערכת</span>
+        <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:40px; font-weight:600; letter-spacing:-.02em; color:#fff;">CRM שנראה ומרגיש מקצועי</h2>
+        <p style="margin:14px 0 0; font-size:17px; color:#9fb2c8; line-height:1.6;">סקירה חיה, צינור מכירות בגרירה, פיד אירועים בזמן אמת, ועוזר AI שמכיר את כל העסק — הכל במקום אחד.</p>
+      </div>
+      <div style="margin-top:44px; perspective:1600px;">
+        <div class="el-tilt" ref="{{ showcaseRef }}" style="border-radius:20px; overflow:hidden; border:1px solid rgba(34,184,207,.2); box-shadow:0 40px 90px -30px rgba(0,0,0,.6); transform:rotateX(6deg); transform-origin:center bottom;">
+          <img ref="{{ shotRef }}" src="assets/dashboard-shot.png" alt="דשבורד Easy Life" style="width:100%; display:block; background:#f5f7fb;">
+        </div>
+      </div>
+      <div style="margin-top:44px; display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+        <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+          <div style="padding:4px;">
+            <div style="color:#22b8cf; margin-bottom:10px;" dangerouslySetInnerHTML="{{ f.icon }}"></div>
+            <div style="font-weight:600; font-size:16px; color:#fff;">{{ f.title }}</div>
+            <div style="font-size:14px; color:#9fb2c8; margin-top:6px; line-height:1.55;">{{ f.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="text-align:center; margin-top:44px;">
+        <a href="Dashboard.dc.html" style="display:inline-block; font-size:16px; font-weight:700; color:#0e1a2b; background:#22b8cf; padding:15px 30px; border-radius:14px; transition:transform .15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">כניסה לדשבורד החי ←</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRICING ============ -->
+  <section id="pricing" style="max-width:1280px; margin:0 auto; padding:84px 32px;">
+    <div style="text-align:center; max-width:34em; margin:0 auto;">
+      <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">תמחור</span>
+      <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:40px; font-weight:600; letter-spacing:-.02em;">מחיר אחד קבוע. בלי הפתעות.</h2>
+      <p style="margin:14px 0 0; font-size:17px; color:#55627a;">במקום אלפי שקלים לחברת אוטומציה — מנוי חודשי שאפשר לבטל בכל רגע.</p>
+    </div>
+    <div style="margin-top:44px; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start;">
+      <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+        <div style="{{ p.cardStyle }}">
+          <sc-if value="{{ p.featured }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute; top:16px; inset-inline-end:16px; font-size:11px; font-weight:700; letter-spacing:.08em; color:#fff; background:#0e8ba0; padding:5px 10px; border-radius:999px;">הכי פופולרי</div>
+          </sc-if>
+          <div style="font-size:15px; font-weight:600; color:{{ p.nameColor }};">{{ p.name }}</div>
+          <div style="margin-top:14px; display:flex; align-items:flex-end; gap:4px;">
+            <span style="font-family:'Space Grotesk',sans-serif; font-size:46px; font-weight:600; letter-spacing:-.02em; color:{{ p.priceColor }};" class="tabular-nums">{{ p.price }}</span>
+            <span style="font-size:15px; color:{{ p.mutedColor }}; margin-bottom:10px;">₪ / חודש</span>
+          </div>
+          <p style="margin:6px 0 0; font-size:14px; color:{{ p.mutedColor }};">{{ p.tagline }}</p>
+          <a href="Dashboard.dc.html" style="{{ p.btnStyle }}">התחלה</a>
+          <div style="margin-top:22px; display:flex; flex-direction:column; gap:12px;">
+            <sc-for list="{{ p.features }}" as="ft" hint-placeholder-count="4">
+              <div style="display:flex; gap:10px; align-items:flex-start; font-size:14px; color:{{ p.featColor }};">
+                <svg viewBox="0 0 24 24" fill="none" stroke="{{ p.checkColor }}" stroke-width="2.2" width="16" height="16" style="flex:none; margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                <span>{{ ft }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section style="background:#fff; border-block:1px solid rgba(15,23,42,.08);">
+    <div style="max-width:1280px; margin:0 auto; padding:80px 32px;">
+      <div style="text-align:center; max-width:32em; margin:0 auto 44px;">
+        <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">לקוחות</span>
+        <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:38px; font-weight:600; letter-spacing:-.02em;">בעלי עסקים שכבר ישנים טוב בלילה</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+        <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+          <div class="glass-card" style="padding:28px; border-radius:16px; display:flex; flex-direction:column; gap:16px;">
+            <p style="font-size:16px; line-height:1.65; color:#0f172a; margin:0;">״{{ t.quote }}״</p>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:auto;">
+              <span style="width:40px; height:40px; border-radius:999px; background:{{ t.tint }}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;">{{ t.initials }}</span>
+              <div>
+                <div style="font-weight:600; font-size:14px;">{{ t.name }}</div>
+                <div style="font-size:12.5px; color:#94a3b8;">{{ t.role }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section style="max-width:820px; margin:0 auto; padding:80px 32px;">
+    <div style="text-align:center; margin-bottom:36px;">
+      <span style="font-size:12px; letter-spacing:.16em; color:#0b7688; font-weight:600;">שאלות נפוצות</span>
+      <h2 style="margin:12px 0 0; font-family:'Space Grotesk','Heebo',sans-serif; font-size:36px; font-weight:600; letter-spacing:-.02em;">כל מה שרצית לדעת</h2>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="4">
+        <div style="border:1px solid rgba(15,23,42,.08); border-radius:14px; background:#fff; overflow:hidden;">
+          <button onClick="{{ q.toggle }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; background:none; border:none; cursor:pointer; text-align:start; font-family:inherit; font-size:16.5px; font-weight:600; color:#0f172a;">
+            <span>{{ q.question }}</span>
+            <span style="flex:none; color:#0e8ba0; font-size:22px; transition:transform .2s ease; transform:{{ q.iconRotate }};">+</span>
+          </button>
+          <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 22px 20px; font-size:15px; color:#55627a; line-height:1.65;">{{ q.answer }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ CTA BAND ============ -->
+  <section style="max-width:1280px; margin:0 auto; padding:0 32px 84px;">
+    <div style="position:relative; overflow:hidden; border-radius:26px; background:#0e8ba0; padding:64px 48px; text-align:center; color:#fff; box-shadow:0 30px 70px -30px rgba(14,139,160,.6);">
+      <div style="position:absolute; inset:0; z-index:0; opacity:.28; background:radial-gradient(circle at 20% 20%, #22b8cf, transparent 45%), radial-gradient(circle at 85% 80%, #6d8bf0, transparent 45%);"></div>
+      <div style="position:relative; z-index:1;">
+        <h2 style="font-family:'Space Grotesk','Heebo',sans-serif; font-size:42px; font-weight:600; letter-spacing:-.02em; margin:0;">מוכנים לשקט בראש?</h2>
+        <p style="margin:14px auto 0; font-size:18px; color:rgba(255,255,255,.9); max-width:34em;">חברו את הערוצים שלכם, הפעילו סוכן, ותראו את ה‑CRM מתמלא לבד. ניסיון חינם, בלי כרטיס אשראי.</p>
+        <a href="Dashboard.dc.html" style="display:inline-block; margin-top:28px; font-size:17px; font-weight:700; color:#0e8ba0; background:#fff; padding:16px 34px; border-radius:14px; transition:transform .15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">התחלה חינם ←</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="border-top:1px solid rgba(15,23,42,.08); background:#fff;">
+    <div style="max-width:1280px; margin:0 auto; padding:48px 32px; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px;">
+      <div>
+        <a href="#top" style="display:flex; align-items:center; gap:10px;">
+          <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+          </span>
+          <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+        </a>
+        <p style="margin:14px 0 0; font-size:14px; color:#55627a; max-width:24em; line-height:1.6;">עסק אחד. מוח אחד. שקט בראש. פלטפורמת סוכני AI לעסקים קטנים בישראל.</p>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:14px;">מוצר</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="#agents" style="color:#55627a;">הסוכנים</a>
+          <a href="#product" style="color:#55627a;">המערכת</a>
+          <a href="#pricing" style="color:#55627a;">תמחור</a>
+          <a href="Dashboard.dc.html" style="color:#55627a;">דשבורד</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:14px;">חברה</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="#brain" style="color:#55627a;">אודות</a>
+          <a href="#how" style="color:#55627a;">איך זה עובד</a>
+          <a href="#" style="color:#55627a;">בלוג</a>
+          <a href="#" style="color:#55627a;">קריירה</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:14px;">יצירת קשר</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <a href="mailto:hi@easylife.co.il" style="color:#55627a;">hi@easylife.co.il</a>
+          <a href="#" style="color:#55627a;">וואטסאפ</a>
+          <a href="#" style="color:#55627a;">תמיכה</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(15,23,42,.06);">
+      <div style="max-width:1280px; margin:0 auto; padding:20px 32px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px; color:#94a3b8;">
+        <span>© 2026 Easy Life · חיים קלים בע״מ</span>
+        <span style="display:flex; gap:20px;"><a href="#" style="color:#94a3b8;">פרטיות</a><a href="#" style="color:#94a3b8;">תנאי שימוש</a></span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { faqOpen: [true, false, false, false] };
+
+  renderVals() {
+    const icon = (p) => ({ __html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="26" height="26">${p}</svg>` });
+    const agents = [
+      { title: 'סוכן וידאו', desc: 'יוצר סרטוני מוצר ופרסום מוכנים לפרסום — מהתסריט ועד העריכה.', status: 'פעיל · מייצר כעת', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h8.25a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H4.5A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/>') },
+      { title: 'סוכן וואטסאפ', desc: 'שירות לקוחות 24/7 — עונה, מזמין תורים ומעביר לידים חמים אליכם.', status: 'פעיל · 24/7', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>') },
+      { title: 'סוכן אינסטגרם', desc: 'מפרסם פוסטים וסטוריז, מגיב לתגובות ולהודעות — בקול של המותג שלכם.', status: 'פעיל · מתזמן', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/>') },
+      { title: 'סוכן לידים', desc: 'לוכד כל פנייה מכל ערוץ, מסנן ומדרג — ומכניס אוטומטית לצינור המכירות.', status: 'פעיל · 12 לידים חדשים', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>') },
+      { title: 'סוכן תוכן', desc: 'כותב פוסטים, מיילים וניוזלטרים — לפי הטון והקמפיינים שלכם.', status: 'פעיל · טיוטה מוכנה', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>') },
+      { title: 'סוכן דוחות', desc: 'סיכום שבועי של מה שקרה בעסק, עם תובנות והמלצות — ישר לוואטסאפ.', status: 'פעיל · דוח יום א׳', icon: icon('<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/>') },
+    ];
+
+    const featIcon = (p) => ({ __html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="24" height="24">${p}</svg>` });
+    const features = [
+      { title: 'סקירה חכמה', desc: 'KPI חיים, שווי צינור והכנסות במבט אחד.', icon: featIcon('<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z"/>') },
+      { title: 'צינור בגרירה', desc: 'לוח עסקאות שמתעדכן בזמן אמת עם הסוכנים.', icon: featIcon('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6Z"/>') },
+      { title: 'פיד חי', desc: 'כל אירוע בעסק — הודעה, ליד, מכירה — כשהוא קורה.', icon: featIcon('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>') },
+      { title: 'עוזר AI', desc: 'שואלים בשפה חופשית — הוא יודע הכל על העסק.', icon: featIcon('<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/>') },
+    ];
+
+    const brainPoints = [
+      { title: 'CRM שממלא את עצמו', desc: 'כל שיחה, ליד ומכירה נרשמים אוטומטית — בלי הזנה ידנית.' },
+      { title: 'רשומת אירועים אחת', desc: 'היסטוריה מלאה של כל מה שקרה, נגישה לכל סוכן ולכל אדם בצוות.' },
+      { title: 'סוכנים שמדברים ביניהם', desc: 'סוכן הלידים מעדכן את סוכן הוואטסאפ — הכל מסונכרן מהמוח.' },
+    ];
+
+    const steps = [
+      { num: 'שלב 01', title: 'מחברים ערוצים', desc: 'וואטסאפ, אינסטגרם, מייל והחנות — בלחיצה אחת, בלי מפתחים.' },
+      { num: 'שלב 02', title: 'מפעילים סוכנים', desc: 'בוחרים מהספרייה את הסוכנים שאתם צריכים והם מתחילים לעבוד.' },
+      { num: 'שלב 03', title: 'רואים את המוח עובד', desc: 'ה‑CRM מתמלא לבד, הפיד זורם, ואתם מתמקדים בעסק.' },
+    ];
+
+    const planBtn = (primary) => primary
+      ? 'display:block; text-align:center; margin-top:22px; font-weight:700; font-size:15px; color:#fff; background:#0e8ba0; padding:13px; border-radius:12px;'
+      : 'display:block; text-align:center; margin-top:22px; font-weight:600; font-size:15px; color:#0f172a; background:#fff; border:1px solid rgba(15,23,42,.16); padding:13px; border-radius:12px;';
+    const plans = [
+      { name: 'בסיס', price: '149', tagline: 'לעסק שרק מתחיל להאיץ', featured: false, features: ['3 סוכנים לבחירה', 'מוח מרכזי + CRM', 'עד 1,000 אירועים בחודש', 'תמיכה בצ׳אט'],
+        cardStyle: 'position:relative; padding:32px 28px; border-radius:18px; background:#fff; border:1px solid rgba(15,23,42,.08); box-shadow:0 1px 2px rgba(15,23,42,.04);',
+        nameColor:'#0f172a', priceColor:'#0f172a', mutedColor:'#55627a', featColor:'#0f172a', checkColor:'#0e8ba0', btnStyle: planBtn(false) },
+      { name: 'עסקי', price: '349', tagline: 'הבחירה של רוב העסקים', featured: true, features: ['כל הסוכנים בספרייה', 'פיד אירועים חי + אישורים', 'עד 10,000 אירועים בחודש', 'עוזר AI מלא', 'תמיכה מועדפת'],
+        cardStyle: 'position:relative; padding:36px 30px; border-radius:20px; background:#fff; border:2px solid #0e8ba0; box-shadow:0 24px 50px -24px rgba(14,139,160,.5); transform:translateY(-8px);',
+        nameColor:'#0b7688', priceColor:'#0f172a', mutedColor:'#55627a', featColor:'#0f172a', checkColor:'#0e8ba0', btnStyle: planBtn(true) },
+      { name: 'פרו', price: '699', tagline: 'לעסק שרץ במלוא הקצב', featured: false, features: ['אירועים ללא הגבלה', 'ניתוח מתקדם ותחזיות', 'משתמשים ללא הגבלה', 'מנהל לקוח ייעודי', 'API ואינטגרציות'],
+        cardStyle: 'position:relative; padding:32px 28px; border-radius:18px; background:#0e1a2b; border:1px solid rgba(34,184,207,.2); box-shadow:0 1px 2px rgba(15,23,42,.1);',
+        nameColor:'#22b8cf', priceColor:'#fff', mutedColor:'#9fb2c8', featColor:'#eef4fb', checkColor:'#22b8cf', btnStyle: 'display:block; text-align:center; margin-top:22px; font-weight:700; font-size:15px; color:#0e1a2b; background:#22b8cf; padding:13px; border-radius:12px;' },
+    ];
+
+    const testimonials = [
+      { quote: 'תוך שבוע ה‑CRM התמלא לבד. הפסקתי לרדוף אחרי לידים — הם פשוט מופיעים מסודרים.', name: 'מיכל ברק', role: 'סטודיו לעיצוב פנים', initials: 'מב', tint:'#0e8ba0' },
+      { quote: 'סוכן הוואטסאפ עונה ללקוחות בלילה במקומי. חסך לי עובד שלם.', name: 'יוסי דהן', role: 'מוסך דהן ובניו', initials: 'יד', tint:'#1666a8' },
+      { quote: 'סוף סוף מערכת שמרגישה מקצועית ולא מסובכת. הכל בעברית, הכל במקום אחד.', name: 'נועה לוי', role: 'קליניקה פרטית', initials: 'נל', tint:'#12805c' },
+    ];
+
+    const faqData = [
+      { question: 'צריך ידע טכני כדי להתחיל?', answer: 'ממש לא. מחברים את הערוצים בלחיצה, בוחרים סוכנים מהספרייה — והם מתחילים לעבוד. הכל בעברית ובלי קוד.' },
+      { question: 'המידע שלי בטוח?', answer: 'כל הנתונים נשמרים במוח מרכזי מאובטח, מוצפנים, ובשרתים בישראל. רק אתם והצוות שלכם רואים אותם.' },
+      { question: 'אפשר לבטל בכל רגע?', answer: 'כן. המנוי חודשי, ללא התחייבות. מבטלים בלחיצה ומפסיקים לשלם מהחודש הבא.' },
+      { question: 'מה ההבדל מ‑CRM רגיל?', answer: 'ב‑CRM רגיל אתם ממלאים הכל ידנית. אצלנו הסוכנים ממלאים את המערכת לבד — היא נבנתה סביב ה‑AI, לא הודבקה אליו.' },
+    ];
+    const faqs = faqData.map((f, i) => ({
+      question: f.question, answer: f.answer, open: this.state.faqOpen[i],
+      iconRotate: this.state.faqOpen[i] ? 'rotate(45deg)' : 'rotate(0deg)',
+      toggle: () => this.setState(s => { const a = [...s.faqOpen]; a[i] = !a[i]; return { faqOpen: a }; }),
+    }));
+
+    return {
+      agents, features, brainPoints, steps, plans, testimonials, faqs,
+      rootRef: (el) => { this.root = el; },
+      animRef: (el) => { this.anim = el; },
+      heroRef: (el) => { this.hero = el; },
+      heroTiltRef: (el) => { this.heroTilt = el; },
+      showcaseRef: (el) => { this.showcase = el; },
+      shotRef: (el) => { this.shot = el; },
+      onTilt: (e) => {
+        const t = e.currentTarget, r = t.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        t.style.transform = `perspective(1000px) rotateX(${(-py * 9).toFixed(2)}deg) rotateY(${(px * 9).toFixed(2)}deg) translateY(-6px)`;
+        t.style.boxShadow = '0 26px 60px -30px rgba(14,139,160,.5)';
+      },
+      offTilt: (e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; },
+    };
+  }
+
+  componentDidMount() {
+    // Frame-sequence: gently ping-pong the rendered-3D glass ribbon
+    const nums = [20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60];
+    this._imgs = nums.map(n => { const i = new Image(); i.src = `assets/hero/f_${n}.jpg`; return i; });
+    let idx = nums.indexOf(50), dir = 1;
+    this._seq = setInterval(() => {
+      idx += dir;
+      if (idx >= nums.length - 1) dir = -1;
+      if (idx <= 0) dir = 1;
+      if (this.hero) this.hero.src = `assets/hero/f_${nums[idx]}.jpg`;
+    }, 130);
+
+    // Count-up
+    const fmt = (n) => n.toLocaleString('he-IL');
+    const els = this.root ? this.root.querySelectorAll('[data-countup]') : [];
+    const run = (el) => {
+      const to = +el.dataset.to, pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+      const start = performance.now(), dur = 1300;
+      const tick = (t) => {
+        const p = Math.min(1, (t - start) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + fmt(Math.round(to * e)) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (els.length) {
+      const io = new IntersectionObserver((ents) => {
+        ents.forEach(en => { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
+      }, { threshold: 0.5 });
+      els.forEach(el => io.observe(el));
+      this._io = io;
+    }
+
+    // Fallback shot background if screenshot not yet generated
+    if (this.shot) this.shot.addEventListener('error', () => {
+      this.shot.style.display = 'none';
+      this.shot.parentElement.style.aspectRatio = '16/9';
+      this.shot.parentElement.style.background = 'linear-gradient(135deg,#f5f7fb,#e6eef2)';
+    });
+
+    const applyAnim = (p) => {
+      if (!this.anim) return;
+      const brain = this.anim.querySelector('[data-brain]');
+      if (brain) { brain.style.filter = `grayscale(${(1 - p).toFixed(3)}) saturate(${(0.6 + p * 0.9).toFixed(2)})`; brain.style.opacity = (0.5 + 0.5 * p).toFixed(3); brain.style.transform = `translate(-50%,-50%) scale(${(0.88 + 0.16 * p).toFixed(3)})`; }
+      const glow = this.anim.querySelector('[data-brainglow]'); if (glow) glow.style.opacity = (Math.max(0, (p - 0.45)) * 1.7).toFixed(3);
+      const label = this.anim.querySelector('[data-worklabel]'); if (label) label.style.opacity = (Math.max(0, (p - 0.6)) * 2.6).toFixed(3);
+      this.anim.querySelectorAll('[data-card]').forEach((c, i) => { const fx = +c.dataset.fx, fy = +c.dataset.fy; const k = 1 + 1.6 * (1 - p); const op = Math.min(1, Math.max(0, (p * 1.3) - (i * 0.05))); c.style.transform = `translate(-50%,-50%) translate(${(fx * k).toFixed(1)}px,${(fy * k).toFixed(1)}px)`; c.style.opacity = op.toFixed(3); });
+    };
+    const onScroll = () => { if (!this.anim) return; const r = this.anim.getBoundingClientRect(); const total = r.height - window.innerHeight; const p = Math.min(1, Math.max(0, (-r.top) / (total || 1))); applyAnim(p); };
+    this._animScroll = onScroll;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._seq);
+    if (this._io) this._io.disconnect();
+    if (this._animScroll) { window.removeEventListener('scroll', this._animScroll); window.removeEventListener('resize', this._animScroll); }
+  }
+}
+</script>
+</body>
+</html>
