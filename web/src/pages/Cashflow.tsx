@@ -302,16 +302,18 @@ export default function Cashflow() {
       {/* header */}
       <div style={{ marginBottom: 20 }}>
         <div style={{ fontSize: 10, letterSpacing: '.25em', textTransform: 'uppercase', color: '#94a3b8', fontFamily: "'Space Grotesk',sans-serif" }}>Cash Intelligence</div>
-        <h1 style={{ margin: '6px 0 0', fontSize: 26, fontWeight: 600, letterSpacing: '-.01em' }}>תזרים</h1>
-        <p style={{ margin: '7px 0 0', fontSize: 14.5, color: '#55627a', maxWidth: '44em', lineHeight: 1.55 }}>
+        <h1 className="text-[21px] lg:text-[26px]" style={{ margin: '4px 0 0', fontWeight: 600, letterSpacing: '-.01em' }}>תזרים</h1>
+        <p style={{ margin: '6px 0 0', fontSize: 13.5, color: '#55627a', maxWidth: '44em', lineHeight: 1.5 }}>
           תמונת מזומנים חיה מחשבוניות, סליקה והזמנות מהחנות — בלי חיבור לבנק ובלי אקסל.
         </p>
       </div>
 
       {/* hero */}
       <div style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 28, overflow: 'hidden', background: 'linear-gradient(to bottom,#fff,#eef2f8)', boxShadow: '0 1px 2px rgba(15,23,42,.04)' }}>
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 items-center px-5 pt-6 pb-2.5 lg:px-[34px] lg:pt-[34px] lg:pb-[10px]">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 items-center px-4 pt-4 pb-2.5 lg:px-[34px] lg:pt-[34px] lg:pb-[10px]">
+          {/* marketing copy — desktop only; on mobile the page header already
+              says it, so we lead straight with the balance card */}
+          <div className="hidden lg:block">
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, color: '#0b7688' }}>
               <span className="animate-pulse-dot" style={{ width: 7, height: 7, borderRadius: 999, background: '#0e8ba0' }} />
               מתעדכן בזמן אמת

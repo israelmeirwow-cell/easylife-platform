@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Search, Bell, Sparkles } from 'lucide-react';
-import type { ComponentType } from 'react';
+import { useLayoutEffect, useRef, type ComponentType } from 'react';
 import {
   BoltIcon,
   ChatBubbleIcon,
@@ -36,6 +36,25 @@ export const NAV_ITEMS: NavItem[] = [
 
 export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { userName?: string; userRole?: string }) {
   const initial = userName.trim().slice(0, 1) || '?';
+  const navRef = useRef<HTMLElement>(null);
+  const { pathname } = useLocation();
+
+  // keep the active tab centered in the horizontally-scrollable row (mobile).
+  // scrollIntoView is unreliable in RTL, so scroll by the measured center delta.
+  // Resolve the active tab from pathname + NAV_ITEMS order (aria-current can lag
+  // a frame). useLayoutEffect runs after layout is committed, so rects are valid.
+  useLayoutEffect(() => {
+    const idx = NAV_ITEMS.findIndex(
+      (i) => pathname === i.to || pathname.startsWith(i.to + '/'),
+    );
+    const nav = navRef.current;
+    const active = nav?.children[idx] as HTMLElement | undefined;
+    if (idx < 0 || !nav || !active) return;
+    const navRect = nav.getBoundingClientRect();
+    const actRect = active.getBoundingClientRect();
+    const delta = actRect.left + actRect.width / 2 - (navRect.left + navRect.width / 2);
+    if (Math.abs(delta) > 1) nav.scrollBy({ left: delta });
+  }, [pathname]);
 
   return (
     // Visible on ALL sizes — the design's chrome: top bar + horizontally
@@ -87,7 +106,7 @@ export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { u
       </div>
 
       {/* underline tabs */}
-      <nav className="flex items-center gap-0.5 overflow-x-auto px-4 scrollbar-hide lg:px-6" aria-label="ניווט ראשי">
+      <nav ref={navRef} className="flex items-center gap-0.5 overflow-x-auto px-4 scrollbar-hide lg:px-6" aria-label="ניווט ראשי">
         {NAV_ITEMS.map(({ to, label, Icon }) => (
           <NavLink
             key={to}

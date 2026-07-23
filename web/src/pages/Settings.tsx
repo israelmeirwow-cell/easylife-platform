@@ -138,9 +138,9 @@ export default function Settings() {
     <main style={{ maxWidth: 920, margin: '0 auto' }}>
       <div style={{ marginBottom: 22 }}>
         <h1
+          className="text-[21px] lg:text-[26px]"
           style={{
             margin: 0,
-            fontSize: 26,
             fontWeight: 600,
             letterSpacing: '-.01em',
             fontFamily: "'Space Grotesk','Heebo',sans-serif",

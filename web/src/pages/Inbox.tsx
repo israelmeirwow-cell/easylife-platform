@@ -156,7 +156,7 @@ export default function Inbox() {
     <main style={{ maxWidth: 1200, margin: '0 auto' }}>
       <div style={{ marginBottom: 22 }}>
         <div style={{ fontSize: 10, letterSpacing: '.25em', textTransform: 'uppercase', color: '#94a3b8', fontFamily: "'Space Grotesk',sans-serif" }}>Unified Inbox</div>
-        <h1 style={{ margin: '6px 0 0', fontSize: 26, fontWeight: 600, letterSpacing: '-.01em' }}>אינבוקס</h1>
+        <h1 className="text-[21px] lg:text-[26px]" style={{ margin: '4px 0 0', fontWeight: 600, letterSpacing: '-.01em' }}>אינבוקס</h1>
         <p style={{ margin: '7px 0 0', fontSize: 14.5, color: '#55627a', maxWidth: '44em', lineHeight: 1.55 }}>
           כל השיחות מכל הערוצים — וואטסאפ, אינסטגרם, פייסבוק ומייל — במקום אחד, עם חלוקה בין הסוכן לבין הצוות.
         </p>

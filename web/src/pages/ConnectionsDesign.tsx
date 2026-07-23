@@ -148,9 +148,9 @@ export default function ConnectionsDesign() {
       {/* heading */}
       <div style={{ marginBottom: 20 }}>
         <h1
+          className="text-[21px] lg:text-[26px]"
           style={{
             margin: 0,
-            fontSize: 26,
             fontWeight: 600,
             letterSpacing: '-.01em',
             fontFamily: "'Space Grotesk','Heebo',sans-serif",

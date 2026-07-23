@@ -167,7 +167,7 @@ export default function CrmDesign() {
       <div className="mb-[18px] flex flex-wrap items-end justify-between gap-3.5">
         <div>
           <h1
-            className="m-0 text-[26px] font-semibold tracking-[-.01em] text-ink"
+            className="m-0 text-[21px] font-semibold tracking-[-.01em] text-ink lg:text-[26px]"
             style={{ fontFamily: "'Space Grotesk','Heebo',sans-serif" }}
           >
             {tabTitle}
@@ -187,7 +187,7 @@ export default function CrmDesign() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="חיפוש…"
               className="w-full min-h-11 rounded-xl border border-border-strong bg-surface text-[13.5px] text-ink outline-none focus:border-gold lg:min-h-0 lg:w-[220px]"
-              style={{ padding: '9px 12px 9px 34px' }}
+              style={{ paddingBlock: 9, paddingInlineStart: 34, paddingInlineEnd: 12 }}
             />
           </div>
           <button
