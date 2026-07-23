@@ -33,6 +33,11 @@ export default defineConfig({
       workbox: {
         // never let the SPA fallback swallow API / SSE requests
         navigateFallbackDenylist: [/^\/api\//],
+        // new deploys take over immediately — no stale-cache "old version"
+        // after re-upload (skip the SW waiting phase + claim open tabs)
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
       },
     }),
   ],
