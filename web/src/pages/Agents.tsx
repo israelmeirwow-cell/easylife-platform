@@ -307,9 +307,40 @@ export default function Agents() {
         </p>
       </div>
 
-      <div className="grid h-[660px] grid-cols-1 gap-4 lg:grid-cols-[300px_1fr]">
-        {/* agent list */}
-        <div className="glass-card flex flex-col overflow-hidden !p-0">
+      <div className="grid grid-cols-1 gap-4 lg:h-[660px] lg:grid-cols-[300px_1fr]">
+        {/* agent chips — mobile only */}
+        <div className="scrollbar-hide flex snap-x snap-mandatory items-center gap-2 overflow-x-auto pb-1 lg:hidden">
+          {AGENT_ORDER.map((k) => {
+            const selected = k === active;
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setActive(k)}
+                className={`flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-2xl border px-3 py-1.5 text-[13px] font-semibold transition-colors ${
+                  selected ? 'text-ink' : 'border-border bg-surface text-muted'
+                }`}
+                style={
+                  selected
+                    ? { background: 'rgba(14,139,160,.08)', borderColor: 'rgba(14,139,160,.3)' }
+                    : undefined
+                }
+              >
+                <AgentAvatar agentKey={k} size={28} />
+                <span className="whitespace-nowrap">{AGENT_DEFS[k].name}</span>
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            className="flex min-h-11 shrink-0 snap-start cursor-pointer items-center whitespace-nowrap rounded-2xl border border-dashed border-border-strong px-3.5 py-1.5 text-[13px] font-semibold text-gold-strong"
+          >
+            + הוספת סוכן
+          </button>
+        </div>
+
+        {/* agent list — desktop only */}
+        <div className="glass-card hidden flex-col overflow-hidden !p-0 lg:flex">
           <div className="border-b border-border px-4 py-3.5 text-[13px] font-semibold text-muted">סוכנים פעילים</div>
           <div className="scrollbar-hide flex-1 overflow-y-auto">
             {AGENT_ORDER.map((k) => (
@@ -327,7 +358,7 @@ export default function Agents() {
         </div>
 
         {/* chat */}
-        <div className="glass-card flex flex-col overflow-hidden !p-0">
+        <div className="glass-card flex h-[calc(100dvh-230px)] min-h-[420px] flex-col overflow-hidden !p-0 lg:h-auto lg:min-h-0">
           <div className="flex items-center gap-3 border-b border-border px-4.5 py-3.5">
             <AgentAvatar agentKey={active} size={42} />
             <div className="min-w-0 flex-1">
@@ -340,7 +371,7 @@ export default function Agents() {
             </span>
           </div>
 
-          <div ref={chatRef} className="scrollbar-hide flex-1 space-y-3 overflow-y-auto p-5" style={{ background: '#f8fafc' }}>
+          <div ref={chatRef} className="scrollbar-hide flex-1 space-y-3 overflow-y-auto p-4 lg:p-5" style={{ background: '#f8fafc' }}>
             <AnimatePresence initial={false}>
               {messages.map((m) => (
                 <motion.div
@@ -378,13 +409,13 @@ export default function Agents() {
           </div>
 
           {/* quick actions */}
-          <div className="flex flex-wrap items-center gap-2 px-4 pt-3">
+          <div className="scrollbar-hide flex flex-nowrap items-center gap-2 overflow-x-auto px-4 pt-3 lg:flex-wrap lg:overflow-x-visible">
             {quickActions.map((qa) => (
               <button
                 key={qa.label}
                 type="button"
                 onClick={() => runQuickAction(qa)}
-                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3.5 py-1.5 text-[12.5px] font-semibold text-ink transition-colors hover:bg-surface-raised"
+                className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border border-border-strong bg-surface px-3.5 py-1.5 text-[12.5px] font-semibold text-ink transition-colors hover:bg-surface-raised"
               >
                 <Plus className="h-3 w-3 text-gold" />
                 {qa.label}
@@ -399,12 +430,12 @@ export default function Agents() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={PLACEHOLDER[active]}
-                className="flex-1 border-none bg-transparent text-sm text-ink outline-none placeholder:text-faint"
+                className="flex-1 border-none bg-transparent text-base text-ink outline-none placeholder:text-faint lg:text-sm"
               />
               <button
                 type="submit"
                 aria-label="שליחה"
-                className="flex cursor-pointer items-center justify-center rounded-lg bg-gold p-2 transition-colors hover:bg-gold-hover"
+                className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg bg-gold p-2 transition-colors hover:bg-gold-hover lg:min-h-0 lg:min-w-0"
               >
                 <Send className="h-3.5 w-3.5 text-white" />
               </button>

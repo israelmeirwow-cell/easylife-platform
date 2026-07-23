@@ -53,7 +53,6 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 12,
   padding: '10px 13px',
   fontFamily: 'inherit',
-  fontSize: 14,
   color: '#0f172a',
   outline: 'none',
   boxSizing: 'border-box',
@@ -77,6 +76,7 @@ function Field({ label, defaultValue, ltr }: { label: string; defaultValue: stri
         defaultValue={defaultValue}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        className="text-[16px] sm:text-[14px]"
         style={{
           ...inputStyle,
           transition: 'border .15s ease, box-shadow .15s ease',
@@ -155,7 +155,7 @@ export default function Settings() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
         {/* profile */}
-        <section className="glass-card" style={{ padding: '22px 24px' }}>
+        <section className="glass-card p-4 sm:px-6 sm:py-[22px]">
           <div style={{ ...sectionTitle, marginBottom: 16 }}>פרופיל</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 18 }}>
             <span
@@ -192,7 +192,7 @@ export default function Settings() {
               <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 6 }}>PNG או JPG · עד 2MB</div>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             <Field label="שם מלא" defaultValue="ישראל ישראלי" />
             <Field label="תפקיד" defaultValue="בעלים" />
             <Field label="אימייל" defaultValue="israel@easylife.co.il" ltr />
@@ -201,9 +201,9 @@ export default function Settings() {
         </section>
 
         {/* business */}
-        <section className="glass-card" style={{ padding: '22px 24px' }}>
+        <section className="glass-card p-4 sm:px-6 sm:py-[22px]">
           <div style={{ ...sectionTitle, marginBottom: 16 }}>פרטי העסק</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             <Field label="שם העסק" defaultValue="חיים קלים בע״מ" />
             <Field label="ח.פ / ע.מ" defaultValue="515123456" ltr />
             <Field label="תחום" defaultValue="שירותים עסקיים" />
@@ -212,7 +212,7 @@ export default function Settings() {
         </section>
 
         {/* agents */}
-        <section className="glass-card" style={{ padding: '22px 24px' }}>
+        <section className="glass-card p-4 sm:px-6 sm:py-[22px]">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
             <div style={sectionTitle}>הסוכנים שלך</div>
             <span style={{ fontSize: 12, color: '#94a3b8' }}>
@@ -248,7 +248,7 @@ export default function Settings() {
         </section>
 
         {/* notifications */}
-        <section className="glass-card" style={{ padding: '22px 24px' }}>
+        <section className="glass-card p-4 sm:px-6 sm:py-[22px]">
           <div style={{ ...sectionTitle, marginBottom: 6 }}>התראות</div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {notifs.map((n, i) => (
@@ -264,13 +264,11 @@ export default function Settings() {
         </section>
 
         {/* plan */}
-        <section className="glass-card" style={{ padding: '22px 24px' }}>
+        <section className="glass-card p-4 sm:px-6 sm:py-[22px]">
           <div style={{ ...sectionTitle, marginBottom: 16 }}>מנוי וחיוב</div>
           <div
+            className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 16,
               border: '1px solid rgba(14,139,160,.25)',
               background: 'rgba(14,139,160,.06)',
               borderRadius: 16,
@@ -306,6 +304,7 @@ export default function Settings() {
             </div>
             <a
               href="/landing#pricing"
+              className="text-center sm:text-start"
               style={{
                 flex: 'none',
                 border: '1px solid rgba(15,23,42,.16)',
@@ -322,7 +321,7 @@ export default function Settings() {
           </div>
         </section>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, paddingTop: 4 }}>
+        <div className="flex flex-wrap justify-end" style={{ gap: 10, paddingTop: 4 }}>
           <button
             style={{
               cursor: 'pointer',

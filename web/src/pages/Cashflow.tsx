@@ -266,16 +266,16 @@ export default function Cashflow() {
 
   const rTabOn: React.CSSProperties = {
     cursor: 'pointer', fontFamily: 'inherit', border: 'none', borderRadius: 8, background: '#fff',
-    padding: '4px 11px', fontWeight: 600, color: '#0f172a', boxShadow: '0 1px 2px rgba(15,23,42,.06)',
+    fontWeight: 600, color: '#0f172a', boxShadow: '0 1px 2px rgba(15,23,42,.06)',
   };
   const rTabOff: React.CSSProperties = {
     cursor: 'pointer', fontFamily: 'inherit', border: 'none', borderRadius: 8, background: 'transparent',
-    padding: '4px 11px', color: '#94a3b8',
+    color: '#94a3b8',
   };
 
   const calBtnStyle: React.CSSProperties = {
     cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex', alignItems: 'center', gap: 5,
-    borderRadius: 10, padding: '6px 11px', fontSize: 11, fontWeight: 600,
+    borderRadius: 10, fontSize: 11, fontWeight: 600,
     ...(fromDate
       ? { border: '1px solid #0e8ba0', background: 'rgba(14,139,160,.1)', color: '#0b7688' }
       : { border: '1px solid rgba(15,23,42,.16)', background: '#fff', color: '#55627a' }),
@@ -295,6 +295,8 @@ export default function Cashflow() {
         .cf-feat:hover { transform:translateY(-3px); box-shadow:0 4px 12px rgba(15,23,42,.1); }
         .cf-src { transition:background .15s ease; }
         .cf-src:hover { background:#f1f5f9; }
+        .cf-scroll { scrollbar-width:none; -ms-overflow-style:none; }
+        .cf-scroll::-webkit-scrollbar { display:none; }
       `}</style>
 
       {/* header */}
@@ -308,13 +310,13 @@ export default function Cashflow() {
 
       {/* hero */}
       <div style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 28, overflow: 'hidden', background: 'linear-gradient(to bottom,#fff,#eef2f8)', boxShadow: '0 1px 2px rgba(15,23,42,.04)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 24, alignItems: 'center', padding: '34px 34px 10px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 items-center px-5 pt-6 pb-2.5 lg:px-[34px] lg:pt-[34px] lg:pb-[10px]">
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, color: '#0b7688' }}>
               <span className="animate-pulse-dot" style={{ width: 7, height: 7, borderRadius: 999, background: '#0e8ba0' }} />
               מתעדכן בזמן אמת
             </div>
-            <h2 style={{ margin: '12px 0 0', fontFamily: "'Space Grotesk','Heebo',sans-serif", fontSize: 44, fontWeight: 600, lineHeight: 1.05, letterSpacing: '-.02em' }}>
+            <h2 className="text-[32px] sm:text-[38px] lg:text-[44px]" style={{ margin: '12px 0 0', fontFamily: "'Space Grotesk','Heebo',sans-serif", fontWeight: 600, lineHeight: 1.05, letterSpacing: '-.02em' }}>
               כל התזרים שלך,<br /><span className="text-gradient">בזמן אמת.</span>
             </h2>
             <p style={{ margin: '14px 0 0', fontSize: 16, color: '#55627a', lineHeight: 1.6, maxWidth: '28em' }}>
@@ -323,10 +325,10 @@ export default function Cashflow() {
           </div>
 
           {/* balance card */}
-          <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(15,23,42,.08)', background: '#fff', color: '#0f172a', padding: 26, minHeight: 214, display: 'flex', flexDirection: 'column', justifyContent: 'center', boxShadow: '0 1px 2px rgba(15,23,42,.04)' }}>
+          <div className="p-5 lg:p-[26px]" style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(15,23,42,.08)', background: '#fff', color: '#0f172a', minHeight: 214, display: 'flex', flexDirection: 'column', justifyContent: 'center', boxShadow: '0 1px 2px rgba(15,23,42,.04)' }}>
             <div style={{ position: 'relative' }}>
               <div style={{ fontSize: 12, letterSpacing: '.14em', color: '#0b7688', fontWeight: 600 }}>יתרה נוכחית</div>
-              <div className="tabular-nums" style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 46, fontWeight: 600, letterSpacing: '-.02em', marginTop: 8, color: '#0f172a' }}>₪ 86,400</div>
+              <div className="tabular-nums text-[36px] lg:text-[46px]" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, letterSpacing: '-.02em', marginTop: 8, color: '#0f172a' }}>₪ 86,400</div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#12805c', marginTop: 6 }}>
                 <Ico inner={P.trendUp} size={14} style={{ strokeWidth: 2 }} />
                 21% מהחודש שעבר
@@ -357,14 +359,14 @@ export default function Cashflow() {
         </div>
 
         {/* dashboard mockup */}
-        <div style={{ margin: '22px 20px 20px', border: '1px solid rgba(15,23,42,.08)', borderRadius: 20, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 3px rgba(15,23,42,.07)' }}>
+        <div className="mt-4 mx-3 mb-3 lg:mt-[22px] lg:mx-5 lg:mb-5" style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 20, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 3px rgba(15,23,42,.07)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(15,23,42,.08)', padding: '11px 16px' }}>
             <Ico inner={P.chart} size={16} style={{ color: '#55627a', strokeWidth: 1.6 }} />
             <span style={{ fontSize: 14, fontWeight: 600 }}>תזרים</span>
           </div>
 
           {/* KPI row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, padding: 14 }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-3.5">
             {STATS.map((s) => (
               <div key={s.label} style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 14, padding: 15 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -381,26 +383,27 @@ export default function Cashflow() {
 
           {/* area chart */}
           <div style={{ padding: '0 14px 14px' }}>
-            <div style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 14, padding: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+            <div className="p-3 lg:p-4" style={{ border: '1px solid rgba(15,23,42,.08)', borderRadius: 14 }}>
+              <div className="flex flex-wrap items-center justify-between gap-y-2 mb-3">
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 600 }}>הכנסות מול הוצאות</div>
                   <div style={{ fontSize: 12, color: '#94a3b8' }}>{c.rangeSub}</div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                  <div style={{ display: 'flex', gap: 2, borderRadius: 10, background: '#f1f5f9', padding: 2, fontSize: 11 }}>
+                <div className="max-w-full" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <div className="cf-scroll max-w-full overflow-x-auto" style={{ display: 'flex', gap: 2, borderRadius: 10, background: '#f1f5f9', padding: 2, fontSize: 11 }}>
                     {RANGE_DEFS.map((r) => (
                       <button
                         key={r.key}
                         type="button"
                         onClick={() => { setRange(r.key); setFromDate(null); setHoverIdx(null); setCalOpen(false); }}
+                        className="shrink-0 whitespace-nowrap px-[11px] py-1 min-h-[40px] lg:min-h-0"
                         style={(!fromDate && range === r.key) ? rTabOn : rTabOff}
                       >
                         {r.label}
                       </button>
                     ))}
                   </div>
-                  <button type="button" onClick={() => setCalOpen((v) => !v)} style={calBtnStyle}>
+                  <button type="button" onClick={() => setCalOpen((v) => !v)} className="shrink-0 whitespace-nowrap px-[11px] py-1.5 min-h-[40px] lg:min-h-0" style={calBtnStyle}>
                     <Ico inner={P.calendar} size={14} style={{ strokeWidth: 1.7 }} />
                     {calBtnLabel}
                   </button>
@@ -495,7 +498,7 @@ export default function Cashflow() {
       </div>
 
       {/* financial breakdown */}
-      <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2" style={{ marginTop: 20 }}>
         <div className="glass-card" style={{ padding: 22 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div style={{ fontSize: 15, fontWeight: 600 }}>לאן הכסף הולך</div>
@@ -564,7 +567,7 @@ export default function Cashflow() {
       </div>
 
       {/* feature cards */}
-      <div style={{ marginTop: 20, display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 12 }}>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2" style={{ marginTop: 20 }}>
         {FEATURES.map((f) => (
           <div key={f.title} className="glass-card cf-feat" style={{ padding: 20 }}>
             <span style={{ display: 'flex', width: 38, height: 38, borderRadius: 11, alignItems: 'center', justifyContent: 'center', background: 'rgba(14,139,160,.1)', color: '#0e8ba0', marginBottom: 12 }}>
@@ -582,7 +585,7 @@ export default function Cashflow() {
           <h3 style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>מתחבר למקורות שכבר יש לך</h3>
           <span style={{ fontSize: 12, color: '#94a3b8' }}>ללא חיבור לבנק</span>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6 }}>
+        <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-4">
           {SOURCES.map((s) => (
             <div key={s.name} className="cf-src" style={{ display: 'flex', alignItems: 'center', gap: 12, borderRadius: 14, padding: 12 }}>
               <span style={{ flex: 'none', width: 40, height: 40, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0e8ba0', background: '#fff', boxShadow: '0 1px 2px rgba(15,23,42,.04)', border: '1px solid rgba(15,23,42,.08)' }}>

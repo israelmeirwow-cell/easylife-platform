@@ -199,7 +199,7 @@ export default function Dashboard() {
       {/* board + assistant */}
       <div className="mt-4 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-[2fr_1fr]">
         {/* pipeline */}
-        <div className="glass-card overflow-hidden p-6" style={{ perspective: '1400px' }}>
+        <div className="glass-card overflow-hidden p-4 sm:p-6" style={{ perspective: '1400px' }}>
           <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
             <div>
               <div className="text-[10px] uppercase tracking-[.25em] text-faint">צינור מכירות</div>
@@ -214,10 +214,7 @@ export default function Dashboard() {
               </span>
             </div>
           </div>
-          <div
-            className="grid grid-cols-2 gap-4 lg:grid-cols-4"
-            style={{ transform: 'rotateX(6deg) rotateZ(-1deg)', transformStyle: 'preserve-3d' }}
-          >
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:[transform:rotateX(6deg)_rotateZ(-1deg)] lg:[transform-style:preserve-3d]">
             {STAGES.map((st) => (
               <div key={st.label} className="flex flex-col gap-2.5" style={{ transform: `translateZ(${st.depth})` }}>
                 <div className="flex items-center justify-between px-0.5">

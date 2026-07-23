@@ -464,10 +464,10 @@ export default function Landing() {
         }}
       >
         <nav
+          className="px-4 py-3 md:px-8 md:py-[14px]"
           style={{
             maxWidth: 1280,
             margin: '0 auto',
-            padding: '14px 32px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -489,11 +489,11 @@ export default function Landing() {
             >
               <Ico inner={SPARKLES} size={18} stroke="#fff" strokeWidth={1.7} />
             </span>
-            <span style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: 19, letterSpacing: '-.01em' }}>
+            <span className="whitespace-nowrap" style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: 19, letterSpacing: '-.01em' }}>
               Easy<span style={{ color: '#0e8ba0' }}> Life</span>
             </span>
           </a>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 28, fontSize: 14, color: '#55627a' }} className="el-navlinks">
+          <div style={{ alignItems: 'center', gap: 28, fontSize: 14, color: '#55627a' }} className="el-navlinks hidden md:flex">
             <a href="#agents" className="el-underline" style={{ color: '#55627a' }}>
               הסוכנים
             </a>
@@ -511,11 +511,16 @@ export default function Landing() {
             </a>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Link to="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', padding: '9px 14px', borderRadius: 12 }}>
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center whitespace-nowrap min-h-11 lg:min-h-0"
+              style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', padding: '9px 14px', borderRadius: 12 }}
+            >
               התחברות
             </Link>
             <Link
               to="/dashboard"
+              className="inline-flex items-center whitespace-nowrap min-h-11 lg:min-h-0"
               style={{
                 fontSize: 14,
                 fontWeight: 600,
@@ -538,13 +543,10 @@ export default function Landing() {
       {/* ============ HERO ============ */}
       <section
         id="top"
+        className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 px-4 pt-10 pb-8 lg:px-8 lg:pt-[72px] lg:pb-10"
         style={{
           maxWidth: 1280,
           margin: '0 auto',
-          padding: '72px 32px 40px',
-          display: 'grid',
-          gridTemplateColumns: '1.05fr 1fr',
-          gap: 56,
           alignItems: 'center',
         }}
       >
@@ -567,11 +569,11 @@ export default function Landing() {
             CRM שממלא את עצמו · מבוסס סוכני AI
           </span>
           <h1
+            className="text-4xl sm:text-5xl lg:text-[60px]"
             style={{
               margin: '22px 0 0',
               fontFamily: "'Space Grotesk','Heebo',sans-serif",
               fontWeight: 600,
-              fontSize: 60,
               lineHeight: 1.08,
               letterSpacing: '-.02em',
             }}
@@ -682,7 +684,7 @@ export default function Landing() {
             />
             {/* floating KPI chip */}
             <div
-              className="el-float"
+              className="el-float hidden sm:block"
               style={{
                 position: 'absolute',
                 top: 20,
@@ -705,7 +707,7 @@ export default function Landing() {
             </div>
             {/* floating live chip */}
             <div
-              className="el-float-slow"
+              className="el-float-slow hidden sm:flex"
               style={{
                 position: 'absolute',
                 bottom: 22,
@@ -716,7 +718,6 @@ export default function Landing() {
                 borderRadius: 14,
                 padding: '11px 14px',
                 boxShadow: '0 12px 32px rgba(15,23,42,.14)',
-                display: 'flex',
                 alignItems: 'center',
                 gap: 10,
               }}
@@ -745,15 +746,15 @@ export default function Landing() {
       </section>
 
       {/* ============ TRUST STRIP ============ */}
-      <section style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 32px 24px' }}>
+      <section className="px-4 pt-5 pb-6 lg:px-8" style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', fontSize: 12, letterSpacing: '.14em', color: '#94a3b8', marginBottom: 18 }}>
           מחובר לכל הערוצים שכבר יש לך
         </div>
         <div
+          className="gap-6 lg:gap-11"
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: 44,
             flexWrap: 'wrap',
             color: '#55627a',
             fontWeight: 600,
@@ -768,14 +769,14 @@ export default function Landing() {
       </section>
 
       {/* ============ AGENTS ============ */}
-      <section id="agents" style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 32px' }}>
+      <section id="agents" className="px-4 py-12 lg:px-8 lg:py-[72px]" style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ maxWidth: '38em' }}>
           <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>הסוכנים</span>
           <h2
+            className="text-3xl lg:text-[40px]"
             style={{
               margin: '12px 0 0',
               fontFamily: "'Space Grotesk','Heebo',sans-serif",
-              fontSize: 40,
               fontWeight: 600,
               letterSpacing: '-.02em',
               lineHeight: 1.15,
@@ -787,14 +788,14 @@ export default function Landing() {
             מפעילים סוכן בלחיצה, והוא מתחיל לעבוד. כל סוכן מחובר לאותו מוח — אז הם יודעים מה קורה, ומעדכנים אחד את השני.
           </p>
         </div>
-        <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" style={{ marginTop: 40 }}>
           {AGENTS.map((a) => (
             <div
               key={a.title}
-              className="glass-card el-tilt"
+              className="glass-card el-tilt p-5 lg:p-[26px]"
               onMouseMove={onTilt}
               onMouseLeave={offTilt}
-              style={{ padding: 26, borderRadius: 16, cursor: 'default' }}
+              style={{ borderRadius: 16, cursor: 'default' }}
             >
               <span
                 style={{
@@ -836,12 +837,9 @@ export default function Landing() {
           style={{
             maxWidth: 1280,
             margin: '0 auto',
-            padding: '80px 32px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1.1fr',
-            gap: 56,
             alignItems: 'center',
           }}
+          className="grid grid-cols-1 gap-10 px-4 py-12 lg:grid-cols-[1fr_1.1fr] lg:gap-14 lg:px-8 lg:py-20"
         >
           <div style={{ position: 'relative' }}>
             <div
@@ -868,10 +866,10 @@ export default function Landing() {
           <div>
             <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>מוח אחד</span>
             <h2
+              className="text-3xl lg:text-[40px]"
               style={{
                 margin: '12px 0 0',
                 fontFamily: "'Space Grotesk','Heebo',sans-serif",
-                fontSize: 40,
                 fontWeight: 600,
                 letterSpacing: '-.02em',
                 lineHeight: 1.15,
@@ -918,10 +916,10 @@ export default function Landing() {
         <div style={{ textAlign: 'center', maxWidth: '34em', margin: '0 auto' }}>
           <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>איך זה עובד</span>
           <h2
+            className="text-3xl lg:text-[40px]"
             style={{
               margin: '12px 0 0',
               fontFamily: "'Space Grotesk','Heebo',sans-serif",
-              fontSize: 40,
               fontWeight: 600,
               letterSpacing: '-.02em',
             }}
@@ -929,7 +927,7 @@ export default function Landing() {
             שלושה צעדים לעסק על אוטומט
           </h2>
         </div>
-        <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3" style={{ marginTop: 48 }}>
           {STEPS.map((s) => (
             <div
               key={s.num}
@@ -956,10 +954,10 @@ export default function Landing() {
           <div style={{ textAlign: 'center', maxWidth: '40em', margin: '0 auto' }}>
             <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#22b8cf', fontWeight: 600 }}>המערכת</span>
             <h2
+              className="text-3xl lg:text-[40px]"
               style={{
                 margin: '12px 0 0',
                 fontFamily: "'Space Grotesk','Heebo',sans-serif",
-                fontSize: 40,
                 fontWeight: 600,
                 letterSpacing: '-.02em',
                 color: '#fff',
@@ -990,7 +988,7 @@ export default function Landing() {
               />
             </div>
           </div>
-          <div style={{ marginTop: 44, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20 }}>
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-4" style={{ marginTop: 44 }}>
             {FEATURES.map((f) => (
               <div key={f.title} style={{ padding: 4 }}>
                 <div style={{ color: '#22b8cf', marginBottom: 10 }} dangerouslySetInnerHTML={{ __html: f.icon }} />
@@ -1026,10 +1024,10 @@ export default function Landing() {
         <div style={{ textAlign: 'center', maxWidth: '34em', margin: '0 auto' }}>
           <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>תמחור</span>
           <h2
+            className="text-3xl lg:text-[40px]"
             style={{
               margin: '12px 0 0',
               fontFamily: "'Space Grotesk','Heebo',sans-serif",
-              fontSize: 40,
               fontWeight: 600,
               letterSpacing: '-.02em',
             }}
@@ -1040,7 +1038,7 @@ export default function Landing() {
             במקום אלפי שקלים לחברת אוטומציה — מנוי חודשי שאפשר לבטל בכל רגע.
           </p>
         </div>
-        <div style={{ marginTop: 44, display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 22, alignItems: 'start' }}>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3" style={{ marginTop: 44, alignItems: "start" }}>
           {PLANS.map((p) => (
             <div key={p.name} style={p.cardStyle}>
               {p.featured && (
@@ -1100,6 +1098,7 @@ export default function Landing() {
           <div style={{ textAlign: 'center', maxWidth: '32em', margin: '0 auto 44px' }}>
             <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>לקוחות</span>
             <h2
+              className="text-3xl lg:text-[40px]"
               style={{
                 margin: '12px 0 0',
                 fontFamily: "'Space Grotesk','Heebo',sans-serif",
@@ -1111,7 +1110,7 @@ export default function Landing() {
               בעלי עסקים שכבר ישנים טוב בלילה
             </h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 22 }}>
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
             {TESTIMONIALS.map((t) => (
               <div
                 key={t.name}
@@ -1152,6 +1151,7 @@ export default function Landing() {
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <span style={{ fontSize: 12, letterSpacing: '.16em', color: '#0b7688', fontWeight: 600 }}>שאלות נפוצות</span>
           <h2
+            className="text-3xl lg:text-[40px]"
             style={{
               margin: '12px 0 0',
               fontFamily: "'Space Grotesk','Heebo',sans-serif",
@@ -1235,9 +1235,9 @@ export default function Landing() {
           />
           <div style={{ position: 'relative', zIndex: 1 }}>
             <h2
+              className="text-3xl lg:text-[40px]"
               style={{
                 fontFamily: "'Space Grotesk','Heebo',sans-serif",
-                fontSize: 42,
                 fontWeight: 600,
                 letterSpacing: '-.02em',
                 margin: 0,
@@ -1273,13 +1273,10 @@ export default function Landing() {
       {/* ============ FOOTER ============ */}
       <footer style={{ borderTop: '1px solid rgba(15,23,42,.08)', background: '#fff' }}>
         <div
+          className="grid grid-cols-2 gap-8 px-4 py-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8 lg:py-12"
           style={{
             maxWidth: 1280,
             margin: '0 auto',
-            padding: '48px 32px',
-            display: 'grid',
-            gridTemplateColumns: '1.4fr 1fr 1fr 1fr',
-            gap: 32,
           }}
         >
           <div>

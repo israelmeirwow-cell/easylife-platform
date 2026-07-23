@@ -29,6 +29,8 @@ const P = {
     '<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/>',
   send:
     '<path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/>',
+  chevron:
+    '<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>',
 };
 
 /* ---------- seed data (verbatim from the design's DCLogic._data) ---------- */
@@ -117,6 +119,8 @@ export default function Inbox() {
   const [activeId, setActiveId] = useState('c1');
   const [agentOn, setAgentOn] = useState(true);
   const [input, setInput] = useState('');
+  /* mobile-only (<lg): which pane is visible. Has zero effect at lg+ (both panes shown). */
+  const [mobileView, setMobileView] = useState<'list' | 'thread'>('list');
   const threadRef = useRef<HTMLDivElement>(null);
 
   const active = convos.find((c) => c.id === activeId)!;
@@ -125,6 +129,7 @@ export default function Inbox() {
   function selectConv(id: string) {
     setConvos((s) => s.map((c) => (c.id === id ? { ...c, unread: 0 } : c)));
     setActiveId(id);
+    setMobileView('thread');
   }
 
   function onSend(e: FormEvent) {
@@ -157,9 +162,9 @@ export default function Inbox() {
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,3fr)', gap: 16, height: 640 }}>
-        {/* conversation list */}
-        <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 h-[calc(100dvh-190px)] lg:h-[640px]">
+        {/* conversation list — on <lg shown only in 'list' view; always shown at lg+ */}
+        <div className={`glass-card flex-col ${mobileView === 'thread' ? 'hidden lg:flex' : 'flex'}`} style={{ overflow: 'hidden', padding: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(15,23,42,.08)', padding: '14px 16px' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600 }}>
               <Ico inner={P.inbox} size={16} stroke="#0e8ba0" />
@@ -203,10 +208,19 @@ export default function Inbox() {
           </div>
         </div>
 
-        {/* message pane */}
-        <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0 }}>
+        {/* message pane — on <lg shown only in 'thread' view; always shown at lg+ */}
+        <div className={`glass-card flex-col ${mobileView === 'list' ? 'hidden lg:flex' : 'flex'}`} style={{ overflow: 'hidden', padding: 0 }}>
           {/* thread header */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, borderBottom: '1px solid rgba(15,23,42,.08)', padding: '14px 18px' }}>
+            <button
+              type="button"
+              onClick={() => setMobileView('list')}
+              className="lg:hidden inline-flex items-center gap-1 min-h-[44px] px-2 -ms-2"
+              style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, color: '#0b7688', flex: 'none' }}
+            >
+              <Ico inner={P.chevron} size={16} width={2} />
+              חזרה
+            </button>
             <span style={{ width: 40, height: 40, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, color: '#fff', background: active.tint }}>{active.initials}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 15, fontWeight: 600 }}>{active.name}</div>
@@ -258,9 +272,10 @@ export default function Inbox() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="כתבו הודעה…"
-                style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontFamily: 'inherit', fontSize: 14, color: '#0f172a' }}
+                className="text-[16px] lg:text-[14px]"
+                style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', outline: 'none', fontFamily: 'inherit', color: '#0f172a' }}
               />
-              <button type="submit" aria-label="שליחה" style={{ border: 'none', borderRadius: 10, background: '#0e8ba0', padding: 9, cursor: 'pointer', display: 'flex' }}>
+              <button type="submit" aria-label="שליחה" className="min-h-11 min-w-11 lg:min-h-0 lg:min-w-0 items-center justify-center" style={{ border: 'none', borderRadius: 10, background: '#0e8ba0', padding: 9, cursor: 'pointer', display: 'flex' }}>
                 <Ico inner={P.send} size={15} stroke="#fff" width={1.8} />
               </button>
             </form>

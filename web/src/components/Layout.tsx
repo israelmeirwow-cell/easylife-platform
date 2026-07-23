@@ -1,20 +1,19 @@
 import { Outlet } from 'react-router-dom';
 import { AmbientBg } from './aether/AmbientBg';
 import { TopNav } from './aether/TopNav';
-import { Dock } from './aether/Dock';
 
+/* App shell per the Claude Design chrome: sticky top bar + horizontally
+   scrollable tab row on every screen size. No bottom dock — mobile navigation
+   is the scrollable top tabs, exactly as the design specifies. */
 export default function Layout() {
   return (
     <div className="relative flex min-h-dvh flex-col">
       <AmbientBg />
       <TopNav />
 
-      <main className="flex-1 px-4 pb-20 pt-6 md:px-8 md:pb-10 md:pt-8">
+      <main className="flex-1 px-4 pb-10 pt-5 md:px-8 md:pt-8">
         <Outlet />
       </main>
-
-      {/* mobile bottom nav only — desktop navigation is in TopNav */}
-      <Dock />
     </div>
   );
 }

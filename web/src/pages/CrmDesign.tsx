@@ -174,8 +174,8 @@ export default function CrmDesign() {
           </h1>
           <p className="mt-[7px] max-w-[44em] text-sm leading-relaxed text-muted">{tabSub}</p>
         </div>
-        <div className="flex items-center gap-2.5">
-          <div className="relative">
+        <div className="flex w-full items-center gap-2.5 lg:w-auto">
+          <div className="relative flex-1 lg:flex-none">
             <span
               className="pointer-events-none absolute top-1/2 -translate-y-1/2 text-faint"
               style={{ insetInlineStart: 12 }}
@@ -186,13 +186,13 @@ export default function CrmDesign() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="חיפוש…"
-              className="w-[220px] rounded-xl border border-border-strong bg-surface text-[13.5px] text-ink outline-none focus:border-gold"
+              className="w-full min-h-11 rounded-xl border border-border-strong bg-surface text-[13.5px] text-ink outline-none focus:border-gold lg:min-h-0 lg:w-[220px]"
               style={{ padding: '9px 12px 9px 34px' }}
             />
           </div>
           <button
             type="button"
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border-none bg-gold px-4 py-[9px] text-sm font-semibold text-white"
+            className="inline-flex min-h-11 flex-none cursor-pointer items-center gap-1.5 rounded-xl border-none bg-gold px-4 py-[9px] text-sm font-semibold text-white lg:min-h-0"
           >
             <span className="text-base leading-none">+</span> חדש
           </button>
@@ -200,7 +200,7 @@ export default function CrmDesign() {
       </div>
 
       {/* tabs */}
-      <div className="mb-4 flex gap-1 border-b border-border">
+      <div className="scrollbar-hide mb-4 flex gap-1 overflow-x-auto border-b border-border">
         {tabDef.map((t) => {
           const on = tab === t.key;
           return (
@@ -208,7 +208,7 @@ export default function CrmDesign() {
               key={t.key}
               type="button"
               onClick={() => setTab(t.key)}
-              className="relative cursor-pointer border-none bg-transparent px-4 py-[11px] text-sm"
+              className="relative min-h-11 flex-none cursor-pointer whitespace-nowrap border-none bg-transparent px-4 py-[11px] text-sm lg:min-h-0"
               style={{
                 fontWeight: on ? 600 : 500,
                 color: on ? '#0f172a' : '#55627a',

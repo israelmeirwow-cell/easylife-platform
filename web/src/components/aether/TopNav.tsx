@@ -38,8 +38,10 @@ export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { u
   const initial = userName.trim().slice(0, 1) || '?';
 
   return (
-    <header className="sticky top-0 z-40 hidden flex-col border-b border-border bg-surface/95 backdrop-blur md:flex">
-      <div className="flex items-center justify-between gap-6 px-6 pb-3 pt-4 lg:px-8">
+    // Visible on ALL sizes — the design's chrome: top bar + horizontally
+    // scrollable tab row (the .dc.html nav is overflow-x:auto, mobile included).
+    <header className="sticky top-0 z-40 flex flex-col border-b border-border bg-surface/95 backdrop-blur">
+      <div className="flex items-center justify-between gap-3 px-4 pb-3 pt-3 md:gap-6 md:px-6 md:pt-4 lg:px-8">
         {/* logo → landing page (per the design's crmChrome: logo links to Landing) */}
         <NavLink to="/landing" className="flex items-center gap-2.5" aria-label="Easy Life — דף הבית">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold">
@@ -53,7 +55,7 @@ export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { u
           </div>
         </NavLink>
 
-        <div className="mx-auto flex w-full max-w-xl items-center gap-2.5 rounded-lg border border-border bg-background px-3.5 py-2">
+        <div className="mx-auto hidden w-full max-w-xl items-center gap-2.5 rounded-lg border border-border bg-background px-3.5 py-2 md:flex">
           <Search className="h-4 w-4 text-faint" />
           <input
             placeholder="חיפוש עסקאות, לידים, אנשי קשר…"
