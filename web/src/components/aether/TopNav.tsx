@@ -40,7 +40,8 @@ export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { u
   return (
     <header className="sticky top-0 z-40 hidden flex-col border-b border-border bg-surface/95 backdrop-blur md:flex">
       <div className="flex items-center justify-between gap-6 px-6 pb-3 pt-4 lg:px-8">
-        <div className="flex items-center gap-2.5">
+        {/* logo → landing page (per the design's crmChrome: logo links to Landing) */}
+        <NavLink to="/landing" className="flex items-center gap-2.5" aria-label="Easy Life — דף הבית">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
@@ -50,7 +51,7 @@ export function TopNav({ userName = 'ישראל', userRole = 'בעלים' }: { u
           >
             Easy<span className="text-gold"> Life</span>
           </div>
-        </div>
+        </NavLink>
 
         <div className="mx-auto flex w-full max-w-xl items-center gap-2.5 rounded-lg border border-border bg-background px-3.5 py-2">
           <Search className="h-4 w-4 text-faint" />
