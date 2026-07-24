@@ -4,6 +4,7 @@ Mirrors .env.example at the repo root. Every var has a dev-safe default so
 tests and local tooling run without a .env.
 """
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -66,6 +67,25 @@ class Settings(BaseSettings):
     APP_ENV: str = "dev"
     APP_BASE_URL: str = "http://localhost:8000"
     WEB_BASE_URL: str = "http://localhost:5173"
+
+    @field_validator("DATABASE_URL")
+    @classmethod
+    def _async_db_url(cls, v: str) -> str:
+        """Coerce a libpq-style URL (Railway/Heroku give postgres://) to asyncpg.
+
+        SQLAlchemy async needs postgresql+asyncpg://; asyncpg also rejects the
+        libpq `?sslmode=` query param, so strip it (Railway's internal network
+        connection doesn't need it).
+        """
+        for prefix in ("postgres://", "postgresql://"):
+            if v.startswith(prefix):
+                v = "postgresql+asyncpg://" + v[len(prefix):]
+                break
+        if "?" in v:
+            base, _, query = v.partition("?")
+            kept = [p for p in query.split("&") if p and not p.startswith("sslmode=")]
+            v = base + ("?" + "&".join(kept) if kept else "")
+        return v
 
     @property
     def is_dev(self) -> bool:
