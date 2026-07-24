@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Feed from './pages/Feed';
 import Inbox from './pages/Inbox';
 import Agents from './pages/Agents';
+import VideoStudio from './pages/VideoStudio';
 import CrmDesign from './pages/CrmDesign';
 import ConnectionsDesign from './pages/ConnectionsDesign';
 import Connections from './pages/Connections';
@@ -96,6 +97,7 @@ export default function App() {
 
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/agents" element={<Agents />} />
+        <Route path="/video" element={<VideoStudio />} />
         {/* Connections — the Claude Design demo page; the live Composio-wired
             page stays reachable at /connections/live. */}
         <Route path="/connections" element={<ConnectionsDesign />} />

@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Search, Bell, Sparkles } from 'lucide-react';
+import { Search, Bell, Sparkles, Clapperboard } from 'lucide-react';
 import { useLayoutEffect, useRef, type ComponentType } from 'react';
 import {
   BoltIcon,
@@ -28,6 +28,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/feed', label: 'פיד חי', Icon: BoltIcon },
   { to: '/inbox', label: 'אינבוקס', Icon: InboxIcon },
   { to: '/agents', label: 'סוכנים', Icon: ChatBubbleIcon },
+  { to: '/video', label: 'סטודיו וידאו', Icon: Clapperboard },
   { to: '/crm', label: 'CRM', Icon: CrmIcon },
   { to: '/connections', label: 'חיבורים', Icon: ConnectIcon },
   { to: '/cashflow', label: 'תזרים', Icon: TrendUpIcon },
