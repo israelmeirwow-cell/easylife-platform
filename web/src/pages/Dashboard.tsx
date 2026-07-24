@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent, type DragEvent } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import { ceoAsk, ceoBrief } from '@/lib/ceo';
 
 /* Dashboard / סקירה — ported 1:1 from the NEW Claude Design handoff
    (docs/claude-design/v2/Dashboard.dc.html). Layout, copy, mock data, tint
@@ -212,9 +213,8 @@ function CountUp({ to, suffix = '', dur = 900, deps = [] as unknown[] }: { to: n
 export default function Dashboard() {
   const [period, setPeriod] = useState<Period>('month');
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<ChatMsg[]>([
-    { role: 'assistant', text: 'בוקר טוב ישראל 👋 יש לך 3 עסקאות במשא ומתן בשווי ₪84K שכדאי לדחוף היום. סוכן הלידים הכניס 12 לידים חדשים מאז אתמול.' },
-  ]);
+  const [busy, setBusy] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [deals, setDeals] = useState<Deal[]>(seedDeals);
   const [notifs, setNotifs] = useState<Notif[]>(seedNotifs);
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
@@ -246,15 +246,49 @@ export default function Dashboard() {
     setDeals((arr) => arr.map((d) => (d.id === id ? { ...d, stage } : d)));
   };
 
-  /* ----- chat send ----- */
-  function onSend(e: FormEvent) {
+  /* ----- seed the chat from the real CEO brief (once, on mount) ----- */
+  useEffect(() => {
+    let alive = true;
+    ceoBrief()
+      .then((b) => {
+        if (!alive) return;
+        const focus = b.focus_now?.length
+          ? '\n\nלמיקוד עכשיו:\n' + b.focus_now.map((f) => `• ${f}`).join('\n')
+          : '';
+        setMessages((m) => (m.length ? m : [{ role: 'assistant', text: b.headline + focus }]));
+      })
+      .catch(() => {
+        if (!alive) return;
+        setMessages((m) =>
+          m.length ? m : [{ role: 'assistant', text: 'שלום 👋 אני המוח של העסק. שאלו אותי על לידים, עסקאות, משימות או מה חשוב היום.' }],
+        );
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const scrollChat = () =>
+    setTimeout(() => chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' }), 60);
+
+  /* ----- chat send — talks to the real CEO brain (/api/ceo/ask) ----- */
+  async function onSend(e: FormEvent) {
     e.preventDefault();
     const q = input.trim();
-    if (!q) return;
-    const reply = 'שאלה טובה. לפי המצב הנוכחי הייתי מתמקד בעסקאות במשא ומתן — יש שם ₪122K שקרובים לסגירה. רוצה שאכין סיכום לכל אחת?';
+    if (!q || busy) return;
     setInput('');
-    setMessages((s) => [...s, { role: 'user', text: q }, { role: 'assistant', text: reply }]);
-    setTimeout(() => chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' }), 60);
+    setMessages((s) => [...s, { role: 'user', text: q }]);
+    setBusy(true);
+    scrollChat();
+    try {
+      const { answer } = await ceoAsk(q);
+      setMessages((s) => [...s, { role: 'assistant', text: answer }]);
+    } catch {
+      setMessages((s) => [...s, { role: 'assistant', text: 'לא הצלחתי לענות כרגע — נסו שוב בעוד רגע.' }]);
+    } finally {
+      setBusy(false);
+      scrollChat();
+    }
   }
 
   /* ----- derived KPIs ----- */
@@ -593,11 +627,12 @@ export default function Dashboard() {
               </span>
             </div>
             <div ref={chatRef} className="scrollbar-hide" style={{ marginTop: 16, flex: 1, display: 'flex', flexDirection: 'column', gap: 12, overflowY: 'auto', border: '1px solid rgba(15,23,42,.08)', borderRadius: 14, background: '#f8fafc', padding: 16 }}>
-              {messages.map((m, i) => <div key={i} style={bubble(m.role)}>{m.text}</div>)}
+              {messages.map((m, i) => <div key={i} style={{ ...bubble(m.role), whiteSpace: 'pre-wrap' }}>{m.text}</div>)}
+              {busy && <div style={bubble('assistant')}>חושב…</div>}
             </div>
             <form onSubmit={onSend} style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8, border: '1px solid rgba(15,23,42,.08)', background: '#f1f5f9', borderRadius: 14, padding: '9px 12px' }}>
               <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="שאלו את המוח — «על מה להתמקד היום?»" style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontFamily: 'inherit', fontSize: 13.5, color: '#0f172a' }} />
-              <button type="submit" aria-label="שליחה" style={{ border: 'none', borderRadius: 9, background: 'linear-gradient(135deg,#0e8ba0,#22b8cf)', padding: 7, cursor: 'pointer', display: 'flex' }}>
+              <button type="submit" aria-label="שליחה" disabled={busy} style={{ border: 'none', borderRadius: 9, background: 'linear-gradient(135deg,#0e8ba0,#22b8cf)', padding: 7, cursor: busy ? 'default' : 'pointer', display: 'flex', opacity: busy ? 0.5 : 1 }}>
                 <Ico inner={path('M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5')} size={14} color="#fff" />
               </button>
             </form>
