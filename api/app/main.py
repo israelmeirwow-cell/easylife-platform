@@ -27,6 +27,7 @@ from app.routers import (
     leads,
     tasks,
     tickets,
+    webhooks,
 )
 
 
@@ -73,6 +74,9 @@ app.include_router(activities.router)
 app.include_router(dashboard.router)
 app.include_router(ceo.router)
 app.include_router(connections.router)
+
+# Inbound channel webhooks (public — Meta/etc. deliver here; NOT tenant-scoped)
+app.include_router(webhooks.router)
 
 
 @app.get("/api/health")
