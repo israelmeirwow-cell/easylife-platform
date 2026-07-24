@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+@media (max-width:960px){ .r-main{padding-inline:18px !important;} .r-3{grid-template-columns:1fr !important;} }
+@media (max-width:760px){ .r-main{padding-inline:14px !important;} .r-cards{grid-template-columns:1fr !important;} .r-kanban{grid-template-columns:repeat(2,minmax(200px,1fr)) !important;} }
+@media (max-width:520px){ .r-kanban{grid-template-columns:1fr !important;} }
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .crm-row:hover { background:rgba(241,245,249,.6); }
+  .crm-th { cursor:pointer; user-select:none; } .crm-th:hover { color:#0f172a; }
+  .crm-card:hover { box-shadow:0 6px 16px rgba(15,23,42,.1); transform:translateY(-2px); }
+  .crm-card { transition:transform .12s ease, box-shadow .12s ease; }
+  .kcard { cursor:grab; transition:transform .12s ease, box-shadow .12s ease; }
+  .kcard:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(15,23,42,.12); }
+  .kcol.drag-over { background:rgba(14,139,160,.08); outline:2px dashed rgba(14,139,160,.4); }
+  @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+  @keyframes dash-fade { from { opacity:0; } to { opacity:1; } }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <span style="position:absolute; top:6px; inset-inline-end:6px; width:6px; height:6px; border-radius:999px; background:#0e8ba0;"></span>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <main class="r-main" style="max-width:1240px; margin:0 auto; padding:28px 28px 56px;">
+    <div style="margin-bottom:18px;">
+      <h1 style="margin:0; font-size:26px; font-weight:600; letter-spacing:-.01em; font-family:'Space Grotesk','Heebo',sans-serif;">CRM</h1>
+      <p style="margin:7px 0 0; font-size:14px; color:#55627a;">כל הלקוחות, אנשי הקשר והעסקאות במקום אחד — מתמלא לבד מפעילות הסוכנים.</p>
+    </div>
+
+    <!-- summary cards -->
+    <div class="r-3" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px;">
+      <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
+        <div class="glass-card" style="padding:18px; display:flex; align-items:center; gap:14px;">
+          <span style="flex:none; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:{{ s.tint }}; color:{{ s.color }};"><span dangerouslySetInnerHTML="{{ s.icon }}"></span></span>
+          <div><div style="font-size:12.5px; color:#55627a;">{{ s.label }}</div><div style="font-size:26px; font-weight:600; letter-spacing:-.01em; margin-top:2px;" class="tabular-nums">{{ s.value }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- tabs + toolbar -->
+    <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid rgba(15,23,42,.08); margin-bottom:16px;">
+      <div style="display:flex; gap:4px;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}<span style="margin-inline-start:6px; font-size:11px; color:#94a3b8;" class="tabular-nums">{{ t.count }}</span></button>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; padding-bottom:8px; flex-wrap:wrap;">
+        <div style="position:relative;">
+          <span style="pointer-events:none; position:absolute; inset-inline-start:11px; top:50%; transform:translateY(-50%); color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg></span>
+          <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="חיפוש…" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:11px; padding:8px 11px 8px 32px; font-family:inherit; font-size:13px; outline:none; width:180px;">
+        </div>
+        <select value="{{ filterVal }}" onChange="{{ onFilter }}" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:11px; padding:8px 11px; font-family:inherit; font-size:13px; color:#0f172a; outline:none;">
+          <sc-for list="{{ filterOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.val }}">{{ o.label }}</option></sc-for>
+        </select>
+        <div style="display:inline-flex; align-items:center; gap:2px; background:#eef2f7; border-radius:10px; padding:3px;">
+          <sc-for list="{{ viewToggle }}" as="v" hint-placeholder-count="2"><button onClick="{{ v.onClick }}" title="{{ v.title }}" style="{{ v.style }}"><span dangerouslySetInnerHTML="{{ v.icon }}"></span></button></sc-for>
+        </div>
+        <button onClick="{{ onExport }}" title="ייצוא CSV" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:11px; padding:8px 12px; font-size:13px; font-weight:600; color:#0f172a;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>CSV</button>
+        <button onClick="{{ onAddOpen }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:11px; background:#0e8ba0; color:#fff; padding:8px 15px; font-size:14px; font-weight:600;"><span style="font-size:16px; line-height:1;">+</span> {{ addLabel }}</button>
+      </div>
+    </div>
+
+    <!-- bulk bar -->
+    <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; align-items:center; gap:12px; background:rgba(14,139,160,.08); border:1px solid rgba(14,139,160,.25); border-radius:12px; padding:10px 16px; margin-bottom:14px; animation:dash-fade .2s ease both;">
+        <span style="font-size:13.5px; font-weight:600; color:#0b7688;">{{ selectedCount }} נבחרו</span>
+        <div style="display:flex; gap:8px; margin-inline-start:auto;">
+          <button onClick="{{ onBulkExport }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:9px; padding:6px 12px; font-size:12.5px; font-weight:600; color:#0f172a;">ייצוא</button>
+          <button onClick="{{ onBulkTag }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:9px; padding:6px 12px; font-size:12.5px; font-weight:600; color:#0f172a;">תיוג</button>
+          <button onClick="{{ onBulkDelete }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(209,69,59,.3); background:rgba(209,69,59,.09); border-radius:9px; padding:6px 12px; font-size:12.5px; font-weight:600; color:#d1453b;">מחיקה</button>
+          <button onClick="{{ onClearSel }}" style="cursor:pointer; font-family:inherit; border:none; background:none; padding:6px 8px; font-size:12.5px; color:#55627a;">ביטול</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- BOARD (deals kanban) -->
+    <sc-if value="{{ isBoard }}" hint-placeholder-val="{{ false }}">
+      <div class="r-kanban" style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-items:start;">
+        <sc-for list="{{ board }}" as="col" hint-placeholder-count="4">
+          <div class="kcol" ref="{{ col.ref }}" onDragOver="{{ col.onDragOver }}" onDragLeave="{{ col.onDragLeave }}" onDrop="{{ col.onDrop }}" style="border-radius:14px; background:#f8fafc; border:1px solid rgba(15,23,42,.06); padding:12px; min-height:120px; transition:background .15s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding:0 2px;">
+              <div style="display:flex; align-items:center; gap:7px;"><span style="width:8px; height:8px; border-radius:999px; background:{{ col.tint }};"></span><span style="font-size:13px; font-weight:600;">{{ col.label }}</span></div>
+              <span style="font-size:11px; color:#94a3b8;" class="tabular-nums">{{ col.count }} · {{ col.sumLabel }}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <sc-for list="{{ col.deals }}" as="d" hint-placeholder-count="2">
+                <div class="kcard" draggable="true" onDragStart="{{ d.onDragStart }}" onDragEnd="{{ d.onDragEnd }}" onClick="{{ d.onOpen }}" style="background:#fff; border:1px solid rgba(15,23,42,.08); border-top:2px solid {{ col.tint }}; border-radius:11px; padding:12px;">
+                  <div style="font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ d.account }}</div>
+                  <div style="margin-top:3px; font-size:13px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ d.title }}</div>
+                  <div style="margin-top:10px; display:flex; align-items:center; justify-content:space-between;"><span style="font-size:13px; font-weight:600; color:#0b7688;" class="tabular-nums">{{ d.valueLabel }}</span><span style="width:24px; height:24px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; background:{{ d.avatarBg }};">{{ d.owner }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- TABLE -->
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ true }}">
+      <div class="glass-card" style="overflow:hidden; padding:0;">
+        <div style="overflow-x:auto;">
+          <table style="width:100%; min-width:720px; border-collapse:collapse; font-size:14px; text-align:start;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(15,23,42,.08); background:rgba(241,245,249,.5);">
+                <th style="padding:12px 16px; width:20px;"><button onClick="{{ onSelectAll }}" aria-label="בחר הכל" style="{{ selectAllBox }}"><sc-if value="{{ allSelected }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></sc-if></button></th>
+                <sc-for list="{{ columns }}" as="col" hint-placeholder-count="5">
+                  <th class="crm-th" onClick="{{ col.onSort }}" style="padding:12px 16px; text-align:start; font-size:12px; font-weight:600; color:#55627a; white-space:nowrap;">{{ col.label }}<span style="margin-inline-start:4px; color:#0e8ba0;">{{ col.arrow }}</span></th>
+                </sc-for>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+                <tr class="crm-row" style="{{ r.rowStyle }}">
+                  <td style="padding:13px 16px;"><button onClick="{{ r.onToggleSel }}" aria-label="בחר" style="{{ r.selBox }}"><sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></sc-if></button></td>
+                  <td onClick="{{ r.onOpen }}" style="padding:13px 16px; cursor:pointer;">
+                    <div style="display:flex; align-items:center; gap:10px;"><span style="flex:none; width:30px; height:30px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; background:{{ r.tint }};">{{ r.initials }}</span><span style="font-weight:600; color:#0f172a;">{{ r.name }}</span></div>
+                  </td>
+                  <td onClick="{{ r.onOpen }}" style="padding:13px 16px; cursor:pointer;"><span style="{{ r.badgeStyle }}">{{ r.badge }}</span></td>
+                  <td onClick="{{ r.onOpen }}" style="padding:13px 16px; color:#55627a; cursor:pointer;">{{ r.c3 }}</td>
+                  <td onClick="{{ r.onOpen }}" style="padding:13px 16px; color:#55627a; cursor:pointer;" dir="ltr"><span style="display:block; text-align:end;">{{ r.c4 }}</span></td>
+                  <td onClick="{{ r.onOpen }}" style="padding:13px 16px; color:#55627a; cursor:pointer;">{{ r.c5 }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:56px 24px; text-align:center;"><span style="width:52px; height:52px; border-radius:999px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:24px;">🏢</span><p style="margin:0; font-size:15px; font-weight:600;">לא נמצאו תוצאות</p><p style="margin:0; font-size:13px; color:#55627a;">נסו מונח חיפוש או סינון אחר.</p></div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- CARDS -->
+    <sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
+      <div class="r-cards" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <div class="glass-card crm-card" onClick="{{ r.onOpen }}" style="padding:18px; cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="flex:none; width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#fff; background:{{ r.tint }};">{{ r.initials }}</span>
+              <div style="flex:1; min-width:0;"><div style="font-size:15px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ r.name }}</div><span style="{{ r.badgeStyle }}">{{ r.badge }}</span></div>
+            </div>
+            <div style="margin-top:14px; display:flex; flex-direction:column; gap:7px; font-size:13px; color:#55627a;">
+              <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">{{ r.l3 }}</span><span>{{ r.c3 }}</span></div>
+              <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">{{ r.l4 }}</span><span dir="ltr">{{ r.c4 }}</span></div>
+              <div style="display:flex; justify-content:space-between;"><span style="color:#94a3b8;">{{ r.l5 }}</span><span>{{ r.c5 }}</span></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div class="glass-card" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:56px 24px; text-align:center;"><span style="width:52px; height:52px; border-radius:999px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:24px;">🏢</span><p style="margin:0; font-size:15px; font-weight:600;">לא נמצאו תוצאות</p></div>
+      </sc-if>
+    </sc-if>
+
+    <!-- pagination -->
+    <sc-if value="{{ showPager }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; font-size:13px; color:#55627a;">
+        <span>מציג {{ pageFrom }}–{{ pageTo }} מתוך {{ totalRows }}</span>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button onClick="{{ onPrev }}" style="{{ prevStyle }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg></button>
+          <span style="font-weight:600; color:#0f172a;" class="tabular-nums">{{ pageNum }} / {{ pageCount }}</span>
+          <button onClick="{{ onNext }}" style="{{ nextStyle }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg></button>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- ADD DRAWER -->
+  <sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onAddClose }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(440px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid rgba(15,23,42,.08);">
+        <div style="font-size:17px; font-weight:600;">{{ addTitle }}</div>
+        <button onClick="{{ onAddClose }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+      </div>
+      <form onSubmit="{{ onAddSubmit }}" style="flex:1; overflow-y:auto; padding:22px; display:flex; flex-direction:column; gap:16px;" class="scrollbar-hide">
+        <sc-for list="{{ addFields }}" as="f" hint-placeholder-count="4">
+          <label style="display:block;">
+            <span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">{{ f.label }}</span>
+            <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+              <select value="{{ f.value }}" onChange="{{ f.onChange }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; color:#0f172a; background:#fff; outline:none; box-sizing:border-box;"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select>
+            </sc-if>
+            <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+              <input value="{{ f.value }}" onInput="{{ f.onChange }}" placeholder="{{ f.placeholder }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; color:#0f172a; outline:none; box-sizing:border-box;">
+            </sc-if>
+          </label>
+        </sc-for>
+        <div style="display:flex; gap:10px; margin-top:6px;">
+          <button type="submit" style="cursor:pointer; font-family:inherit; flex:1; border:none; border-radius:12px; background:#0e8ba0; color:#fff; padding:12px; font-size:14px; font-weight:600;">הוספה</button>
+          <button type="button" onClick="{{ onAddClose }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); border-radius:12px; background:#fff; color:#0f172a; padding:12px 18px; font-size:14px; font-weight:600;">ביטול</button>
+        </div>
+      </form>
+    </aside>
+  </sc-if>
+
+  <!-- RECORD DRAWER -->
+  <sc-if value="{{ recOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onRecClose }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(460px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="padding:22px; border-bottom:1px solid rgba(15,23,42,.08);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px;"><span style="flex:none; width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; background:{{ rec.tint }};">{{ rec.initials }}</span><div><div style="font-size:17px; font-weight:600;">{{ rec.name }}</div><div style="font-size:13px; color:#94a3b8;">{{ rec.sub }}</div></div></div>
+          <button onClick="{{ onRecClose }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+          <sc-for list="{{ rec.actions }}" as="a" hint-placeholder-count="3"><button onClick="{{ a.onClick }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.14); background:#fff; border-radius:10px; padding:8px 12px; font-size:12.5px; font-weight:600; color:#0f172a;"><span style="color:#0e8ba0;" dangerouslySetInnerHTML="{{ a.icon }}"></span>{{ a.label }}</button></sc-for>
+        </div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:22px;" class="scrollbar-hide">
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">פרטים</div>
+        <div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:14px; margin-bottom:22px; display:flex; flex-direction:column; gap:9px;">
+          <sc-for list="{{ rec.fields }}" as="f" hint-placeholder-count="4"><div style="display:flex; justify-content:space-between; font-size:13.5px;"><span style="color:#94a3b8;">{{ f.label }}</span><span style="color:#0f172a; font-weight:500;" dir="{{ f.dir }}">{{ f.value }}</span></div></sc-for>
+        </div>
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">היסטוריה</div>
+        <ol style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column;">
+          <sc-for list="{{ rec.timeline }}" as="t" hint-placeholder-count="4">
+            <li style="display:flex; gap:12px;">
+              <div style="display:flex; flex-direction:column; align-items:center;"><span style="flex:none; width:28px; height:28px; border-radius:999px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px;">{{ t.icon }}</span><sc-if value="{{ t.line }}" hint-placeholder-val="{{ true }}"><span style="flex:1; width:2px; background:rgba(15,23,42,.08); min-height:14px;"></span></sc-if></div>
+              <div style="padding-bottom:16px;"><div style="font-size:13px; font-weight:600; color:#0f172a;">{{ t.title }}</div><div style="font-size:12px; color:#55627a; margin-top:1px;">{{ t.text }}</div><div style="font-size:11px; color:#94a3b8; margin-top:3px;">{{ t.time }}</div></div>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; bottom:28px; inset-inline-start:50%; transform:translateX(50%); z-index:80; background:#0f172a; color:#fff; border-radius:12px; padding:12px 20px; font-size:14px; box-shadow:0 12px 32px rgba(15,23,42,.28); animation:dash-fade .25s ease both;">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    nav: [], tab:'accounts', search:'', filter:'all', view:'table',
+    sortKey:null, sortDir:1, page:1, selected:[], toast:'',
+    accounts:null, contacts:null, deals:null,
+    addOpen:false, addForm:{}, recId:null,
+  };
+  PAGE=8;
+
+  _svg(p,w){ return { __html:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="${w||16}" height="${w||16}">${p}</svg>` }; }
+  _tint(s){ const t=['#0e8ba0','#1666a8','#12805c','#b26a00','#7c6cf0','#0e7490']; let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))|0; return t[Math.abs(h)%t.length]; }
+  _ini(s){ return s.replace(/[״׳"]/g,'').split(' ').slice(0,2).map(w=>w[0]).join(''); }
+
+  _seedAccounts(){ return [
+    {id:1,name:'קליניקת נועה',kind:'עסק',industry:'בריאות',phone:'050-123-4567',email:'noa@clinic.co.il',created:'22.7.2026'},
+    {id:2,name:'מוסך דהן ובניו',kind:'עסק',industry:'רכב',phone:'052-998-7766',email:'yossi@dahan.co.il',created:'19.7.2026'},
+    {id:3,name:'סטודיו מיכל',kind:'עסק',industry:'עיצוב',phone:'054-321-9988',email:'michal@studio.co.il',created:'15.7.2026'},
+    {id:4,name:'רשת אופנה URBAN',kind:'עסק',industry:'קמעונאות',phone:'03-555-1234',email:'dana@urban.co.il',created:'11.7.2026'},
+    {id:5,name:'בית קפה עלית',kind:'עסק',industry:'מסעדנות',phone:'050-777-2211',email:'avi@elite.co.il',created:'8.7.2026'},
+    {id:6,name:'חברת שיפוצים',kind:'עסק',industry:'בנייה',phone:'050-444-1212',email:'ron@shipputzim.co.il',created:'5.7.2026'},
+    {id:7,name:'סוכנות נדל״ן',kind:'עסק',industry:'נדל״ן',phone:'052-321-4455',email:'shira@realestate.co.il',created:'2.7.2026'},
+    {id:8,name:'יוסי אברהם',kind:'אדם פרטי',industry:'—',phone:'058-444-5566',email:'yossi.a@gmail.com',created:'1.7.2026'},
+    {id:9,name:'מאפיית הבוקר',kind:'עסק',industry:'מסעדנות',phone:'09-777-8899',email:'boker@bakery.co.il',created:'28.6.2026'},
+    {id:10,name:'ד״ר לוינשטיין',kind:'עסק',industry:'בריאות',phone:'03-611-2233',email:'clinic@dr.co.il',created:'24.6.2026'},
+  ]; }
+  _seedContacts(){ return [
+    {id:1,name:'נועה לוי',role:'מנהלת',account:'קליניקת נועה',phone:'050-123-4567',email:'noa@clinic.co.il',last:'לפני יום'},
+    {id:2,name:'יוסי דהן',role:'בעלים',account:'מוסך דהן ובניו',phone:'052-998-7766',email:'yossi@dahan.co.il',last:'לפני 3 ימים'},
+    {id:3,name:'מיכל ברק',role:'מעצבת ראשית',account:'סטודיו מיכל',phone:'054-321-9988',email:'michal@studio.co.il',last:'לפני שבוע'},
+    {id:4,name:'דנה כהן',role:'רכש',account:'רשת אופנה URBAN',phone:'03-555-1234',email:'dana@urban.co.il',last:'לפני יומיים'},
+    {id:5,name:'אבי מזרחי',role:'מנהל',account:'בית קפה עלית',phone:'050-777-2211',email:'avi@elite.co.il',last:'היום'},
+    {id:6,name:'רון אבני',role:'מנכ״ל',account:'חברת שיפוצים',phone:'050-444-1212',email:'ron@shipputzim.co.il',last:'אתמול'},
+    {id:7,name:'שירה גל',role:'שותפה',account:'סוכנות נדל״ן',phone:'052-321-4455',email:'shira@realestate.co.il',last:'לפני 4 ימים'},
+  ]; }
+  _seedDeals(){ return [
+    {id:1,name:'שדרוג אתר תדמית',stage:'ליד',account:'סטודיו מיכל',value:18000,owner:'עד',close:'—'},
+    {id:2,name:'קמפיין לידים',stage:'ליד',account:'מוסך דהן ובניו',value:9000,owner:'רכ',close:'—'},
+    {id:3,name:'חבילת סוכנים שנתית',stage:'מוכשר',account:'קליניקת נועה',value:42000,owner:'נל',close:'31.7.2026'},
+    {id:4,name:'ניהול סושיאל',stage:'מוכשר',account:'בית קפה עלית',value:12000,owner:'עד',close:'12.8.2026'},
+    {id:5,name:'אוטומציית וואטסאפ',stage:'הצעה',account:'רשת אופנה URBAN',value:64000,owner:'רכ',close:'5.8.2026'},
+    {id:6,name:'חבילת פרו + API',stage:'משא ומתן',account:'חברת שיפוצים',value:84000,owner:'עד',close:'2.8.2026'},
+    {id:7,name:'סוכן לידים + דוחות',stage:'משא ומתן',account:'סוכנות נדל״ן',value:38000,owner:'נל',close:'9.8.2026'},
+  ]; }
+
+  _badge(bg,fg){ return `border-radius:999px; padding:2px 10px; font-size:11px; font-weight:600; background:${bg}; color:${fg}; display:inline-block;`; }
+  _stageBadge(s){ const m={'ליד':['rgba(14,116,144,.1)','#0e7490'],'מוכשר':['rgba(14,139,160,.1)','#0b7688'],'הצעה':['rgba(178,106,0,.1)','#b26a00'],'משא ומתן':['rgba(15,23,42,.06)','#0f172a'],'זכייה':['rgba(18,128,92,.1)','#12805c']}; const c=m[s]||['#f1f5f9','#55627a']; return this._badge(c[0],c[1]); }
+  _stageMeta(){ return [['ליד','#0e8ba0'],['מוכשר','#1666a8'],['הצעה','#b26a00'],['משא ומתן','#0f172a']]; }
+
+  _toast(m){ this.setState({toast:m}); clearTimeout(this._tt); this._tt=setTimeout(()=>this.setState({toast:''}),2600); }
+
+  renderVals(){
+    const S=this._svg.bind(this);
+    const accounts=this.state.accounts||this._seedAccounts();
+    const contacts=this.state.contacts||this._seedContacts();
+    const deals=this.state.deals||this._seedDeals();
+    const tab=this.state.tab, q=this.state.search.trim(), filter=this.state.filter;
+    const money=(n)=>'₪ '+n.toLocaleString('he-IL');
+    const moneyK=(n)=>'₪ '+Math.round(n/1000)+'K';
+
+    // summary
+    const pipeSum=deals.reduce((a,d)=>a+d.value,0);
+    const summary=[
+      { label:'סה״כ לקוחות', value:String(accounts.length), color:'#0e8ba0', tint:'rgba(14,139,160,.1)', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/>',20) },
+      { label:'שווי צינור', value:moneyK(pipeSum), color:'#b26a00', tint:'rgba(178,106,0,.1)', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941"/>',20) },
+      { label:'לידים חדשים החודש', value:'94', color:'#12805c', tint:'rgba(18,128,92,.1)', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z"/>',20) },
+    ];
+
+    // tabs
+    const tabDef=[['accounts','חשבונות',accounts.length],['contacts','אנשי קשר',contacts.length],['deals','עסקאות',deals.length]];
+    const tabOn='cursor:pointer; font-family:inherit; position:relative; border:none; background:none; padding:11px 16px; font-size:14px; font-weight:600; color:#0f172a; box-shadow:inset 0 -2px 0 #0e8ba0;';
+    const tabOff='cursor:pointer; font-family:inherit; position:relative; border:none; background:none; padding:11px 16px; font-size:14px; font-weight:500; color:#55627a;';
+    const tabs=tabDef.map(([k,l,c])=>({label:l,count:c,style:tab===k?tabOn:tabOff,onClick:()=>this.setState({tab:k,page:1,selected:[],sortKey:null,filter:'all',view:this.state.view==='board'&&k!=='deals'?'table':this.state.view})}));
+
+    // filter options per tab
+    let filterOptions;
+    if(tab==='accounts'){ const inds=[...new Set(accounts.map(a=>a.industry))]; filterOptions=[{val:'all',label:'כל התחומים'},...inds.map(i=>({val:i,label:i}))]; }
+    else if(tab==='contacts'){ const accs=[...new Set(contacts.map(c=>c.account))]; filterOptions=[{val:'all',label:'כל החשבונות'},...accs.map(a=>({val:a,label:a}))]; }
+    else { filterOptions=[{val:'all',label:'כל השלבים'},...this._stageMeta().map(([s])=>({val:s,label:s}))]; }
+
+    // build base rows per tab
+    const owAv=(t)=>`linear-gradient(135deg, ${t}, #22b8cf)`;
+    let baseRows=[];
+    if(tab==='accounts'){
+      baseRows=accounts.filter(a=>filter==='all'||a.industry===filter).map(a=>({id:a.id,rec:a,name:a.name,initials:this._ini(a.name),tint:this._tint(a.name),badge:a.kind,badgeStyle:this._badge('rgba(14,116,144,.1)','#0e7490'),sortName:a.name,c3:a.industry,l3:'תחום',c4:a.phone,l4:'טלפון',c5:a.created,l5:'נוצר',sortVals:{name:a.name,badge:a.kind,c3:a.industry,c4:a.phone,c5:a.created}}));
+    } else if(tab==='contacts'){
+      baseRows=contacts.filter(c=>filter==='all'||c.account===filter).map(c=>({id:c.id,rec:c,name:c.name,initials:this._ini(c.name),tint:this._tint(c.name),badge:c.role,badgeStyle:this._badge('#f1f5f9','#55627a'),c3:c.account,l3:'חשבון',c4:c.phone,l4:'טלפון',c5:c.last,l5:'קשר אחרון',sortVals:{name:c.name,badge:c.role,c3:c.account,c4:c.phone,c5:c.last}}));
+    } else {
+      baseRows=deals.filter(d=>filter==='all'||d.stage===filter).map(d=>({id:d.id,rec:d,name:d.name,initials:this._ini(d.account),tint:this._tint(d.account),badge:d.stage,badgeStyle:this._stageBadge(d.stage),c3:d.account,l3:'חשבון',c4:money(d.value),l4:'שווי',c5:d.close,l5:'סגירה',sortVals:{name:d.name,badge:d.stage,c3:d.account,c4:d.value,c5:d.close}}));
+    }
+    // search
+    if(q) baseRows=baseRows.filter(r=>[r.name,r.badge,r.c3,String(r.c4),r.c5].some(v=>(v||'').toString().includes(q)));
+    // sort
+    const sk=this.state.sortKey;
+    if(sk){ baseRows=[...baseRows].sort((a,b)=>{ let x=a.sortVals[sk],y=b.sortVals[sk]; if(typeof x==='number'&&typeof y==='number') return (x-y)*this.state.sortDir; return String(x).localeCompare(String(y),'he')*this.state.sortDir; }); }
+
+    const totalRows=baseRows.length;
+    // columns
+    const colDefs = tab==='accounts'?[['name','שם'],['badge','סוג'],['c3','תחום'],['c4','טלפון'],['c5','נוצר']]
+      : tab==='contacts'?[['name','שם'],['badge','תפקיד'],['c3','חשבון'],['c4','טלפון'],['c5','קשר אחרון']]
+      : [['name','עסקה'],['badge','שלב'],['c3','חשבון'],['c4','שווי'],['c5','סגירה']];
+    const columns=colDefs.map(([key,label])=>({label,arrow:sk===key?(this.state.sortDir>0?'↑':'↓'):'',onSort:()=>this.setState(s=>({sortKey:key,sortDir:s.sortKey===key?-s.sortDir:1}))}));
+
+    // view
+    const view=this.state.view;
+    const isBoard=tab==='deals'&&view==='board';
+    const isCards=view==='cards'&&!isBoard;
+    const isTable=view==='table'&&!isBoard;
+
+    // pagination (table/cards only)
+    let rows=baseRows; let pageCount=1, pageNum=this.state.page;
+    if(!isBoard){ pageCount=Math.max(1,Math.ceil(totalRows/this.PAGE)); pageNum=Math.min(pageNum,pageCount); rows=baseRows.slice((pageNum-1)*this.PAGE,pageNum*this.PAGE); }
+    const selected=this.state.selected;
+    const selBox=(on)=>'cursor:pointer; flex:none; width:18px; height:18px; border-radius:5px; display:flex; align-items:center; justify-content:center; '+(on?'background:#0e8ba0; border:1px solid #0e8ba0;':'background:#fff; border:1.5px solid rgba(15,23,42,.2);');
+    rows=rows.map(r=>{ const on=selected.includes(tab+r.id); return {...r,selected:on,selBox:selBox(on),rowStyle:'border-bottom:1px solid rgba(15,23,42,.06); transition:background .15s ease;'+(on?'background:rgba(14,139,160,.05);':''),onToggleSel:()=>this._toggleSel(tab+r.id),onOpen:()=>this.setState({recId:r.id})}; });
+
+    const pageIds=baseRows.slice((pageNum-1)*this.PAGE,pageNum*this.PAGE).map(r=>tab+r.id);
+    const allSelected=pageIds.length>0&&pageIds.every(id=>selected.includes(id));
+
+    // view toggle
+    const vBtn=(on)=>'cursor:pointer; font-family:inherit; border:none; border-radius:8px; padding:6px 9px; display:flex; align-items:center; '+(on?'background:#fff; color:#0f172a; box-shadow:0 1px 2px rgba(15,23,42,.08);':'background:transparent; color:#94a3b8;');
+    const viewToggle=[
+      {title:'טבלה',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6h16.5M3.75 12h16.5m-16.5 6h16.5"/>',14),onClick:()=>this.setState({view:'table'}),style:vBtn(isTable)},
+      {title:'כרטיסים',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25h-2.25a2.25 2.25 0 0 1-2.25-2.25v-2.25Z"/>',14),onClick:()=>this.setState({view:'cards'}),style:vBtn(isCards)},
+    ];
+    if(tab==='deals') viewToggle.push({title:'לוח',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5"/>',14),onClick:()=>this.setState({view:'board'}),style:vBtn(isBoard)});
+
+    // board (deals)
+    let board=[];
+    if(isBoard){ board=this._stageMeta().map(([label,tint])=>{ const list=deals.filter(d=>d.stage===label); const sum=list.reduce((a,d)=>a+d.value,0); return { label,tint,count:list.length,sumLabel:sum?moneyK(sum):'₪0',
+      ref:(el)=>{this._cols=this._cols||{};this._cols[label]=el;},
+      onDragOver:(e)=>{e.preventDefault(); if(this._cols&&this._cols[label])this._cols[label].classList.add('drag-over');},
+      onDragLeave:()=>{ if(this._cols&&this._cols[label])this._cols[label].classList.remove('drag-over');},
+      onDrop:(e)=>{e.preventDefault(); if(this._cols&&this._cols[label])this._cols[label].classList.remove('drag-over'); this._moveDeal(this._drag,label);},
+      deals:list.map(d=>({account:d.account,title:d.name,valueLabel:moneyK(d.value),owner:d.owner,avatarBg:owAv(tint),onDragStart:()=>{this._drag=d.id;},onDragEnd:()=>{this._drag=null;},onOpen:()=>this.setState({recId:d.id})})) }; }); }
+
+    // add form
+    const af=this.state.addForm;
+    const addLabel=tab==='accounts'?'לקוח':tab==='contacts'?'איש קשר':'עסקה';
+    const addTitle=tab==='accounts'?'לקוח חדש':tab==='contacts'?'איש קשר חדש':'עסקה חדשה';
+    const setF=(k)=>(e)=>this.setState(s=>({addForm:{...s.addForm,[k]:e.target.value}}));
+    let addFieldsDef;
+    if(tab==='accounts') addFieldsDef=[['name','שם הלקוח',0,''],['kind','סוג',1,['עסק','אדם פרטי']],['industry','תחום',0,''],['phone','טלפון',0,''],['email','אימייל',0,'']];
+    else if(tab==='contacts') addFieldsDef=[['name','שם',0,''],['role','תפקיד',0,''],['account','חשבון',0,''],['phone','טלפון',0,''],['email','אימייל',0,'']];
+    else addFieldsDef=[['name','שם העסקה',0,''],['account','חשבון',0,''],['value','שווי (₪)',0,''],['stage','שלב',1,['ליד','מוכשר','הצעה','משא ומתן']]];
+    const addFields=addFieldsDef.map(([k,label,isSel,opts])=>({label,isSelect:!!isSel,isText:!isSel,value:af[k]||(isSel?opts[0]:''),placeholder:label,options:isSel?opts:[],onChange:setF(k)}));
+
+    // record drawer
+    const recOpen=this.state.recId!=null;
+    let rec=null;
+    if(recOpen){
+      const rObj=baseRows.find(r=>r.id===this.state.recId)||baseRows[0];
+      const d=rObj?rObj.rec:null;
+      const p18=(dd)=>S(`<path stroke-linecap="round" stroke-linejoin="round" d="${dd}"/>`,15);
+      const acts=[
+        {label:'הודעה',icon:p18('M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5'),onClick:()=>this._toast('נפתחה שיחה')},
+        {label:'פגישה',icon:p18('M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75'),onClick:()=>this._toast('פגישה נוספה ליומן')},
+        {label:'עריכה',icon:p18('m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z'),onClick:()=>this._toast('מצב עריכה')},
+      ];
+      let name,sub,fields;
+      if(tab==='accounts'){ name=d.name; sub=d.industry+' · '+d.kind; fields=[{label:'תחום',value:d.industry,dir:'rtl'},{label:'טלפון',value:d.phone,dir:'ltr'},{label:'אימייל',value:d.email,dir:'ltr'},{label:'נוצר',value:d.created,dir:'rtl'}]; }
+      else if(tab==='contacts'){ name=d.name; sub=d.role+' · '+d.account; fields=[{label:'תפקיד',value:d.role,dir:'rtl'},{label:'חשבון',value:d.account,dir:'rtl'},{label:'טלפון',value:d.phone,dir:'ltr'},{label:'אימייל',value:d.email,dir:'ltr'}]; }
+      else { name=d.name; sub=d.account+' · '+d.stage; fields=[{label:'חשבון',value:d.account,dir:'rtl'},{label:'שווי',value:money(d.value),dir:'rtl'},{label:'שלב',value:d.stage,dir:'rtl'},{label:'סגירה צפויה',value:d.close,dir:'rtl'}]; }
+      const tlBase=[{icon:'🎯',title:'נוצר במערכת',text:'הרשומה נוספה ל‑CRM',time:'לפני שבועיים'},{icon:'💬',title:'סוכן וואטסאפ יצר קשר',text:'שלח הודעת פתיחה',time:'לפני שבוע'},{icon:'📞',title:'שיחת מעקב',text:'תיאום צרכים',time:'לפני 3 ימים'},{icon:'📄',title:'עדכון אחרון',text:'הפעילות האחרונה נרשמה',time:'היום'}];
+      rec={name,sub,initials:rObj.initials,tint:rObj.tint,actions:acts,fields,timeline:tlBase.map((t,i)=>({...t,line:i<tlBase.length-1}))};
+    }
+
+    return {
+      navItems:this.state.nav, summary, tabs, columns, rows, tab,
+      search:this.state.search, onSearch:(e)=>this.setState({search:e.target.value,page:1}),
+      filterVal:filter, filterOptions, onFilter:(e)=>this.setState({filter:e.target.value,page:1,selected:[]}),
+      viewToggle, isTable, isCards, isBoard, board,
+      isEmpty:totalRows===0,
+      selectAllBox:selBox(allSelected), allSelected, onSelectAll:()=>this._selectAllPage(pageIds),
+      hasSelection:selected.length>0, selectedCount:selected.length,
+      onBulkExport:()=>{ this._exportCSV(baseRows.filter(r=>selected.includes(tab+r.id)),columns); },
+      onBulkTag:()=>this._toast(selected.length+' רשומות תויגו'),
+      onBulkDelete:()=>this._bulkDelete(), onClearSel:()=>this.setState({selected:[]}),
+      showPager:!isBoard&&totalRows>this.PAGE, pageFrom:totalRows?((pageNum-1)*this.PAGE+1):0, pageTo:Math.min(pageNum*this.PAGE,totalRows), totalRows, pageNum, pageCount,
+      prevStyle:'cursor:pointer; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:9px; padding:6px; display:flex; color:'+(pageNum<=1?'#cbd5e1':'#0f172a')+';',
+      nextStyle:'cursor:pointer; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:9px; padding:6px; display:flex; color:'+(pageNum>=pageCount?'#cbd5e1':'#0f172a')+';',
+      onPrev:()=>this.setState(s=>({page:Math.max(1,s.page-1)})), onNext:()=>this.setState(s=>({page:Math.min(pageCount,s.page+1)})),
+      addLabel, addTitle, addOpen:this.state.addOpen, addFields,
+      onAddOpen:()=>this.setState({addOpen:true,addForm:{}}), onAddClose:()=>this.setState({addOpen:false}),
+      onAddSubmit:(e)=>{ e.preventDefault(); this._addRecord(); },
+      onExport:()=>this._exportCSV(baseRows,columns),
+      recOpen, rec, onRecClose:()=>this.setState({recId:null}),
+      rootRef:(el)=>{this.root=el;}, toast:this.state.toast,
+    };
+  }
+
+  _toggleSel(id){ this.setState(s=>({selected:s.selected.includes(id)?s.selected.filter(x=>x!==id):[...s.selected,id]})); }
+  _selectAllPage(ids){ this.setState(s=>{ const all=ids.every(id=>s.selected.includes(id)); return {selected:all?s.selected.filter(x=>!ids.includes(x)):[...new Set([...s.selected,...ids])]}; }); }
+  _moveDeal(id,stage){ if(id==null)return; const arr=(this.state.deals||this._seedDeals()).map(d=>d.id===id?{...d,stage}:d); this.setState({deals:arr}); }
+  _bulkDelete(){ const tab=this.state.tab, sel=this.state.selected; const key=tab==='accounts'?'accounts':tab==='contacts'?'contacts':'deals'; const cur=this.state[key]||(tab==='accounts'?this._seedAccounts():tab==='contacts'?this._seedContacts():this._seedDeals()); const next=cur.filter(r=>!sel.includes(tab+r.id)); this.setState({[key]:next,selected:[]}); this._toast(sel.length+' רשומות נמחקו'); }
+  _addRecord(){ const tab=this.state.tab, f=this.state.addForm; const nid=Date.now()%100000;
+    if(tab==='accounts'){ const cur=this.state.accounts||this._seedAccounts(); const rec={id:nid,name:f.name||'ללא שם',kind:f.kind||'עסק',industry:f.industry||'—',phone:f.phone||'—',email:f.email||'—',created:'היום'}; this.setState({accounts:[rec,...cur],addOpen:false}); }
+    else if(tab==='contacts'){ const cur=this.state.contacts||this._seedContacts(); const rec={id:nid,name:f.name||'ללא שם',role:f.role||'—',account:f.account||'—',phone:f.phone||'—',email:f.email||'—',last:'עכשיו'}; this.setState({contacts:[rec,...cur],addOpen:false}); }
+    else { const cur=this.state.deals||this._seedDeals(); const rec={id:nid,name:f.name||'עסקה חדשה',account:f.account||'—',value:parseInt(f.value)||0,stage:f.stage||'ליד',owner:'עד',close:'—'}; this.setState({deals:[rec,...cur],addOpen:false}); }
+    this._toast('הרשומה נוספה בהצלחה');
+  }
+  _exportCSV(rows,columns){
+    try{
+      const head=columns.map(c=>c.label);
+      const lines=[head.join(',')];
+      rows.forEach(r=>{ lines.push([r.name,r.badge,r.c3,r.c4,r.c5].map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',')); });
+      const csv='\uFEFF'+lines.join('\n');
+      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='easylife-crm.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+      this._toast('יוצאו '+rows.length+' רשומות ל‑CSV');
+    }catch(e){ this._toast('הייצוא נכשל בסביבה הזו'); }
+  }
+
+  componentDidMount(){ this.setState({accounts:this._seedAccounts(),contacts:this._seedContacts(),deals:this._seedDeals()}); import('./crmChrome.js').then(m=>this.setState({nav:m.navItems('CRM')})); }
+}
+</script>
+</body>
+</html>

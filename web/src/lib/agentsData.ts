@@ -12,12 +12,28 @@
 
 export type AgentKey = 'whatsapp' | 'video' | 'social' | 'content';
 
+export interface TaskDef {
+  label: string;
+  done: boolean;
+}
+
+export interface RecurringTask {
+  label: string;
+  freq: string;
+}
+
 export interface AgentDef {
   key: AgentKey;
   name: string;
   cap: string;
   status: string;
   tint: string;
+  bio: string;
+  stats: [string, string][];
+  caps: string[];
+  daily: TaskDef[];
+  weekly: TaskDef[];
+  recurring: RecurringTask[];
 }
 
 export const AGENT_DEFS: Record<AgentKey, AgentDef> = {
@@ -27,6 +43,26 @@ export const AGENT_DEFS: Record<AgentKey, AgentDef> = {
     cap: 'שירות, תזכורות וקמפיינים בוואטסאפ',
     status: 'פעיל · 142 שיחות היום',
     tint: '#12805c',
+    bio: 'עונה ללקוחות בוואטסאפ 24/7, קובע תורים, שולח תזכורות ומריץ קמפיינים — בקול של העסק שלך.',
+    stats: [
+      ['142', 'שיחות היום'],
+      ['38', 'נענו לבד'],
+      ['96%', 'שביעות רצון'],
+    ],
+    caps: ['מענה אוטומטי', 'תזכורות תורים', 'קמפיינים', 'העברת לידים'],
+    daily: [
+      { label: 'לענות לכל הפניות החדשות', done: true },
+      { label: 'לשלוח תזכורות תור למחר', done: true },
+      { label: 'להעביר לידים חמים ל‑CRM', done: false },
+    ],
+    weekly: [
+      { label: 'לסכם שיחות השבוע לדוח', done: false },
+      { label: 'לזהות לקוחות לא פעילים', done: false },
+    ],
+    recurring: [
+      { label: 'תזכורת תור 24 שעות מראש', freq: 'כל יום · 09:00' },
+      { label: 'בקשת חוות דעת אחרי שירות', freq: 'אוטומטי · בסיום' },
+    ],
   },
   video: {
     key: 'video',
@@ -34,13 +70,52 @@ export const AGENT_DEFS: Record<AgentKey, AgentDef> = {
     cap: 'סרטוני מוצר ופרסום, אוטומטית',
     status: 'פעיל · 3 סרטונים החודש',
     tint: '#7c6cf0',
+    bio: 'מפיק סרטוני מוצר, רילים ופרסומות מוכנים לפרסום — מהתסריט ועד העריכה, בהתאמה למותג.',
+    stats: [
+      ['3', 'סרטונים החודש'],
+      ['12.4K', 'צפיות'],
+      ['0:30', 'אורך ממוצע'],
+    ],
+    caps: ['סרטוני מוצר', 'רילים', 'כתוביות בעברית', 'מוזיקה'],
+    daily: [
+      { label: 'לבדוק טרנדים רלוונטיים', done: true },
+      { label: 'להכין טיוטת ריל יומי', done: false },
+    ],
+    weekly: [
+      { label: 'להפיק 2 סרטוני מוצר', done: false },
+      { label: 'לנתח ביצועי סרטונים', done: false },
+    ],
+    recurring: [
+      { label: 'ריל טרנד שבועי', freq: 'כל יום ראשון' },
+      { label: 'סרטון מבצע חודשי', freq: '1 בחודש' },
+    ],
   },
   social: {
     key: 'social',
     name: 'סוכן רשתות ולידים',
-    cap: 'סריקת רשתות חברתיות ואיתור לידים',
+    cap: 'סריקת רשתות ואיתור לידים',
     status: 'פעיל · 12 לידים חדשים',
     tint: '#0e8ba0',
+    bio: 'סורק אינסטגרם, פייסבוק וגוגל, מאתר לידים חמים, עונה לתגובות ומכין דוחות חשיפה.',
+    stats: [
+      ['12', 'לידים חדשים'],
+      ['+18%', 'חשיפה'],
+      ['3', 'אזכורים'],
+    ],
+    caps: ['איתור לידים', 'מענה לתגובות', 'ניטור אזכורים', 'דוחות'],
+    daily: [
+      { label: 'לסרוק פניות חדשות ברשתות', done: true },
+      { label: 'לענות לתגובות ממתינות', done: true },
+      { label: 'לדרג לידים חדשים', done: false },
+    ],
+    weekly: [
+      { label: 'להכין דוח חשיפה שבועי', done: false },
+      { label: 'לזהות מגמות בקהל', done: false },
+    ],
+    recurring: [
+      { label: 'דוח לידים שבועי', freq: 'כל יום ה׳' },
+      { label: 'ניטור אזכורי מותג', freq: 'שוטף · 24/7' },
+    ],
   },
   content: {
     key: 'content',
@@ -48,6 +123,25 @@ export const AGENT_DEFS: Record<AgentKey, AgentDef> = {
     cap: 'כתיבת פוסטים, מיילים וניוזלטרים',
     status: 'פעיל · 2 טיוטות מוכנות',
     tint: '#b26a00',
+    bio: 'כותב פוסטים, מיילים וניוזלטרים בקול של המותג, מציע לוח תוכן ומעביר לאישור לפני פרסום.',
+    stats: [
+      ['2', 'טיוטות מוכנות'],
+      ['8', 'פוסטים החודש'],
+      ['1.2K', 'נמענים'],
+    ],
+    caps: ['פוסטים', 'ניוזלטרים', 'מיילים', 'לוח תוכן'],
+    daily: [
+      { label: 'להכין טיוטת פוסט יומי', done: true },
+      { label: 'לבדוק ביצועי תוכן אתמול', done: false },
+    ],
+    weekly: [
+      { label: 'לתכנן לוח תוכן שבועי', done: false },
+      { label: 'לנסח ניוזלטר', done: false },
+    ],
+    recurring: [
+      { label: 'ניוזלטר שבועי', freq: 'כל יום א׳' },
+      { label: 'פוסט טיפ שבועי', freq: 'כל יום ג׳' },
+    ],
   },
 };
 
@@ -79,49 +173,118 @@ export interface AgentMessage {
 }
 
 let seq = 0;
-const id = () => `m${++seq}`;
+export const nextId = () => `m${++seq}`;
+const id = nextId;
 
-export function seedThreads(): Record<AgentKey, AgentMessage[]> {
+export interface Conversation {
+  id: string;
+  title: string;
+  msgs: AgentMessage[];
+}
+
+export function seedConversations(): Record<AgentKey, Conversation[]> {
   return {
     whatsapp: [
       {
-        id: id(),
-        role: 'agent',
-        type: 'text',
-        text: 'בוקר טוב ישראל 👋 אני סוכן הוואטסאפ — עונה ללקוחות 24/7, שולח תזכורות ומריץ קמפיינים. מה נעשה היום?',
+        id: 'w1',
+        title: 'שיחה נוכחית',
+        msgs: [
+          {
+            id: id(),
+            role: 'agent',
+            type: 'text',
+            text: 'בוקר טוב ישראל 👋 אני סוכן הוואטסאפ — עונה ללקוחות 24/7, שולח תזכורות ומריץ קמפיינים. מה נעשה היום?',
+          },
+          {
+            id: id(),
+            role: 'agent',
+            type: 'approval',
+            body: 'לקוח (מוסך דהן) שאל אם יש מבצע החודש. ניסחתי מענה — לאשר שליחה?',
+            preview: 'שלום! החודש יש 15% הנחה על טיפול תקופתי 🚗 אפשר לקבוע תור ישירות כאן. נשמח לראותך!',
+          },
+        ],
       },
       {
-        id: id(),
-        role: 'agent',
-        type: 'approval',
-        body: 'לקוח (מוסך דהן) שאל אם יש מבצע החודש. ניסחתי מענה — לאשר שליחה?',
-        preview: 'שלום! החודש יש 15% הנחה על טיפול תקופתי 🚗 אפשר לקבוע תור ישירות כאן. נשמח לראותך!',
+        id: 'w2',
+        title: 'קמפיין קיץ (אתמול)',
+        msgs: [
+          { id: id(), role: 'user', type: 'text', text: 'תכין קמפיין למבצע קיץ' },
+          {
+            id: id(),
+            role: 'agent',
+            type: 'text',
+            text: 'הכנתי קמפיין קיץ ושלחתי ל‑412 לקוחות אתמול. שיעור פתיחה: 68%, 23 הזמנות תור. רוצה סבב המשך?',
+          },
+        ],
       },
     ],
     video: [
       {
-        id: id(),
-        role: 'agent',
-        type: 'text',
-        text: 'היי 🎬 אני סוכן יצירת הווידאו. תן לי מוצר, מבצע או רעיון — ואחזיר סרטון מוכן לפרסום. אפשר גם לבחור פעולה מהירה למטה.',
+        id: 'v1',
+        title: 'שיחה נוכחית',
+        msgs: [
+          {
+            id: id(),
+            role: 'agent',
+            type: 'text',
+            text: 'היי 🎬 אני סוכן יצירת הווידאו. תן לי מוצר, מבצע או רעיון — ואחזיר סרטון מוכן לפרסום.',
+          },
+        ],
       },
     ],
     social: [
       {
-        id: id(),
-        role: 'agent',
-        type: 'text',
-        text: 'שלום ישראל 🎯 אני סוכן הרשתות והלידים. אני סורק אינסטגרם, פייסבוק וגוגל, מאתר לידים חמים ומכין דוחות. מה לבדוק?',
+        id: 's1',
+        title: 'שיחה נוכחית',
+        msgs: [
+          {
+            id: id(),
+            role: 'agent',
+            type: 'text',
+            text: 'שלום ישראל 🎯 אני סוכן הרשתות והלידים. אני סורק אינסטגרם, פייסבוק וגוגל, מאתר לידים חמים ומכין דוחות. מה לבדוק?',
+          },
+        ],
       },
     ],
     content: [
       {
-        id: id(),
-        role: 'agent',
-        type: 'text',
-        text: 'היי ✍️ אני סוכן התוכן. אני כותב פוסטים, מיילים וניוזלטרים בקול של המותג שלך — ומעביר לך לאישור לפני פרסום. מה נכתוב היום?',
+        id: 'c1',
+        title: 'שיחה נוכחית',
+        msgs: [
+          {
+            id: id(),
+            role: 'agent',
+            type: 'text',
+            text: 'היי ✍️ אני סוכן התוכן. אני כותב פוסטים, מיילים וניוזלטרים בקול של המותג שלך. מה נכתוב היום?',
+          },
+        ],
       },
     ],
+  };
+}
+
+export const TONE_OPTIONS = ['ידידותי', 'מקצועי', 'שיווקי', 'רשמי'];
+export const HOURS_OPTIONS = ['24/7', 'שעות עבודה', '09:00–18:00', 'בהתאמה אישית'];
+
+export interface AgentSettings {
+  tone: string;
+  hours: string;
+  auto: boolean;
+}
+
+export const DEFAULT_ENABLED: Record<AgentKey, boolean> = {
+  whatsapp: true,
+  video: true,
+  social: true,
+  content: false,
+};
+
+export function seedSettings(): Record<AgentKey, AgentSettings> {
+  return {
+    whatsapp: { tone: 'ידידותי', hours: '24/7', auto: true },
+    video: { tone: 'מקצועי', hours: 'שעות עבודה', auto: false },
+    social: { tone: 'ידידותי', hours: '24/7', auto: true },
+    content: { tone: 'שיווקי', hours: 'שעות עבודה', auto: false },
   };
 }
 

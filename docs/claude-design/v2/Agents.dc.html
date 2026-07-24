@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+@media (max-width:860px){ .r-split{grid-template-columns:1fr !important; height:auto !important;} .r-main{padding-inline:16px !important;} }
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .qa:hover { background:#eef2f7; }
+  .ag-row:hover { background:rgba(14,139,160,.05); }
+  @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+  @keyframes dash-fade { from { opacity:0; } to { opacity:1; } }
+  @keyframes td-blink { 0%,60%,100%{opacity:.25;} 30%{opacity:1;} }
+  .td b { display:inline-block; width:7px; height:7px; border-radius:999px; background:#94a3b8; margin:0 1.5px; animation:td-blink 1.2s infinite; }
+  .td b:nth-child(2){animation-delay:.2s;} .td b:nth-child(3){animation-delay:.4s;}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <span style="position:absolute; top:6px; inset-inline-end:6px; width:6px; height:6px; border-radius:999px; background:#0e8ba0;"></span>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <main class="r-main" style="max-width:1240px; margin:0 auto; padding:28px 28px 40px;">
+    <div style="margin-bottom:20px;">
+      <h1 style="margin:0; font-size:26px; font-weight:600; letter-spacing:-.01em; font-family:'Space Grotesk','Heebo',sans-serif;">הסוכנים שלך</h1>
+      <p style="margin:7px 0 0; font-size:14px; color:#55627a;">דברו עם הסוכנים, נהלו את המשימות וההגדרות שלהם — והם ישלחו לכם לאישור לפני שיוצאים לדרך.</p>
+    </div>
+
+    <div class="r-split" style="display:grid; grid-template-columns:320px 1fr; gap:16px; height:680px;">
+
+      <!-- agent list -->
+      <div class="glass-card" style="display:flex; flex-direction:column; overflow:hidden; padding:0;">
+        <div style="padding:14px 16px; border-bottom:1px solid rgba(15,23,42,.08); display:flex; align-items:center; justify-content:space-between;"><span style="font-size:13px; font-weight:600; color:#55627a;">הסוכנים שלך</span><span style="font-size:11.5px; color:#94a3b8;">{{ activeCount }} פעילים</span></div>
+        <div style="flex:1; overflow-y:auto;" class="scrollbar-hide">
+          <sc-for list="{{ agents }}" as="a" hint-placeholder-count="4">
+            <div class="ag-row" onClick="{{ a.onSelect }}" style="{{ a.rowStyle }}">
+              <span style="position:relative; flex:none; width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; color:#fff; background:{{ a.tint }}; {{ a.avaDim }}">
+                <span dangerouslySetInnerHTML="{{ a.icon }}"></span>
+                <sc-if value="{{ a.on }}" hint-placeholder-val="{{ true }}"><span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:12px; height:12px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span></sc-if>
+              </span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:14px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ a.name }}</div>
+                <div style="font-size:11.5px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ a.statusText }}</div>
+              </div>
+              <button onClick="{{ a.toggle }}" role="switch" aria-checked="{{ a.on }}" style="{{ a.track }}"><span style="{{ a.knob }}"></span></button>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:14px 16px; border-top:1px solid rgba(15,23,42,.08);">
+          <a href="Landing.dc.html#agents" style="display:block; text-align:center; font-size:13px; font-weight:600; color:#0b7688; border:1px dashed rgba(15,23,42,.16); border-radius:12px; padding:10px;">+ הוספת סוכן</a>
+        </div>
+      </div>
+
+      <!-- chat -->
+      <div class="glass-card" style="display:flex; flex-direction:column; overflow:hidden; padding:0;">
+        <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(15,23,42,.08); padding:13px 18px;">
+          <span style="flex:none; width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; background:{{ active.tint }};"><span dangerouslySetInnerHTML="{{ active.icon }}"></span></span>
+          <div style="flex:1; min-width:0;"><div style="font-size:15px; font-weight:600;">{{ active.name }}</div><div style="font-size:12px; color:#55627a;">{{ active.cap }}</div></div>
+          <select value="{{ activeConvId }}" onChange="{{ onConvChange }}" title="היסטוריית שיחות" style="border:1px solid rgba(15,23,42,.14); background:#fff; border-radius:10px; padding:7px 10px; font-family:inherit; font-size:12.5px; color:#0f172a; outline:none; max-width:150px;"><sc-for list="{{ convOptions }}" as="o" hint-placeholder-count="2"><option value="{{ o.id }}">{{ o.title }}</option></sc-for></select>
+        <button onClick="{{ openProfile }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(15,23,42,.14); background:#fff; border-radius:10px; padding:7px 11px; font-size:12.5px; font-weight:600; color:#0f172a;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>פרופיל</button>
+        </div>
+
+        <div ref="{{ chatRef }}" style="flex:1; overflow-y:auto; padding:22px 20px; display:flex; flex-direction:column; gap:12px; background:#f8fafc;" class="scrollbar-hide">
+          <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+            <div style="{{ m.wrap }}">
+              <sc-if value="{{ m.isTyping }}" hint-placeholder-val="{{ false }}"><div class="td" style="align-self:flex-start; background:#fff; border:1px solid rgba(15,23,42,.08); border-radius:16px 16px 16px 5px; padding:12px 16px;"><b></b><b></b><b></b></div></sc-if>
+              <sc-if value="{{ m.isText }}" hint-placeholder-val="{{ true }}"><div style="{{ m.bubble }}">{{ m.text }}</div></sc-if>
+              <sc-if value="{{ m.isApproval }}" hint-placeholder-val="{{ false }}">
+                <div style="max-width:94%; border:1px solid rgba(178,106,0,.28); background:rgba(178,106,0,.06); border-radius:16px 16px 16px 5px; padding:15px;">
+                  <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; color:#b26a00;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>בקשת אישור</div>
+                  <p style="margin:8px 0 0; font-size:13.5px; color:#0f172a; line-height:1.55;">{{ m.body }}</p>
+                  <div style="margin-top:10px; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:12px; padding:11px 13px; font-size:13px; color:#0f172a; line-height:1.55;">{{ m.preview }}</div>
+                  <div style="margin-top:12px; display:flex; gap:9px;"><button onClick="{{ m.approve }}" style="cursor:pointer; font-family:inherit; border:none; border-radius:11px; background:#0e8ba0; color:#fff; padding:8px 18px; font-size:13.5px; font-weight:600;">אישור ושליחה</button><button onClick="{{ m.reject }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(209,69,59,.3); border-radius:11px; background:rgba(209,69,59,.09); color:#d1453b; padding:8px 18px; font-size:13.5px; font-weight:600;">דחייה</button></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.isCampaign }}" hint-placeholder-val="{{ false }}">
+                <div style="max-width:94%; border:1px solid rgba(14,139,160,.25); background:#fff; border-radius:16px 16px 16px 5px; padding:15px; box-shadow:0 1px 2px rgba(15,23,42,.04);">
+                  <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; color:#0b7688;"><span style="width:9px; height:9px; border-radius:999px; background:#12805c;"></span>{{ m.title }}</div>
+                  <div style="margin-top:10px; border-inline-start:3px solid #12805c; background:#f8fafc; border-radius:8px; padding:11px 13px; font-size:13.5px; color:#0f172a; line-height:1.6;">{{ m.preview }}</div>
+                  <div style="margin-top:10px; display:flex; align-items:center; gap:14px; font-size:12px; color:#55627a;"><span>👥 {{ m.audience }}</span><span>🕐 {{ m.timing }}</span></div>
+                  <div style="margin-top:12px; display:flex; gap:9px;"><button onClick="{{ m.approve }}" style="cursor:pointer; font-family:inherit; border:none; border-radius:11px; background:#0e8ba0; color:#fff; padding:8px 18px; font-size:13.5px; font-weight:600;">שליחה עכשיו</button><button onClick="{{ m.reject }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); border-radius:11px; background:#fff; color:#0f172a; padding:8px 18px; font-size:13.5px; font-weight:600;">עריכה</button></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.isVideo }}" hint-placeholder-val="{{ false }}">
+                <div style="max-width:94%; border:1px solid rgba(124,108,240,.25); background:#fff; border-radius:16px 16px 16px 5px; padding:14px; box-shadow:0 1px 2px rgba(15,23,42,.04);">
+                  <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; color:#6b5cf0; margin-bottom:10px;"><span style="width:9px; height:9px; border-radius:999px; background:#7c6cf0;"></span>{{ m.title }}</div>
+                  <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:linear-gradient(135deg,#0e1a2b,#25406b); display:flex; align-items:center; justify-content:center;"><span style="width:52px; height:52px; border-radius:999px; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="#0e1a2b" width="22" height="22" style="margin-inline-start:3px;"><path d="M8 5v14l11-7z"/></svg></span><span style="position:absolute; bottom:8px; inset-inline-end:8px; background:rgba(15,23,42,.7); color:#fff; font-size:11px; border-radius:6px; padding:2px 7px;">{{ m.duration }}</span></div>
+                  <div style="margin-top:8px; font-size:12px; color:#55627a;">{{ m.meta }}</div>
+                  <div style="margin-top:12px; display:flex; gap:9px;"><button onClick="{{ m.approve }}" style="cursor:pointer; font-family:inherit; border:none; border-radius:11px; background:#0e8ba0; color:#fff; padding:8px 18px; font-size:13.5px; font-weight:600;">אישור ופרסום</button><button onClick="{{ m.reject }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); border-radius:11px; background:#fff; color:#0f172a; padding:8px 18px; font-size:13.5px; font-weight:600;">גרסה נוספת</button></div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.isLeads }}" hint-placeholder-val="{{ false }}">
+                <div style="max-width:94%; border:1px solid rgba(14,139,160,.25); background:#fff; border-radius:16px 16px 16px 5px; padding:15px; box-shadow:0 1px 2px rgba(15,23,42,.04);">
+                  <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; color:#0b7688; margin-bottom:12px;"><span style="width:9px; height:9px; border-radius:999px; background:#0e8ba0;"></span>{{ m.title }}</div>
+                  <div style="display:flex; flex-direction:column; gap:10px;">
+                    <sc-for list="{{ m.leads }}" as="ld" hint-placeholder-count="3"><div style="display:flex; align-items:center; gap:11px; border:1px solid rgba(15,23,42,.08); border-radius:11px; padding:10px 12px;"><span style="flex:none; width:34px; height:34px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:14px; background:{{ ld.tint }};">{{ ld.emoji }}</span><div style="flex:1; min-width:0;"><div style="font-size:13.5px; font-weight:600;">{{ ld.name }}</div><div style="font-size:11.5px; color:#94a3b8;">{{ ld.note }}</div></div><button onClick="{{ ld.add }}" style="cursor:pointer; font-family:inherit; flex:none; border:1px solid rgba(14,139,160,.3); background:rgba(14,139,160,.08); color:#0b7688; border-radius:9px; padding:6px 11px; font-size:12px; font-weight:600;">הוסף ל‑CRM</button></div></sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:12px 16px 0;">
+          <sc-for list="{{ quickActions }}" as="q" hint-placeholder-count="3"><button class="qa" onClick="{{ q.onClick }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.14); background:#fff; border-radius:999px; padding:7px 13px; font-size:12.5px; font-weight:600; color:#0f172a; transition:background .15s ease;"><span style="color:#0e8ba0;">+</span>{{ q.label }}</button></sc-for>
+        </div>
+        <div style="padding:12px 16px 14px;">
+          <form onSubmit="{{ onSend }}" style="display:flex; align-items:center; gap:8px; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:14px; padding:9px 12px;">
+            <input value="{{ input }}" onInput="{{ onInput }}" placeholder="{{ inputPlaceholder }}" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+            <button type="submit" aria-label="שליחה" style="border:none; border-radius:10px; background:#0e8ba0; padding:9px; cursor:pointer; display:flex;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PROFILE DRAWER -->
+  <sc-if value="{{ profileOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeProfile }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(460px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="padding:22px; border-bottom:1px solid rgba(15,23,42,.08); display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div style="display:flex; align-items:center; gap:13px;"><span style="flex:none; width:52px; height:52px; border-radius:15px; display:flex; align-items:center; justify-content:center; color:#fff; background:{{ prof.tint }};"><span dangerouslySetInnerHTML="{{ prof.icon }}"></span></span><div><div style="font-size:18px; font-weight:600;">{{ prof.name }}</div><div style="display:flex; align-items:center; gap:6px; margin-top:2px;"><span style="{{ prof.dotStyle }}"></span><span style="font-size:12.5px; color:{{ prof.dotColor }};">{{ prof.stateLabel }}</span></div></div></div>
+        <button onClick="{{ closeProfile }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:22px;" class="scrollbar-hide">
+        <p style="margin:0 0 20px; font-size:14px; color:#55627a; line-height:1.65;">{{ prof.bio }}</p>
+        <!-- stats -->
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;">
+          <sc-for list="{{ prof.stats }}" as="s" hint-placeholder-count="3"><div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:12px; text-align:center;"><div style="font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:600; color:#0f172a;" class="tabular-nums">{{ s.value }}</div><div style="font-size:11px; color:#94a3b8; margin-top:2px;">{{ s.label }}</div></div></sc-for>
+        </div>
+        <!-- capabilities -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">יכולות</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px;"><sc-for list="{{ prof.caps }}" as="c" hint-placeholder-count="3"><span style="border:1px solid rgba(14,139,160,.25); background:rgba(14,139,160,.06); color:#0b7688; border-radius:999px; padding:5px 11px; font-size:12px; font-weight:600;">{{ c }}</span></sc-for></div>
+        <!-- daily tasks -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">משימות היום</div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:18px;"><sc-for list="{{ prof.daily }}" as="t" hint-placeholder-count="3"><div style="display:flex; align-items:center; gap:10px; padding:7px 2px; font-size:13.5px;"><span style="{{ t.box }}"><sc-if value="{{ t.done }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></sc-if></span><span style="{{ t.textStyle }}">{{ t.label }}</span></div></sc-for></div>
+        <!-- weekly tasks -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">משימות השבוע</div>
+        <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:18px;"><sc-for list="{{ prof.weekly }}" as="t" hint-placeholder-count="2"><div style="display:flex; align-items:center; gap:10px; padding:7px 2px; font-size:13.5px;"><span style="{{ t.box }}"><sc-if value="{{ t.done }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></sc-if></span><span style="{{ t.textStyle }}">{{ t.label }}</span></div></sc-for></div>
+        <!-- recurring tasks -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">משימות קבועות</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+          <sc-for list="{{ prof.recurring }}" as="t" hint-placeholder-count="2"><div style="display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); border-radius:11px; padding:10px 12px;"><svg viewBox="0 0 24 24" fill="none" stroke="#0e8ba0" stroke-width="1.6" width="16" height="16" style="flex:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><div style="flex:1;"><div style="font-size:13px; font-weight:600;">{{ t.label }}</div><div style="font-size:11.5px; color:#94a3b8;">{{ t.freq }}</div></div><button onClick="{{ t.remove }}" aria-label="הסר" style="cursor:pointer; border:none; background:none; color:#94a3b8;">✕</button></div></sc-for>
+        </div>
+        <form onSubmit="{{ onAddTask }}" style="display:flex; gap:8px; margin-bottom:22px;"><input value="{{ taskInput }}" onInput="{{ onTaskInput }}" placeholder="הוסף משימה קבועה…" style="flex:1; border:1px solid rgba(15,23,42,.16); border-radius:10px; padding:9px 12px; font-family:inherit; font-size:13px; outline:none;"><button type="submit" style="cursor:pointer; font-family:inherit; border:none; border-radius:10px; background:#0e8ba0; color:#fff; padding:9px 14px; font-size:13px; font-weight:600;">הוסף</button></form>
+        <!-- settings -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">הגדרות</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">טון הדיבור</span><select value="{{ prof.tone }}" onChange="{{ onTone }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; color:#0f172a; background:#fff; outline:none; box-sizing:border-box;"><sc-for list="{{ toneOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+          <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">שעות פעילות</span><select value="{{ prof.hours }}" onChange="{{ onHours }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; color:#0f172a; background:#fff; outline:none; box-sizing:border-box;"><sc-for list="{{ hoursOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select></label>
+          <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:12px 14px;"><div><div style="font-size:13.5px; font-weight:600;">מענה אוטומטי</div><div style="font-size:12px; color:#94a3b8;">הסוכן עונה ללקוחות ללא אישור</div></div><button onClick="{{ onAutoToggle }}" role="switch" style="{{ prof.autoTrack }}"><span style="{{ prof.autoKnob }}"></span></button></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(15,23,42,.08); padding:16px 22px;"><button onClick="{{ prof.onToggleAgent }}" style="{{ prof.mainBtnStyle }}">{{ prof.mainBtnLabel }}</button></div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}"><div style="position:fixed; bottom:28px; inset-inline-start:50%; transform:translateX(50%); z-index:80; background:#0f172a; color:#fff; border-radius:12px; padding:12px 20px; font-size:14px; box-shadow:0 12px 32px rgba(15,23,42,.28); animation:dash-fade .25s ease both;">{{ toast }}</div></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { nav:[], active:'whatsapp', input:'', convs:null, activeConv:null, enabled:null, settings:null, tasks:null, profileOpen:false, taskInput:'', toast:'', typing:{} };
+
+  _icon(p,w){ return { __html:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="${w||22}" height="${w||22}">${p}</svg>` }; }
+
+  _defs(){
+    return {
+      whatsapp:{ name:'סוכן וואטסאפ', cap:'שירות, תזכורות וקמפיינים בוואטסאפ', tint:'#12805c',
+        iconP:'<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>',
+        bio:'עונה ללקוחות בוואטסאפ 24/7, קובע תורים, שולח תזכורות ומריץ קמפיינים — בקול של העסק שלך.',
+        stats:[['142','שיחות היום'],['38','נענו לבד'],['96%','שביעות רצון']],
+        caps:['מענה אוטומטי','תזכורות תורים','קמפיינים','העברת לידים'],
+        daily:[['לענות לכל הפניות החדשות',true],['לשלוח תזכורות תור למחר',true],['להעביר לידים חמים ל‑CRM',false]],
+        weekly:[['לסכם שיחות השבוע לדוח',false],['לזהות לקוחות לא פעילים',false]],
+        recurring:[['תזכורת תור 24 שעות מראש','כל יום · 09:00'],['בקשת חוות דעת אחרי שירות','אוטומטי · בסיום']] },
+      video:{ name:'סוכן יצירת וידאו', cap:'סרטוני מוצר ופרסום, אוטומטית', tint:'#7c6cf0',
+        iconP:'<path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h8.25a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H4.5A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/>',
+        bio:'מפיק סרטוני מוצר, רילים ופרסומות מוכנים לפרסום — מהתסריט ועד העריכה, בהתאמה למותג.',
+        stats:[['3','סרטונים החודש'],['12.4K','צפיות'],['0:30','אורך ממוצע']],
+        caps:['סרטוני מוצר','רילים','כתוביות בעברית','מוזיקה'],
+        daily:[['לבדוק טרנדים רלוונטיים',true],['להכין טיוטת ריל יומי',false]],
+        weekly:[['להפיק 2 סרטוני מוצר',false],['לנתח ביצועי סרטונים',false]],
+        recurring:[['ריל טרנד שבועי','כל יום ראשון'],['סרטון מבצע חודשי','1 בחודש']] },
+      social:{ name:'סוכן רשתות ולידים', cap:'סריקת רשתות ואיתור לידים', tint:'#0e8ba0',
+        iconP:'<path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8"/>',
+        bio:'סורק אינסטגרם, פייסבוק וגוגל, מאתר לידים חמים, עונה לתגובות ומכין דוחות חשיפה.',
+        stats:[['12','לידים חדשים'],['+18%','חשיפה'],['3','אזכורים']],
+        caps:['איתור לידים','מענה לתגובות','ניטור אזכורים','דוחות'],
+        daily:[['לסרוק פניות חדשות ברשתות',true],['לענות לתגובות ממתינות',true],['לדרג לידים חדשים',false]],
+        weekly:[['להכין דוח חשיפה שבועי',false],['לזהות מגמות בקהל',false]],
+        recurring:[['דוח לידים שבועי','כל יום ה׳'],['ניטור אזכורי מותג','שוטף · 24/7']] },
+      content:{ name:'סוכן תוכן', cap:'כתיבת פוסטים, מיילים וניוזלטרים', tint:'#b26a00',
+        iconP:'<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>',
+        bio:'כותב פוסטים, מיילים וניוזלטרים בקול של המותג, מציע לוח תוכן ומעביר לאישור לפני פרסום.',
+        stats:[['2','טיוטות מוכנות'],['8','פוסטים החודש'],['1.2K','נמענים']],
+        caps:['פוסטים','ניוזלטרים','מיילים','לוח תוכן'],
+        daily:[['להכין טיוטת פוסט יומי',true],['לבדוק ביצועי תוכן אתמול',false]],
+        weekly:[['לתכנן לוח תוכן שבועי',false],['לנסח ניוזלטר',false]],
+        recurring:[['ניוזלטר שבועי','כל יום א׳'],['פוסט טיפ שבועי','כל יום ג׳']] },
+    };
+  }
+
+  _seedConvs(){
+    return {
+      whatsapp:[
+        { id:'w1', title:'שיחה נוכחית', msgs:[
+          {role:'agent',type:'text',text:'בוקר טוב ישראל 👋 אני סוכן הוואטסאפ — עונה ללקוחות 24/7, שולח תזכורות ומריץ קמפיינים. מה נעשה היום?'},
+          {role:'agent',type:'approval',body:'לקוח (מוסך דהן) שאל אם יש מבצע החודש. ניסחתי מענה — לאשר שליחה?',preview:'שלום! החודש יש 15% הנחה על טיפול תקופתי 🚗 אפשר לקבוע תור ישירות כאן. נשמח לראותך!'},
+        ]},
+        { id:'w2', title:'קמפיין קיץ (אתמול)', msgs:[
+          {role:'user',type:'text',text:'תכין קמפיין למבצע קיץ'},
+          {role:'agent',type:'text',text:'הכנתי קמפיין קיץ ושלחתי ל‑412 לקוחות אתמול. שיעור פתיחה: 68%, 23 הזמנות תור. רוצה סבב המשך?'},
+        ]},
+      ],
+      video:[{ id:'v1', title:'שיחה נוכחית', msgs:[{role:'agent',type:'text',text:'היי 🎬 אני סוכן יצירת הווידאו. תן לי מוצר, מבצע או רעיון — ואחזיר סרטון מוכן לפרסום.'}]}],
+      social:[{ id:'s1', title:'שיחה נוכחית', msgs:[{role:'agent',type:'text',text:'שלום ישראל 🎯 אני סוכן הרשתות והלידים. אני סורק אינסטגרם, פייסבוק וגוגל, מאתר לידים חמים ומכין דוחות. מה לבדוק?'}]}],
+      content:[{ id:'c1', title:'שיחה נוכחית', msgs:[{role:'agent',type:'text',text:'היי ✍️ אני סוכן התוכן. אני כותב פוסטים, מיילים וניוזלטרים בקול של המותג שלך. מה נכתוב היום?'}]}],
+    };
+  }
+
+  _actionDefs(){
+    return {
+      whatsapp:[
+        { label:'שלח קמפיין ללקוחות', resp:{role:'agent',type:'campaign',title:'קמפיין וואטסאפ מוכן לשליחה',preview:'היי {שם}, מזמינים אותך למבצע הקיץ שלנו — 20% הנחה על כל השירותים עד סוף החודש ☀️ להזמנה מהירה השב/י כאן.',audience:'412 לקוחות פעילים',timing:'שליחה מיידית'} },
+        { label:'נסח הודעת קידום', resp:{role:'agent',type:'text',text:'הנה טיוטה: ״תודה שאתם איתנו! 🎁 כלקוחות מועדפים מגיעה לכם הטבה — 15% על ההזמנה הבאה. רק להשיב ״מעוניין״.״ רוצה שאתאים את הטון?'} },
+        { label:'סכם שיחות היום', resp:{role:'agent',type:'text',text:'סיכום היום: 142 שיחות · 38 נענו אוטומטית · 12 לידים חדשים הועברו ל‑CRM · 4 בקשות לתור נקבעו.'} },
+      ],
+      video:[
+        { label:'צור סרטון מוצר', resp:{role:'agent',type:'video',title:'סרטון מוצר — טיוטה',duration:'0:30',meta:'פורמט אנכי 9:16 · מוזיקה רגועה · כתוביות בעברית'} },
+        { label:'רעיון לפרסומת', resp:{role:'agent',type:'text',text:'3 רעיונות:\n1. ״לפני ואחרי״.\n2. עדות לקוח ב‑15 שניות.\n3. טיפ מקצועי מהיר.\nלהפיק אחד?'} },
+        { label:'ריל לאינסטגרם', resp:{role:'agent',type:'video',title:'ריל לאינסטגרם — טיוטה',duration:'0:15',meta:'פורמט 9:16 · טרנד נוכחי · קריאה לפעולה'} },
+      ],
+      social:[
+        { label:'מצא לידים חדשים', resp:{role:'agent',type:'leads',title:'3 לידים חמים אותרו',leads:[
+          {emoji:'📸',tint:'rgba(124,108,240,.14)',name:'דנה — אינסטגרם',note:'הגיבה ״מעוניינת במחיר״'},
+          {emoji:'👍',tint:'rgba(22,102,168,.14)',name:'אולם ״גן ורדים״ — פייסבוק',note:'חיפש שירות באזור'},
+          {emoji:'🔍',tint:'rgba(14,139,160,.12)',name:'רן לוי — גוגל',note:'לחץ על מודעה'},
+        ]} },
+        { label:'בדוק אזכורים ברשתות', resp:{role:'agent',type:'text',text:'סרקתי 24 שעות: 3 אזכורים חיוביים, תגובה אחת שדורשת מענה, ועלייה של 18% בחשיפה. להכין תגובה?'} },
+        { label:'דוח שבועי', resp:{role:'agent',type:'text',text:'דוח שבועי 📊 חשיפה +22% · 47 לידים · 3 קמפיינים פעילים. שלחתי גרסה מלאה לוואטסאפ.'} },
+      ],
+      content:[
+        { label:'כתוב פוסט', resp:{role:'agent',type:'approval',body:'הכנתי פוסט לאינסטגרם על מבצע הקיץ — לאשר פרסום?',preview:'☀️ קיץ = הזמן לפנק את העסק! החודש: 20% הנחה על כל החבילות. תייגו חבר 👇 #EasyLife'} },
+        { label:'נסח ניוזלטר', resp:{role:'agent',type:'text',text:'טיוטת ניוזלטר 📧 נושא: ״3 דברים שקרו החודש בעסק שלך״. לשלוח ל‑1,240 נמענים?'} },
+        { label:'רעיונות לתוכן שבועי', resp:{role:'agent',type:'text',text:'לוח תוכן:\nא׳ — טיפ מקצועי.\nג׳ — עדות לקוח.\nה׳ — מאחורי הקלעים.\nלהפוך אחד לפוסט?'} },
+      ],
+    };
+  }
+
+  _toast(m){ this.setState({toast:m}); clearTimeout(this._tt); this._tt=setTimeout(()=>this.setState({toast:''}),2400); }
+  _convs(){ return this.state.convs||this._seedConvs(); }
+  _enabled(){ return this.state.enabled||{whatsapp:true,video:true,social:true,content:false}; }
+  _settings(){ return this.state.settings||{whatsapp:{tone:'ידידותי',hours:'24/7',auto:true},video:{tone:'מקצועי',hours:'שעות עבודה',auto:false},social:{tone:'ידידותי',hours:'24/7',auto:true},content:{tone:'שיווקי',hours:'שעות עבודה',auto:false}}; }
+  _tasks(){ if(this.state.tasks) return this.state.tasks; const d=this._defs(); const o={}; Object.keys(d).forEach(k=>o[k]={recurring:d[k].recurring.map(r=>({label:r[0],freq:r[1]}))}); return o; }
+
+  _append(key,convId,msg){
+    this.setState(s=>{ const c={...(s.convs||this._seedConvs())}; const arr=c[key].map(cv=>cv.id===convId?{...cv,msgs:[...cv.msgs,msg]}:cv); c[key]=arr; return {convs:c}; });
+    setTimeout(()=>{ if(this.chat) this.chat.scrollTo({top:this.chat.scrollHeight,behavior:'smooth'}); },60);
+  }
+  _agentReply(key,convId,resp){
+    // typing indicator then reply
+    this.setState(s=>({typing:{...s.typing,[key+convId]:true}}));
+    setTimeout(()=>{ if(this.chat) this.chat.scrollTo({top:this.chat.scrollHeight,behavior:'smooth'}); },60);
+    setTimeout(()=>{ this.setState(s=>({typing:{...s.typing,[key+convId]:false}})); this._append(key,convId,resp); },900);
+  }
+
+  renderVals(){
+    const defs=this._defs(), convs=this._convs(), enabled=this._enabled(), settings=this._settings(), tasks=this._tasks();
+    const keys=['whatsapp','video','social','content'];
+    const key=this.state.active;
+
+    // switch
+    const sw=(on)=>({ track:'cursor:pointer; flex:none; position:relative; width:38px; height:22px; border-radius:999px; border:none; padding:0; '+(on?'background:#0e8ba0;':'background:#cbd5e1;'), knob:'position:absolute; top:3px; '+(on?'inset-inline-start:3px;':'inset-inline-start:19px;')+' width:16px; height:16px; border-radius:999px; background:#fff; box-shadow:0 1px 2px rgba(15,23,42,.2);' });
+
+    // agent list
+    const rowBase='display:flex; gap:12px; padding:14px 16px; cursor:pointer; border-bottom:1px solid rgba(15,23,42,.06); align-items:center; transition:background .15s ease;';
+    const agents=keys.map(k=>{ const d=defs[k], sel=k===this.state.active, on=!!enabled[k]; const s=sw(on);
+      return { name:d.name, tint:d.tint, icon:this._icon(d.iconP,22), on, statusText:on?d.cap:'כבוי',
+        avaDim:on?'':'opacity:.5;', track:s.track, knob:s.knob,
+        rowStyle:rowBase+(sel?'background:rgba(14,139,160,.08); box-shadow:inset 3px 0 0 #0e8ba0;':'background:#fff;'),
+        onSelect:()=>this.setState({active:k}),
+        toggle:(e)=>{ e.stopPropagation(); const en={...enabled,[k]:!on}; this.setState({enabled:en}); this._toast(d.name+(on?' כובה':' הופעל')); } }; });
+    const activeCount=keys.filter(k=>enabled[k]).length;
+
+    const d=defs[key];
+    const activeOut={name:d.name,cap:d.cap,tint:d.tint,icon:this._icon(d.iconP,22)};
+
+    // conversations
+    const convList=convs[key];
+    let activeConvId=(this.state.activeConv&&this.state.activeConv[key])||convList[0].id;
+    const convOptions=convList.map(c=>({id:c.id,title:c.title}));
+    const conv=convList.find(c=>c.id===activeConvId)||convList[0];
+
+    // messages
+    const agentText='max-width:88%; align-self:flex-start; background:#fff; border:1px solid rgba(15,23,42,.08); border-radius:16px 16px 16px 5px; padding:11px 14px; font-size:14px; line-height:1.6; color:#0f172a; box-shadow:0 1px 2px rgba(15,23,42,.04); white-space:pre-line;';
+    const userText='max-width:88%; align-self:flex-end; background:#0e8ba0; border-radius:16px 16px 5px 16px; padding:11px 14px; font-size:14px; line-height:1.6; color:#fff; white-space:pre-line;';
+    const wrapStart='display:flex; justify-content:flex-start;', wrapEnd='display:flex; justify-content:flex-end;';
+    const confirm=(text)=>this._agentReply(key,activeConvId,{role:'agent',type:'text',text});
+    const messages=conv.msgs.map(m=>{ const o={isText:m.type==='text',isApproval:m.type==='approval',isCampaign:m.type==='campaign',isVideo:m.type==='video',isLeads:m.type==='leads',isTyping:false,wrap:m.role==='user'?wrapEnd:wrapStart};
+      if(m.type==='text'){o.text=m.text;o.bubble=m.role==='user'?userText:agentText;}
+      else if(m.type==='approval'){o.body=m.body;o.preview=m.preview;o.approve=()=>confirm('מצוין — ההודעה נשלחה ללקוח ✓');o.reject=()=>confirm('בסדר, לא שלחתי. רוצה שאנסח מחדש?');}
+      else if(m.type==='campaign'){o.title=m.title;o.preview=m.preview;o.audience=m.audience;o.timing=m.timing;o.approve=()=>confirm('הקמפיין יצא לדרך 🚀 נשלח ל‑412 לקוחות.');o.reject=()=>confirm('פתחתי לעריכה — מה לשנות?');}
+      else if(m.type==='video'){o.title=m.title;o.duration=m.duration;o.meta=m.meta;o.approve=()=>confirm('הסרטון אושר ופורסם ✓');o.reject=()=>confirm('מכין גרסה נוספת…');}
+      else if(m.type==='leads'){o.title=m.title;o.leads=(m.leads||[]).map(ld=>({...ld,add:()=>confirm(ld.name+' נוסף ל‑CRM ✓')}));}
+      return o; });
+    if(this.state.typing[key+activeConvId]) messages.push({isTyping:true,isText:false,isApproval:false,isCampaign:false,isVideo:false,isLeads:false,wrap:wrapStart});
+
+    const acts=this._actionDefs()[key];
+    const quickActions=acts.map(a=>({label:a.label,onClick:()=>{ this._append(key,activeConvId,{role:'user',type:'text',text:a.label}); this._agentReply(key,activeConvId,a.resp); }}));
+    const placeholders={whatsapp:'בקש מהסוכן לנסח או לשלוח הודעה…',video:'תאר את הסרטון שתרצה…',social:'בקש מחקר, לידים או דוח…',content:'בקש פוסט, מייל או ניוזלטר…'};
+
+    // profile drawer
+    const st=settings[key], on=!!enabled[key];
+    const autoSw=sw(st.auto);
+    const boxOf=(done)=>'flex:none; width:19px; height:19px; border-radius:6px; display:flex; align-items:center; justify-content:center; '+(done?'background:#0e8ba0; border:1px solid #0e8ba0;':'background:#fff; border:1.5px solid rgba(15,23,42,.2);');
+    const prof={
+      name:d.name, tint:d.tint, icon:this._icon(d.iconP,26), bio:d.bio,
+      dotStyle:'width:8px; height:8px; border-radius:999px; background:'+(on?'#12805c':'#cbd5e1')+';', dotColor:on?'#12805c':'#94a3b8', stateLabel:on?'פעיל':'כבוי',
+      stats:d.stats.map(s=>({value:s[0],label:s[1]})), caps:d.caps,
+      daily:d.daily.map(t=>({label:t[0],done:t[1],box:boxOf(t[1]),textStyle:t[1]?'color:#94a3b8; text-decoration:line-through;':'color:#0f172a;'})),
+      weekly:d.weekly.map(t=>({label:t[0],done:t[1],box:boxOf(t[1]),textStyle:t[1]?'color:#94a3b8; text-decoration:line-through;':'color:#0f172a;'})),
+      recurring:tasks[key].recurring.map((t,i)=>({label:t.label,freq:t.freq,remove:()=>{ const tk={...tasks}; tk[key]={recurring:tk[key].recurring.filter((_,j)=>j!==i)}; this.setState({tasks:tk}); }})),
+      tone:st.tone, hours:st.hours, autoTrack:autoSw.track, autoKnob:autoSw.knob,
+      onToggleAgent:()=>{ const en={...enabled,[key]:!on}; this.setState({enabled:en}); this._toast(d.name+(on?' כובה':' הופעל')); },
+      mainBtnLabel:on?'כיבוי הסוכן':'הפעלת הסוכן',
+      mainBtnStyle:'cursor:pointer; font-family:inherit; width:100%; border-radius:12px; padding:12px; font-size:14px; font-weight:600; '+(on?'border:1px solid rgba(209,69,59,.3); background:rgba(209,69,59,.09); color:#d1453b;':'border:none; background:#0e8ba0; color:#fff;'),
+    };
+
+    return {
+      navItems:this.state.nav, agents, activeCount, active:activeOut, messages, quickActions,
+      convOptions, activeConvId, onConvChange:(e)=>this.setState(s=>({activeConv:{...(s.activeConv||{}),[key]:e.target.value}})),
+      input:this.state.input, inputPlaceholder:placeholders[key],
+      rootRef:(el)=>{this.root=el;}, chatRef:(el)=>{this.chat=el;},
+      onInput:(e)=>this.setState({input:e.target.value}),
+      onSend:(e)=>{ e.preventDefault(); const q=this.state.input.trim(); if(!q) return; this.setState({input:''}); this._append(key,activeConvId,{role:'user',type:'text',text:q}); this._agentReply(key,activeConvId,{role:'agent',type:'text',text:'קיבלתי 👍 אני מטפל בזה ואחזור עם תוצאה. אפשר גם לבחור פעולה מהירה מלמעלה.'}); },
+      profileOpen:this.state.profileOpen, prof, openProfile:()=>this.setState({profileOpen:true}), closeProfile:()=>this.setState({profileOpen:false}),
+      toneOptions:['ידידותי','מקצועי','שיווקי','רשמי'], hoursOptions:['24/7','שעות עבודה','09:00–18:00','בהתאמה אישית'],
+      onTone:(e)=>{ const s={...settings,[key]:{...st,tone:e.target.value}}; this.setState({settings:s}); },
+      onHours:(e)=>{ const s={...settings,[key]:{...st,hours:e.target.value}}; this.setState({settings:s}); },
+      onAutoToggle:()=>{ const s={...settings,[key]:{...st,auto:!st.auto}}; this.setState({settings:s}); },
+      taskInput:this.state.taskInput, onTaskInput:(e)=>this.setState({taskInput:e.target.value}),
+      onAddTask:(e)=>{ e.preventDefault(); const v=this.state.taskInput.trim(); if(!v) return; const tk={...tasks}; tk[key]={recurring:[...tk[key].recurring,{label:v,freq:'מותאם אישית'}]}; this.setState({tasks:tk,taskInput:''}); this._toast('משימה קבועה נוספה'); },
+      toast:this.state.toast,
+    };
+  }
+
+  componentDidMount(){
+    this.setState({convs:this._seedConvs(),enabled:{whatsapp:true,video:true,social:true,content:false},settings:this._settings(),tasks:this._tasks()});
+    import('./crmChrome.js').then(m=>this.setState({nav:m.navItems('סוכנים')}));
+  }
+  componentWillUnmount(){ clearTimeout(this._tt); }
+}
+</script>
+</body>
+</html>

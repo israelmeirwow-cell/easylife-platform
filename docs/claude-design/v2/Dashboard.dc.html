@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+@media (max-width:960px){ .r-main{padding-inline:18px !important;} .r-4{grid-template-columns:repeat(2,1fr) !important;} .r-32{grid-template-columns:1fr !important;} }
+@media (max-width:760px){ .r-2{grid-template-columns:1fr !important;} .r-3{grid-template-columns:1fr !important;} .r-main{padding-inline:14px !important;} .r-kanban{grid-template-columns:repeat(2,minmax(220px,1fr)) !important;} }
+@media (max-width:520px){ .r-4{grid-template-columns:1fr !important;} .r-kanban{grid-template-columns:1fr !important;} }
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .kcard { cursor:grab; transition:transform .12s ease, box-shadow .12s ease; }
+  .kcard:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(15,23,42,.12); }
+  .kcard:active { cursor:grabbing; }
+  .kcol.drag-over { background:rgba(14,139,160,.08); outline:2px dashed rgba(14,139,160,.4); }
+  @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+  @keyframes dash-fade { from { opacity:0; } to { opacity:1; } }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+
+  <!-- ===== TOP NAV ===== -->
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button onClick="{{ toggleNotif }}" style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ true }}"><span style="position:absolute; top:5px; inset-inline-end:5px; min-width:15px; height:15px; padding:0 3px; border-radius:999px; background:#d1453b; color:#fff; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; box-sizing:border-box;">{{ unreadCount }}</span></sc-if>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <!-- ===== BODY ===== -->
+  <main class="r-main" style="max-width:1400px; margin:0 auto; padding:28px 28px 56px;">
+
+    <!-- greeting + period -->
+    <div style="margin-bottom:22px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;">
+      <div>
+        <h1 style="margin:0; font-size:22px; font-weight:600; letter-spacing:-.01em;">{{ greeting }}, ישראל</h1>
+        <p style="margin:6px 0 0; font-size:14px; color:#55627a;">הנה מה שקורה בעסק שלך {{ periodLabel }} — כל הסוכנים מחוברים למוח אחד.</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="display:inline-flex; align-items:center; gap:3px; background:#eef2f7; border-radius:11px; padding:4px;">
+          <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+          </sc-for>
+        </div>
+        <span style="display:flex; align-items:center; gap:8px; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:999px; padding:7px 14px; font-size:12.5px; box-shadow:0 1px 2px rgba(15,23,42,.04);">
+          <span style="width:8px; height:8px; border-radius:999px; background:#12805c;" class="animate-pulse-dot"></span><span style="color:#55627a;">מוח מרכזי</span><span style="font-weight:600; color:#12805c;">מחובר</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="r-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div class="glass-card" style="padding:18px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#55627a;"><span style="color:#0e8ba0;" dangerouslySetInnerHTML="{{ k.icon }}"></span>{{ k.label }}</div>
+            <span style="display:inline-flex; align-items:center; gap:2px; font-size:11px; font-weight:600; color:{{ k.deltaColor }};">{{ k.delta }}</span>
+          </div>
+          <div style="margin-top:10px; font-size:28px; font-weight:600; letter-spacing:-.01em;" class="tabular-nums"><span style="font-size:15px; color:#55627a; margin-inline-end:2px;">{{ k.prefix }}</span><span data-countup data-to="{{ k.value }}" data-suffix="{{ k.suffix }}">0</span></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- needs attention -->
+    <div style="margin-top:24px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+        <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase;">דורש את תשומת לבך</div>
+        <span style="font-size:11.5px; color:#94a3b8;">{{ attentionTotal }} פריטים</span>
+      </div>
+      <div class="r-3" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+        <sc-for list="{{ attention }}" as="a" hint-placeholder-count="3">
+          <a href="{{ a.href }}" class="glass-card" style="display:block; padding:18px; border-inline-start:3px solid {{ a.color }};">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="flex:none; width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:{{ a.tint }}; color:{{ a.color }};"><span dangerouslySetInnerHTML="{{ a.icon }}"></span></span>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; align-items:baseline; gap:6px;"><span style="font-size:22px; font-weight:600; color:#0f172a;" class="tabular-nums">{{ a.count }}</span><span style="font-size:13.5px; font-weight:600; color:#0f172a;">{{ a.title }}</span></div>
+                <div style="font-size:12px; color:#55627a; margin-top:1px;">{{ a.sub }}</div>
+              </div>
+              <span style="flex:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg></span>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- pipeline kanban -->
+    <div class="glass-card" style="margin-top:24px; padding:22px;">
+      <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:18px;">
+        <div>
+          <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase;">צינור מכירות</div>
+          <div style="margin-top:4px; font-size:18px; font-weight:600; font-family:'Space Grotesk',sans-serif;">גררו עסקאות בין שלבים · <span class="text-gradient">{{ pipelineTotal }}</span></div>
+        </div>
+        <span style="border:1px solid rgba(15,23,42,.16); background:rgba(14,139,160,.1); color:#0b7688; border-radius:999px; padding:4px 11px; font-size:11px; font-weight:600;">חי</span>
+      </div>
+      <div class="r-kanban" style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-items:start;">
+        <sc-for list="{{ stagesView }}" as="col" hint-placeholder-count="4">
+          <div class="kcol" ref="{{ col.ref }}" onDragOver="{{ col.onDragOver }}" onDragLeave="{{ col.onDragLeave }}" onDrop="{{ col.onDrop }}" style="border-radius:14px; background:#f8fafc; border:1px solid rgba(15,23,42,.06); padding:12px; min-height:120px; transition:background .15s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding:0 2px;">
+              <div style="display:flex; align-items:center; gap:7px;"><span style="width:8px; height:8px; border-radius:999px; background:{{ col.tint }};"></span><span style="font-size:13px; font-weight:600;">{{ col.label }}</span></div>
+              <span style="font-size:11px; color:#94a3b8;" class="tabular-nums">{{ col.count }} · {{ col.sumLabel }}</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <sc-for list="{{ col.deals }}" as="d" hint-placeholder-count="2">
+                <div class="kcard" draggable="true" onDragStart="{{ d.onDragStart }}" onDragEnd="{{ d.onDragEnd }}" onClick="{{ d.onOpen }}" style="background:#fff; border:1px solid rgba(15,23,42,.08); border-top:2px solid {{ col.tint }}; border-radius:11px; padding:12px;">
+                  <div style="font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ d.account }}</div>
+                  <div style="margin-top:3px; font-size:13px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ d.title }}</div>
+                  <div style="margin-top:10px; display:flex; align-items:center; justify-content:space-between;">
+                    <span style="font-size:13px; font-weight:600; color:#0b7688;" class="tabular-nums">{{ d.valueLabel }}</span>
+                    <span style="width:24px; height:24px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; background:{{ d.avatarBg }};">{{ d.owner }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- revenue chart + goal -->
+    <div class="r-32" style="margin-top:16px; display:grid; grid-template-columns:2fr 1fr; gap:16px; align-items:stretch;">
+      <div class="glass-card" style="padding:22px;">
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:8px;">
+          <div><div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase;">הכנסות</div><div style="margin-top:4px; font-size:18px; font-weight:600; font-family:'Space Grotesk',sans-serif;" class="tabular-nums">{{ revHeadValue }}</div></div>
+          <div style="font-size:12px; color:#94a3b8;">{{ revHeadDate }}</div>
+        </div>
+        <div ref="{{ chartRef }}" onMouseMove="{{ onChartMove }}" onMouseLeave="{{ onChartLeave }}" style="position:relative; cursor:crosshair;">
+          <svg viewBox="0 0 800 220" style="width:100%; display:block;">
+            <defs><linearGradient id="rev-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0e8ba0" stop-opacity="0.24"/><stop offset="100%" stop-color="#0e8ba0" stop-opacity="0"/></linearGradient></defs>
+            <sc-for list="{{ revGrid }}" as="g" hint-placeholder-count="4"><line x1="0" y1="{{ g.y }}" x2="800" y2="{{ g.y }}" stroke="rgba(15,23,42,.07)" stroke-width="1"></line></sc-for>
+            <path d="{{ revArea }}" fill="url(#rev-fill)"></path>
+            <path d="{{ revLine }}" fill="none" stroke="#0e8ba0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+            <sc-if value="{{ revHover }}" hint-placeholder-val="{{ false }}"><line x1="{{ revHoverX }}" y1="6" x2="{{ revHoverX }}" y2="206" stroke="#0e8ba0" stroke-width="1.1" stroke-dasharray="4 4"></line></sc-if>
+          </svg>
+          <sc-for list="{{ revGrid }}" as="g" hint-placeholder-count="4"><span style="position:absolute; top:{{ g.top }}; inset-inline-end:2px; transform:translateY(-50%); font-size:10px; color:#94a3b8; background:rgba(255,255,255,.85); padding:0 4px; border-radius:4px;" class="tabular-nums">{{ g.label }}</span></sc-for>
+          <sc-if value="{{ revHover }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute; left:{{ revHoverLeft }}; top:{{ revHoverTop }}; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:999px; background:#0e8ba0; border:2.5px solid #fff; box-shadow:0 1px 5px rgba(14,139,160,.5); pointer-events:none;"></span>
+            <div style="position:absolute; left:{{ revHoverLeft }}; top:{{ revHoverTop }}; transform:translate(-50%,calc(-100% - 14px)); background:#0f172a; color:#fff; border-radius:9px; padding:6px 11px; font-size:12px; font-weight:600; white-space:nowrap; pointer-events:none;" class="tabular-nums">{{ revHoverValue }}<span style="opacity:.7; font-weight:400; margin-inline-start:6px;">{{ revHoverLabel }}</span></div>
+          </sc-if>
+        </div>
+        <div dir="ltr" style="display:flex; justify-content:space-between; padding:0 4px; margin-top:8px; font-size:11px; color:#94a3b8;"><sc-for list="{{ revXLabels }}" as="x" hint-placeholder-count="4"><span>{{ x }}</span></sc-for></div>
+      </div>
+      <div class="glass-card" style="padding:22px; display:flex; flex-direction:column;">
+        <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase;">יעד חודשי</div>
+        <div style="display:flex; align-items:center; justify-content:center; margin:14px 0 6px;">
+          <div style="position:relative; width:150px; height:150px;">
+            <svg viewBox="0 0 120 120" style="width:100%; height:100%; transform:rotate(-90deg);">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#eef2f7" stroke-width="12"></circle>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#0e8ba0" stroke-width="12" stroke-linecap="round" stroke-dasharray="{{ goalDash }}" stroke-dashoffset="{{ goalOffset }}" style="transition:stroke-dashoffset 1s cubic-bezier(.22,1,.36,1);"></circle>
+            </svg>
+            <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+              <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:600; color:#0f172a;" class="tabular-nums">{{ goalPct }}%</div>
+              <div style="font-size:11px; color:#94a3b8;">מהיעד</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:13px; color:#55627a;">נסגר <b style="color:#0f172a;" class="tabular-nums">{{ goalCurrent }}</b> מתוך <b style="color:#0f172a;" class="tabular-nums">{{ goalTarget }}</b></div>
+        <div style="margin-top:14px; border-top:1px solid rgba(15,23,42,.08); padding-top:14px; display:flex; flex-direction:column; gap:9px;">
+          <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="3">
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:12px; margin-bottom:4px;"><span style="color:#55627a;">{{ f.label }}</span><span style="color:#0f172a; font-weight:600;" class="tabular-nums">{{ f.value }}</span></div>
+              <div style="height:6px; border-radius:999px; background:#f1f5f9; overflow:hidden;"><div style="width:{{ f.pct }}; height:100%; border-radius:999px; background:{{ f.color }};"></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- feed + assistant -->
+    <div class="r-32" style="margin-top:16px; display:grid; grid-template-columns:1.6fr 1fr; gap:16px; align-items:start;">
+      <div class="glass-card" style="padding:24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+          <div><div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase;">פיד חי</div><div style="margin-top:4px; font-size:18px; font-weight:600; font-family:'Space Grotesk',sans-serif;">מה קורה עכשיו בעסק</div></div>
+          <span style="display:flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.16); background:rgba(14,139,160,.1); color:#0b7688; border-radius:999px; padding:4px 11px; font-size:11px; font-weight:600;"><span style="width:6px; height:6px; border-radius:999px; background:#0e8ba0;" class="animate-pulse-dot"></span>בזמן אמת</span>
+        </div>
+        <ol style="list-style:none; margin:0; padding:0 4px; display:flex; flex-direction:column; gap:18px;">
+          <sc-for list="{{ feed }}" as="ev" hint-placeholder-count="6">
+            <li style="display:flex; gap:12px; animation:feed-in .4s cubic-bezier(.22,1,.36,1) both; animation-delay:{{ ev.delay }};">
+              <span style="flex:none; width:34px; height:34px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 1px 2px rgba(15,23,42,.04);">{{ ev.icon }}</span>
+              <div style="flex:1; min-width:0; padding-top:2px;">
+                <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:8px;"><span style="font-size:13.5px; font-weight:500;">{{ ev.label }}</span><span style="font-size:11.5px; color:#94a3b8;">{{ ev.time }}</span></div>
+                <p style="margin:2px 0 0; font-size:13.5px; color:#55627a; line-height:1.5;">{{ ev.text }}</p>
+              </div>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+      <div class="glass-card" style="display:flex; flex-direction:column; padding:20px; min-height:440px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="position:relative; width:36px; height:36px; border-radius:11px; background:linear-gradient(135deg,#0e8ba0,#22b8cf); padding:1.5px;">
+            <div style="width:100%; height:100%; border-radius:9px; background:#fff; display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#0b7688" stroke-width="1.6" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg></div>
+          </div>
+          <div style="flex:1; min-width:0;"><div style="font-size:14px; font-weight:600; font-family:'Space Grotesk',sans-serif;">שיחה עם המוח</div><div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(11,118,136,.7);">CEO · AI</div></div>
+          <span style="display:flex; align-items:center; gap:5px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; border-radius:999px; padding:3px 9px; font-size:10px; color:#55627a;"><span style="width:6px; height:6px; border-radius:999px; background:#12805c;" class="animate-pulse-dot"></span>פעיל</span>
+        </div>
+        <div ref="{{ chatRef }}" style="margin-top:16px; flex:1; display:flex; flex-direction:column; gap:12px; overflow-y:auto; border:1px solid rgba(15,23,42,.08); border-radius:14px; background:#f8fafc; padding:16px;" class="scrollbar-hide">
+          <sc-for list="{{ messages }}" as="m" hint-placeholder-count="2"><div style="{{ m.style }}">{{ m.text }}</div></sc-for>
+        </div>
+        <form onSubmit="{{ onSend }}" style="margin-top:12px; display:flex; align-items:center; gap:8px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; border-radius:14px; padding:9px 12px;">
+          <input value="{{ input }}" onInput="{{ onInput }}" placeholder="שאלו את המוח — «על מה להתמקד היום?»" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:13.5px; color:#0f172a;">
+          <button type="submit" aria-label="שליחה" style="border:none; border-radius:9px; background:linear-gradient(135deg,#0e8ba0,#22b8cf); padding:7px; cursor:pointer; display:flex;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"/></svg></button>
+        </form>
+      </div>
+    </div>
+
+    <!-- tasks + top customers + heatmap -->
+    <div class="r-3" style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; align-items:start;">
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase; margin-bottom:4px;">המשימות שלי</div>
+        <div style="font-size:16px; font-weight:600; margin-bottom:14px;">להיום · {{ tasksLeft }} פתוחות</div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.toggle }}" style="cursor:pointer; font-family:inherit; text-align:start; display:flex; align-items:center; gap:11px; border:none; background:none; padding:9px 4px; border-radius:8px;">
+              <span style="{{ t.boxStyle }}"><sc-if value="{{ t.done }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg></sc-if></span>
+              <span style="flex:1; font-size:13.5px; {{ t.textStyle }}">{{ t.label }}</span>
+              <span style="font-size:11px; color:#94a3b8; white-space:nowrap;">{{ t.time }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase; margin-bottom:4px;">לקוחות מובילים</div>
+        <div style="font-size:16px; font-weight:600; margin-bottom:14px;">לפי הכנסה</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <sc-for list="{{ topCustomers }}" as="c" hint-placeholder-count="4">
+            <div style="display:flex; align-items:center; gap:11px;">
+              <span style="flex:none; width:32px; height:32px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; background:{{ c.tint }};">{{ c.initials }}</span>
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;"><span style="font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ c.name }}</span><span style="font-size:13px; font-weight:600; color:#0b7688;" class="tabular-nums">{{ c.value }}</span></div>
+                <div style="height:5px; border-radius:999px; background:#f1f5f9; overflow:hidden; margin-top:5px;"><div style="width:{{ c.pct }}; height:100%; border-radius:999px; background:{{ c.tint }};"></div></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:10px; letter-spacing:.25em; color:#94a3b8; text-transform:uppercase; margin-bottom:4px;">מפת פעילות</div>
+        <div style="font-size:16px; font-weight:600; margin-bottom:14px;">12 השבועות האחרונים</div>
+        <div dir="ltr" style="display:flex; flex-direction:column; gap:4px;">
+          <sc-for list="{{ heatRows }}" as="row" hint-placeholder-count="7">
+            <div style="display:flex; gap:4px; align-items:center;">
+              <span style="width:26px; font-size:9px; color:#94a3b8; text-align:right;">{{ row.label }}</span>
+              <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="12"><span title="{{ c.title }}" style="width:14px; height:14px; border-radius:3px; background:{{ c.color }};"></span></sc-for>
+            </div>
+          </sc-for>
+          <div style="display:flex; align-items:center; gap:5px; margin-top:8px; justify-content:flex-end; font-size:10px; color:#94a3b8;">
+            <span>פחות</span>
+            <span style="width:11px; height:11px; border-radius:3px; background:#eef2f7;"></span>
+            <span style="width:11px; height:11px; border-radius:3px; background:rgba(14,139,160,.35);"></span>
+            <span style="width:11px; height:11px; border-radius:3px; background:rgba(14,139,160,.65);"></span>
+            <span style="width:11px; height:11px; border-radius:3px; background:#0e8ba0;"></span>
+            <span>יותר</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== NOTIFICATION CENTER ===== -->
+  <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeNotif }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(400px,92vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid rgba(15,23,42,.08);">
+        <div style="font-size:17px; font-weight:600;">התראות</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button onClick="{{ markAllRead }}" style="cursor:pointer; font-family:inherit; border:none; background:none; font-size:12.5px; font-weight:600; color:#0b7688;">סמן הכל כנקרא</button>
+          <button onClick="{{ closeNotif }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8; padding:2px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+        </div>
+      </div>
+      <div style="flex:1; overflow-y:auto;" class="scrollbar-hide">
+        <sc-for list="{{ notifList }}" as="n" hint-placeholder-count="5">
+          <div onClick="{{ n.onClick }}" style="display:flex; gap:12px; padding:15px 22px; border-bottom:1px solid rgba(15,23,42,.06); cursor:pointer; background:{{ n.bg }};">
+            <span style="flex:none; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:{{ n.tint }}; color:{{ n.color }};"><span dangerouslySetInnerHTML="{{ n.icon }}"></span></span>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13.5px; font-weight:600; color:#0f172a;">{{ n.title }}</div>
+              <div style="font-size:12.5px; color:#55627a; line-height:1.5; margin-top:1px;">{{ n.text }}</div>
+              <div style="font-size:11px; color:#94a3b8; margin-top:4px;">{{ n.time }}</div>
+            </div>
+            <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="flex:none; width:8px; height:8px; border-radius:999px; background:#0e8ba0; margin-top:6px;"></span></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </aside>
+  </sc-if>
+
+  <!-- ===== DEAL DRAWER ===== -->
+  <sc-if value="{{ dealOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDeal }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(460px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="padding:22px; border-bottom:1px solid rgba(15,23,42,.08);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="flex:none; width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#fff; background:{{ deal.tint }};">{{ deal.initials }}</span>
+            <div><div style="font-size:17px; font-weight:600;">{{ deal.title }}</div><div style="font-size:13px; color:#94a3b8;">{{ deal.account }}</div></div>
+          </div>
+          <button onClick="{{ closeDeal }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8; padding:2px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div style="margin-top:16px; display:flex; align-items:center; gap:10px;">
+          <div style="flex:1;"><div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">שווי עסקה</div><div style="font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:600; color:#0f172a;" class="tabular-nums">{{ deal.valueLabel }}</div></div>
+          <div style="flex:1;"><div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">שלב</div>
+            <select value="{{ deal.stage }}" onChange="{{ deal.onStageChange }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:10px; padding:8px 10px; font-family:inherit; font-size:13.5px; color:#0f172a; background:#fff; outline:none;">
+              <sc-for list="{{ deal.stageOptions }}" as="o" hint-placeholder-count="4"><option value="{{ o.key }}">{{ o.label }}</option></sc-for>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:22px;" class="scrollbar-hide">
+        <!-- quick actions -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px;">
+          <sc-for list="{{ deal.actions }}" as="a" hint-placeholder-count="3">
+            <button onClick="{{ a.onClick }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.14); background:#fff; border-radius:10px; padding:8px 12px; font-size:12.5px; font-weight:600; color:#0f172a;"><span style="color:#0e8ba0;" dangerouslySetInnerHTML="{{ a.icon }}"></span>{{ a.label }}</button>
+          </sc-for>
+        </div>
+        <!-- contact -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">איש קשר</div>
+        <div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:14px; margin-bottom:22px;">
+          <div style="font-size:14px; font-weight:600;">{{ deal.contact.name }}</div>
+          <div style="font-size:12.5px; color:#94a3b8;">{{ deal.contact.role }}</div>
+          <div style="margin-top:10px; display:flex; flex-direction:column; gap:7px; font-size:13px;">
+            <div style="display:flex; align-items:center; gap:8px; color:#55627a;"><svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.7" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg><span dir="ltr">{{ deal.contact.phone }}</span></div>
+            <div style="display:flex; align-items:center; gap:8px; color:#55627a;"><svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.7" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg><span dir="ltr">{{ deal.contact.email }}</span></div>
+          </div>
+        </div>
+        <!-- timeline -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">טיימליין</div>
+        <ol style="list-style:none; margin:0 0 22px; padding:0; display:flex; flex-direction:column; gap:0;">
+          <sc-for list="{{ deal.timeline }}" as="t" hint-placeholder-count="4">
+            <li style="display:flex; gap:12px;">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <span style="flex:none; width:28px; height:28px; border-radius:999px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px;">{{ t.icon }}</span>
+                <sc-if value="{{ t.line }}" hint-placeholder-val="{{ true }}"><span style="flex:1; width:2px; background:rgba(15,23,42,.08); min-height:14px;"></span></sc-if>
+              </div>
+              <div style="padding-bottom:16px;"><div style="font-size:13px; font-weight:600; color:#0f172a;">{{ t.title }}</div><div style="font-size:12px; color:#55627a; margin-top:1px;">{{ t.text }}</div><div style="font-size:11px; color:#94a3b8; margin-top:3px;">{{ t.time }}</div></div>
+            </li>
+          </sc-for>
+        </ol>
+        <!-- files -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">קבצים</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
+          <sc-for list="{{ deal.files }}" as="f" hint-placeholder-count="2">
+            <div style="display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); border-radius:10px; padding:10px 12px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0e8ba0" stroke-width="1.6" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+              <div style="flex:1; min-width:0;"><div style="font-size:13px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ f.name }}</div><div style="font-size:11px; color:#94a3b8;">{{ f.meta }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+        <!-- notes -->
+        <div style="font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">הערות</div>
+        <form onSubmit="{{ deal.onAddNote }}" style="display:flex; gap:8px; margin-bottom:12px;">
+          <input value="{{ deal.noteInput }}" onInput="{{ deal.onNoteInput }}" placeholder="הוסף הערה…" style="flex:1; border:1px solid rgba(15,23,42,.16); border-radius:10px; padding:9px 12px; font-family:inherit; font-size:13px; outline:none;">
+          <button type="submit" style="cursor:pointer; font-family:inherit; border:none; border-radius:10px; background:#0e8ba0; color:#fff; padding:9px 14px; font-size:13px; font-weight:600;">הוסף</button>
+        </form>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <sc-for list="{{ deal.notes }}" as="nt" hint-placeholder-count="1">
+            <div style="border:1px solid rgba(15,23,42,.08); background:#f8fafc; border-radius:10px; padding:10px 12px; font-size:13px; color:#0f172a; line-height:1.5;">{{ nt.text }}<div style="font-size:11px; color:#94a3b8; margin-top:4px;">{{ nt.time }}</div></div>
+          </sc-for>
+        </div>
+      </div>
+    </aside>
+  </sc-if>
+
+  <!-- toast -->
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; bottom:28px; inset-inline-start:50%; transform:translateX(50%); z-index:80; background:#0f172a; color:#fff; border-radius:12px; padding:12px 20px; font-size:14px; box-shadow:0 12px 32px rgba(15,23,42,.28); animation:dash-fade .25s ease both;">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    period: 'month', input: '',
+    notifOpen: false, dealId: null,
+    dealsByStage: null, notifs: null, tasks: null, revHover: null, noteInput: '', toast: '',
+    messages: [{ role:'assistant', text:'בוקר טוב ישראל 👋 יש לך 3 עסקאות במשא ומתן בשווי ₪84K שכדאי לדחוף היום. סוכן הלידים הכניס 12 לידים חדשים מאז אתמול.' }],
+  };
+
+  _svg(p, w) { return { __html:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="${w||16}" height="${w||16}">${p}</svg>` }; }
+  greetingText() { const h = new Date().getHours(); if (h<5) return 'לילה טוב'; if (h<12) return 'בוקר טוב'; if (h<18) return 'צהריים טובים'; return 'ערב טוב'; }
+
+  _stageMeta() {
+    return [
+      { key:'lead', label:'ליד', tint:'#0e8ba0' },
+      { key:'qualified', label:'מוכשר', tint:'#1666a8' },
+      { key:'proposal', label:'הצעה', tint:'#b26a00' },
+      { key:'negotiation', label:'משא ומתן', tint:'#0f172a' },
+    ];
+  }
+
+  _seedDeals() {
+    const tl = (arr) => arr;
+    return [
+      { id:1, stage:'lead', account:'סטודיו מיכל', title:'שדרוג אתר תדמית', value:18000, owner:'עד', tint:'#0e8ba0',
+        contact:{name:'מיכל ברק', role:'מעצבת ראשית', phone:'054-321-9988', email:'michal@studio.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'הגיע מטופס באתר',time:'לפני יומיים'},{icon:'💬',title:'סוכן וואטסאפ פנה',text:'שלח הצעת פגישה',time:'אתמול'},{icon:'📄',title:'עסקה נוצרה',text:'שווי ₪18K',time:'היום'}]),
+        files:[{name:'בריף עיצוב.pdf',meta:'240KB · היום'}], notes:[{text:'מעדיפה פגישות בימי ג׳',time:'אתמול'}] },
+      { id:2, stage:'lead', account:'מוסך דהן', title:'קמפיין לידים', value:9000, owner:'רכ', tint:'#0e8ba0',
+        contact:{name:'יוסי דהן', role:'בעלים', phone:'052-998-7766', email:'yossi@dahan.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'פנייה מפייסבוק',time:'לפני 3 ימים'},{icon:'💰',title:'תקציב אושר',text:'₪9K לקמפיין',time:'אתמול'}]),
+        files:[], notes:[] },
+      { id:3, stage:'qualified', account:'קליניקת נועה', title:'חבילת סוכנים שנתית', value:42000, owner:'נל', tint:'#1666a8',
+        contact:{name:'נועה לוי', role:'מנהלת', phone:'050-123-4567', email:'noa@clinic.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'המלצה מלקוח',time:'לפני שבוע'},{icon:'📞',title:'שיחת אפיון',text:'25 דק׳',time:'לפני 4 ימים'},{icon:'📄',title:'הצעה בהכנה',text:'חבילה שנתית',time:'היום'}]),
+        files:[{name:'הצעת מחיר.pdf',meta:'180KB · היום'}], notes:[{text:'רוצה התחלה בתחילת החודש',time:'לפני 4 ימים'}] },
+      { id:4, stage:'qualified', account:'בית קפה עלית', title:'ניהול סושיאל', value:12000, owner:'עד', tint:'#1666a8',
+        contact:{name:'אבי מזרחי', role:'מנהל', phone:'050-777-2211', email:'avi@elite.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'אינסטגרם',time:'לפני 5 ימים'},{icon:'💬',title:'תיאום ציפיות',text:'וואטסאפ',time:'לפני יומיים'}]),
+        files:[], notes:[] },
+      { id:5, stage:'proposal', account:'רשת אופנה URBAN', title:'אוטומציית וואטסאפ', value:64000, owner:'רכ', tint:'#b26a00',
+        contact:{name:'דנה כהן', role:'רכש', phone:'03-555-1234', email:'dana@urban.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'תערוכה',time:'לפני שבועיים'},{icon:'📄',title:'הצעה נשלחה',text:'₪64K',time:'לפני 3 ימים'},{icon:'👀',title:'ההצעה נצפתה',text:'הלקוח פתח פעמיים',time:'אתמול'}]),
+        files:[{name:'הצעה URBAN.pdf',meta:'320KB · לפני 3 ימים'}], notes:[{text:'לעקוב אחרי אם אין תשובה עד יום ה׳',time:'אתמול'}] },
+      { id:6, stage:'negotiation', account:'חברת שיפוצים', title:'חבילת פרו + API', value:84000, owner:'עד', tint:'#0f172a',
+        contact:{name:'רון אבני', role:'מנכ״ל', phone:'050-444-1212', email:'ron@shipputzim.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'גוגל',time:'לפני 3 שבועות'},{icon:'📄',title:'הצעה נשלחה',text:'₪84K',time:'לפני שבוע'},{icon:'🤝',title:'משא ומתן',text:'בקשה להנחה 8%',time:'אתמול'}]),
+        files:[{name:'חוזה טיוטה.pdf',meta:'410KB · אתמול'}], notes:[{text:'מוכן לסגור אם ניתן 5% הנחה',time:'אתמול'}] },
+      { id:7, stage:'negotiation', account:'סוכנות נדל״ן', title:'סוכן לידים + דוחות', value:38000, owner:'נל', tint:'#0f172a',
+        contact:{name:'שירה גל', role:'שותפה', phone:'052-321-4455', email:'shira@realestate.co.il'},
+        timeline: tl([{icon:'🎯',title:'ליד נוצר',text:'לינקדאין',time:'לפני חודש'},{icon:'📄',title:'הצעה נשלחה',text:'₪38K',time:'לפני 10 ימים'}]),
+        files:[], notes:[] },
+    ];
+  }
+
+  _seedNotifs() {
+    return [
+      { id:1, kind:'won', title:'עסקה נסגרה בזכייה 🏆', text:'חברת שיפוצים · ₪84,000', time:'לפני 4 דק׳', unread:true },
+      { id:2, kind:'approval', title:'סוכן מבקש אישור', text:'שליחת הצעת מחיר לקליניקת נועה', time:'לפני 12 דק׳', unread:true },
+      { id:3, kind:'lead', title:'ליד חדש מאינסטגרם', text:'מעוניין בחבילת וידאו', time:'לפני 23 דק׳', unread:true },
+      { id:4, kind:'msg', title:'הודעה ללא מענה', text:'מוסך דהן ממתין לתשובה', time:'לפני שעה', unread:false },
+      { id:5, kind:'pay', title:'תשלום התקבל', text:'קליניקת נועה · ₪349', time:'לפני שעתיים', unread:false },
+    ];
+  }
+
+  _seedTasks() {
+    return [
+      { id:1, label:'להתקשר לחברת שיפוצים על ההנחה', time:'10:30', done:false },
+      { id:2, label:'לאשר הצעת מחיר לקליניקת נועה', time:'12:00', done:false },
+      { id:3, label:'לעקוב אחרי רשת אופנה URBAN', time:'15:00', done:false },
+      { id:4, label:'לאשר 3 בקשות סוכנים', time:'16:30', done:true },
+    ];
+  }
+
+  renderVals() {
+    const S = this._svg.bind(this);
+    const stageMeta = this._stageMeta();
+    const deals = this.state.dealsByStage || this._seedDeals();
+    const notifs = this.state.notifs || this._seedNotifs();
+    const tasks = this.state.tasks || this._seedTasks();
+
+    // ---- nav ----
+    const navBase = 'position:relative; display:flex; align-items:center; gap:6px; padding:11px 14px; font-size:13.5px; white-space:nowrap;';
+    const navDefs = [
+      ['סקירה','Dashboard.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/>',true],
+      ['פיד חי','Feed.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>'],
+      ['אינבוקס','Inbox.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z"/>'],
+      ['סוכנים','Agents.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>'],
+      ['CRM','CRM.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>'],
+      ['חיבורים','Connections.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8"/>'],
+      ['תזרים','Cashflow.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22"/>'],
+      ['הגדרות','Settings.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.03 7.03 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.988 6.988 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>'],
+    ];
+    const navItems = navDefs.map(([label,href,icon,active]) => ({ label, href, active:!!active, icon:S(icon,16), style: navBase + (active ? 'color:#0f172a; font-weight:600;' : 'color:#55627a;') }));
+
+    // ---- period ----
+    const period = this.state.period;
+    const pTab = (on) => on ? 'cursor:pointer; font-family:inherit; border:none; border-radius:9px; background:#fff; color:#0f172a; font-weight:600; padding:6px 14px; font-size:13px; box-shadow:0 1px 2px rgba(15,23,42,.08);' : 'cursor:pointer; font-family:inherit; border:none; border-radius:9px; background:transparent; color:#55627a; padding:6px 14px; font-size:13px;';
+    const periods = [['today','היום'],['week','השבוע'],['month','החודש']].map(([k,l]) => ({ label:l, style:pTab(period===k), onClick:()=>this.setState({period:k, revHover:null}) }));
+    const periodLabel = { today:'היום', week:'השבוע', month:'החודש' }[period];
+
+    // ---- KPIs by period ----
+    const kpiData = {
+      today: { closed:8200, closedD:'+6%', leads:5, rate:30 },
+      week:  { closed:34000, closedD:'+9%', leads:23, rate:32 },
+      month: { closed:128000, closedD:'+12.5%', leads:94, rate:34 },
+    }[period];
+    const kpis = [
+      { label:'שווי צינור מכירות', prefix:'₪ ', value:342000, suffix:'', delta:'', deltaColor:'#12805c', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941"/>',15) },
+      { label:'נסגר '+periodLabel, prefix:'₪ ', value:kpiData.closed, suffix:'', delta:kpiData.closedD, deltaColor:'#12805c', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>',15) },
+      { label:'לידים חדשים', prefix:'', value:kpiData.leads, suffix:'', delta:'▲', deltaColor:'#12805c', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z"/>',15) },
+      { label:'אחוז סגירה', prefix:'', value:kpiData.rate, suffix:'%', delta:'', deltaColor:'#12805c', icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21a.75.75 0 0 1-.75.75H5.25A.75.75 0 0 1 4.5 21V4.757c0-.414.336-.75.75-.75h13.5a.75.75 0 0 1 .75.75Z"/>',15) },
+    ];
+
+    // ---- attention ----
+    const p18 = (d) => S(`<path stroke-linecap="round" stroke-linejoin="round" d="${d}"/>`,18);
+    const attention = [
+      { count:notifs.filter(n=>n.kind==='approval').length+2, title:'אישורי סוכנים', sub:'ממתינים לאישור שלך', href:'Agents.dc.html', color:'#b26a00', tint:'rgba(178,106,0,.1)', icon:p18('M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z') },
+      { count:5, title:'הודעות ללא מענה', sub:'לקוחות שמחכים לתשובה', href:'Inbox.dc.html', color:'#0e8ba0', tint:'rgba(14,139,160,.1)', icon:p18('M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z') },
+      { count:2, title:'עסקאות מתקררות', sub:'ללא פעילות מעל 7 ימים', href:'CRM.dc.html', color:'#d1453b', tint:'rgba(209,69,59,.09)', icon:p18('M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z') },
+    ];
+
+    // ---- kanban ----
+    const money = (n) => '₪ ' + n.toLocaleString('he-IL');
+    const moneyK = (n) => '₪ ' + (n/1000).toLocaleString('he-IL', {maximumFractionDigits:0}) + 'K';
+    const av = (t) => `linear-gradient(135deg, ${t}, #22b8cf)`;
+    const stagesView = stageMeta.map(sm => {
+      const list = deals.filter(d => d.stage === sm.key);
+      const sum = list.reduce((a,d)=>a+d.value,0);
+      return {
+        key:sm.key, label:sm.label, tint:sm.tint, count:list.length, sumLabel: sum ? moneyK(sum) : '₪0',
+        ref:(el)=>{ this._cols = this._cols||{}; this._cols[sm.key]=el; },
+        onDragOver:(e)=>{ e.preventDefault(); if(this._cols&&this._cols[sm.key]) this._cols[sm.key].classList.add('drag-over'); },
+        onDragLeave:(e)=>{ if(this._cols&&this._cols[sm.key]) this._cols[sm.key].classList.remove('drag-over'); },
+        onDrop:(e)=>{ e.preventDefault(); if(this._cols&&this._cols[sm.key]) this._cols[sm.key].classList.remove('drag-over'); this._moveDeal(this._drag, sm.key); },
+        deals: list.map(d => ({
+          id:d.id, account:d.account, title:d.title, valueLabel:moneyK(d.value), owner:d.owner, avatarBg:av(sm.tint),
+          onDragStart:()=>{ this._drag = d.id; }, onDragEnd:()=>{ this._drag = null; },
+          onOpen:()=>this.setState({ dealId:d.id }),
+        })),
+      };
+    });
+    const pipelineTotal = moneyK(deals.reduce((a,d)=>a+d.value,0));
+
+    // ---- revenue chart ----
+    const revSeries = {
+      today: [2,3,2.5,4,3.5,5,4.5,6,5.5,7,6,8.2],
+      week:  [18,22,20,26,24,30,34],
+      month: [52,58,55,64,68,74,82,90,86,94,102,128],
+    }[period];
+    const revLabels = {
+      today: ['08:00','12:00','16:00','20:00'],
+      week:  ['א׳','ג׳','ה׳','ש׳'],
+      month: ['שבוע 1','שבוע 2','שבוע 3','שבוע 4'],
+    }[period];
+    const rev = this._chart(revSeries);
+    const revActive = this.state.revHover != null;
+    const ri = revActive ? Math.max(0, Math.min(revSeries.length-1, this.state.revHover)) : revSeries.length-1;
+    const rpt = rev.points[ri];
+    const revValLabel = (v) => '₪ ' + Math.round(v*1000).toLocaleString('he-IL');
+
+    // ---- goal ----
+    const goalTargetN = 180000, goalCurrentN = 128000;
+    const goalPct = Math.round(goalCurrentN/goalTargetN*100);
+    const R=52, C=2*Math.PI*R;
+    const funnel = [
+      { label:'לידים', value:'94', pct:'100%', color:'#0e8ba0' },
+      { label:'מוכשרים', value:'41', pct:'44%', color:'#1666a8' },
+      { label:'הצעות', value:'22', pct:'23%', color:'#b26a00' },
+      { label:'נסגרו', value:'12', pct:'13%', color:'#12805c' },
+    ];
+
+    // ---- feed ----
+    const feed = [
+      { icon:'🏆', label:'עסקה נסגרה בזכייה', time:'לפני 4 דק׳', text:'חברת שיפוצים · חבילת פרו — ₪84,000' },
+      { icon:'💬', label:'הודעה נכנסת', time:'לפני 11 דק׳', text:'סוכן וואטסאפ ענה ללקוח על שעות פעילות' },
+      { icon:'🎯', label:'ליד חדש', time:'לפני 23 דק׳', text:'ליד מאינסטגרם — מעוניין בחבילת וידאו' },
+      { icon:'💰', label:'תשלום התקבל', time:'לפני 38 דק׳', text:'קליניקת נועה — מנוי חודשי ₪349' },
+      { icon:'🧠', label:'זיכרון נשמר', time:'לפני 52 דק׳', text:'המוח למד: הרשת מעדיפה פגישות בימי ג׳' },
+      { icon:'📄', label:'עסקה נוצרה', time:'לפני שעה', text:'רשת אופנה · אוטומציית וואטסאפ — ₪64K' },
+    ].map((e,i)=>({ ...e, delay:`${i*60}ms` }));
+
+    // ---- assistant ----
+    const bubble = (role) => role === 'user'
+      ? 'max-width:88%; margin-inline-start:auto; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; border-radius:16px; padding:10px 14px; font-size:13.5px; line-height:1.55; color:#0f172a;'
+      : 'max-width:88%; margin-inline-end:auto; border:1px solid rgba(15,23,42,.16); background:rgba(14,139,160,.1); border-radius:16px; padding:10px 14px; font-size:13.5px; line-height:1.55; color:#0f172a; box-shadow:inset 0 1px 0 rgba(255,255,255,.6);';
+    const messages = this.state.messages.map(m => ({ text:m.text, style:bubble(m.role) }));
+
+    // ---- tasks ----
+    const tasksLeft = tasks.filter(t=>!t.done).length;
+    const tasksView = tasks.map((t,i) => ({
+      label:t.label, time:t.time, done:t.done,
+      boxStyle: 'flex:none; width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; ' + (t.done ? 'background:#0e8ba0; border:1px solid #0e8ba0;' : 'background:#fff; border:1.5px solid rgba(15,23,42,.2);'),
+      textStyle: t.done ? 'color:#94a3b8; text-decoration:line-through;' : 'color:#0f172a;',
+      toggle: ()=>{ const arr=(this.state.tasks||this._seedTasks()).map((x,j)=>j===i?{...x,done:!x.done}:x); this.setState({tasks:arr}); },
+    }));
+
+    // ---- top customers ----
+    const topCustomers = [
+      { name:'רשת אופנה URBAN', value:'₪ 64K', initials:'רא', tint:'#0e8ba0', pct:'100%' },
+      { name:'חברת שיפוצים', value:'₪ 84K', initials:'חש', tint:'#1666a8', pct:'92%' },
+      { name:'קליניקת נועה', value:'₪ 42K', initials:'קנ', tint:'#12805c', pct:'58%' },
+      { name:'סוכנות נדל״ן', value:'₪ 38K', initials:'סנ', tint:'#b26a00', pct:'48%' },
+    ];
+
+    // ---- heatmap ----
+    const days = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+    const heatColor = (v) => v===0 ? '#eef2f7' : v===1 ? 'rgba(14,139,160,.35)' : v===2 ? 'rgba(14,139,160,.65)' : '#0e8ba0';
+    const heatRows = days.map((d,r) => ({
+      label:d,
+      cells: Array.from({length:12}, (_,c) => { const v = (r===5||r===6) ? (c%3===0?1:0) : ((r*7+c*3)%4); return { color:heatColor(v), title:`${v*4} אירועים` }; }),
+    }));
+
+    // ---- deal drawer ----
+    const openDeal = this.state.dealId != null;
+    let deal = null;
+    if (openDeal) {
+      const d = deals.find(x => x.id === this.state.dealId) || deals[0];
+      const sm = stageMeta.find(s=>s.key===d.stage);
+      const dActs = [
+        { label:'שלח הודעה', icon:p18('M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5'), onClick:()=>this._toast('נפתחה שיחה עם '+d.contact.name) },
+        { label:'קבע פגישה', icon:p18('M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5'), onClick:()=>this._toast('פגישה נוספה ליומן') },
+        { label:'סגור עסקה', icon:p18('M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'), onClick:()=>{ this._moveDeal(d.id,'negotiation'); this._toast('כל הכבוד! מסמן את '+d.title+' לקראת סגירה'); } },
+      ];
+      const tlLen = d.timeline.length;
+      deal = {
+        title:d.title, account:d.account, initials:(d.account.replace(/[״׳]/g,'').split(' ').slice(0,2).map(w=>w[0]).join('')), tint:av(sm.tint),
+        valueLabel:money(d.value), stage:d.stage,
+        stageOptions: stageMeta.map(s=>({key:s.key,label:s.label})),
+        onStageChange:(e)=>this._moveDeal(d.id, e.target.value),
+        actions:dActs,
+        contact:d.contact,
+        timeline: d.timeline.map((t,i)=>({ ...t, line: i < tlLen-1 })),
+        files: d.files.length ? d.files : [],
+        notes: d.notes,
+        noteInput: this.state.noteInput,
+        onNoteInput:(e)=>this.setState({noteInput:e.target.value}),
+        onAddNote:(e)=>{ e.preventDefault(); const v=this.state.noteInput.trim(); if(!v) return; const arr=(this.state.dealsByStage||this._seedDeals()).map(x=>x.id===d.id?{...x,notes:[{text:v,time:'עכשיו'},...x.notes]}:x); this.setState({dealsByStage:arr, noteInput:''}); },
+      };
+    }
+
+    // ---- notifications ----
+    const notifMeta = {
+      won:{tint:'rgba(18,128,92,.1)',color:'#12805c',icon:p18('M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z')},
+      approval:{tint:'rgba(178,106,0,.1)',color:'#b26a00',icon:p18('M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z')},
+      lead:{tint:'rgba(14,139,160,.1)',color:'#0e8ba0',icon:p18('M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z')},
+      msg:{tint:'rgba(124,108,240,.12)',color:'#7c6cf0',icon:p18('M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z')},
+      pay:{tint:'rgba(14,116,144,.1)',color:'#0e7490',icon:p18('M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z')},
+    };
+    const notifList = notifs.map(n => ({
+      title:n.title, text:n.text, time:n.time, unread:n.unread, ...notifMeta[n.kind],
+      bg: n.unread ? 'rgba(14,139,160,.04)' : '#fff',
+      onClick:()=>{ const arr=(this.state.notifs||this._seedNotifs()).map(x=>x.id===n.id?{...x,unread:false}:x); this.setState({notifs:arr}); },
+    }));
+    const unreadCount = notifs.filter(n=>n.unread).length;
+
+    return {
+      navItems, greeting:this.greetingText(), periodLabel, periods, kpis, attention,
+      attentionTotal: attention.reduce((s,a)=>s+a.count,0),
+      stagesView, pipelineTotal,
+      // revenue
+      revGrid:rev.grid, revLine:rev.line, revArea:rev.area, revXLabels:revLabels,
+      revHover:revActive, revHoverX:rpt.x.toFixed(1), revHoverLeft:(rpt.x/rev.W*100).toFixed(2)+'%', revHoverTop:(rpt.y/rev.H*100).toFixed(2)+'%',
+      revHoverValue:revValLabel(revSeries[ri]), revHoverLabel:'', revHeadValue:revValLabel(revSeries[revSeries.length-1]), revHeadDate:periodLabel,
+      chartRef:(el)=>{this._chartEl=el;},
+      onChartMove:(e)=>{ if(!this._chartEl) return; const r=this._chartEl.getBoundingClientRect(); let i=Math.round((e.clientX-r.left)/r.width*(revSeries.length-1)); i=Math.max(0,Math.min(revSeries.length-1,i)); if(i!==this.state.revHover) this.setState({revHover:i}); },
+      onChartLeave:()=>this.setState({revHover:null}),
+      // goal
+      goalPct, goalDash:C.toFixed(1), goalOffset:(C*(1-goalCurrentN/goalTargetN)).toFixed(1), goalCurrent:money(goalCurrentN), goalTarget:money(goalTargetN), funnel,
+      // lists
+      feed, messages, tasks:tasksView, tasksLeft, topCustomers, heatRows,
+      // chat
+      input:this.state.input, rootRef:(el)=>{this.root=el;}, chatRef:(el)=>{this.chat=el;},
+      onInput:(e)=>this.setState({input:e.target.value}),
+      onSend:(e)=>{ e.preventDefault(); const q=this.state.input.trim(); if(!q) return; const reply='שאלה טובה. לפי המצב הנוכחי הייתי מתמקד בעסקאות במשא ומתן — יש שם ₪122K שקרובים לסגירה. רוצה שאכין סיכום לכל אחת?'; this.setState(s=>({input:'', messages:[...s.messages,{role:'user',text:q},{role:'assistant',text:reply}]})); setTimeout(()=>{ if(this.chat) this.chat.scrollTo({top:this.chat.scrollHeight,behavior:'smooth'}); },60); },
+      // notifications
+      notifOpen:this.state.notifOpen, toggleNotif:()=>this.setState(s=>({notifOpen:!s.notifOpen})), closeNotif:()=>this.setState({notifOpen:false}),
+      markAllRead:()=>{ const arr=(this.state.notifs||this._seedNotifs()).map(x=>({...x,unread:false})); this.setState({notifs:arr}); },
+      notifList, unreadCount, hasUnread:unreadCount>0,
+      // deal drawer
+      dealOpen:openDeal, deal, closeDeal:()=>this.setState({dealId:null, noteInput:''}),
+      // toast
+      toast:this.state.toast,
+    };
+  }
+
+  _chart(series) {
+    const W=800, H=220, pad=12, n=series.length;
+    const max=Math.max(...series), min=Math.min(...series);
+    const lo=Math.floor((min-max*0.1)/1)*1, hi=Math.ceil(max*1.05);
+    const yFor=(v)=>pad+(H-2*pad)*(1-(v-lo)/(hi-lo));
+    const stepX=W/(n-1);
+    const points=series.map((v,i)=>({x:i*stepX,y:yFor(v)}));
+    const line=points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    const area=`${line} L${W},${H} L0,${H} Z`;
+    const grid=[]; for(let k=0;k<=3;k++){ const v=lo+(hi-lo)*k/3; const y=yFor(v); grid.push({y:y.toFixed(1), top:(y/H*100).toFixed(2)+'%', label:'₪'+Math.round(v)+'K'}); }
+    return { points, line, area, grid, W, H };
+  }
+
+  _moveDeal(id, stage) {
+    if (id == null) return;
+    const arr = (this.state.dealsByStage || this._seedDeals()).map(d => d.id === id ? { ...d, stage } : d);
+    this.setState({ dealsByStage: arr });
+  }
+  _toast(msg) { this.setState({ toast: msg }); clearTimeout(this._tt); this._tt = setTimeout(()=>this.setState({toast:''}), 2600); }
+
+  componentDidMount() {
+    this.setState({ dealsByStage: this._seedDeals(), notifs: this._seedNotifs(), tasks: this._seedTasks() });
+    this._countUp();
+  }
+  componentDidUpdate(pp, ps) { if (ps.period !== this.state.period) this._countUp(); }
+  _countUp() {
+    const fmt=(n)=>n.toLocaleString('he-IL');
+    const els=this.root?this.root.querySelectorAll('[data-countup]'):[];
+    els.forEach(el=>{ const to=+el.dataset.to, suf=el.dataset.suffix||''; const start=performance.now(), dur=900; const tick=(t)=>{ const p=Math.min(1,(t-start)/dur), e=1-Math.pow(1-p,3); el.textContent=fmt(Math.round(to*e))+suf; if(p<1) requestAnimationFrame(tick); }; requestAnimationFrame(tick); });
+  }
+}
+</script>
+</body>
+</html>

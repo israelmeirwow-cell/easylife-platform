@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+@media (max-width:960px){ .r-main{padding-inline:18px !important;} .r-4{grid-template-columns:repeat(2,1fr) !important;} .r-32{grid-template-columns:1fr !important;} }
+@media (max-width:760px){ .r-hero{grid-template-columns:1fr !important;} .r-2{grid-template-columns:1fr !important;} .r-3{grid-template-columns:1fr !important;} .r-main{padding-inline:14px !important;} }
+@media (max-width:520px){ .r-4{grid-template-columns:1fr !important;} }
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .cf-line { stroke-dasharray:1; stroke-dashoffset:1; animation:cf-draw 1.6s ease-in-out .1s forwards; }
+  @keyframes cf-draw { to { stroke-dashoffset:0; } }
+  .cf-feat { transition:transform .18s ease, box-shadow .18s ease; }
+  .cf-feat:hover { transform:translateY(-3px); box-shadow:0 4px 12px rgba(15,23,42,.1); }
+  .cf-src:hover { background:#f1f5f9; }
+  .txn-row:hover { background:rgba(241,245,249,.6); }
+  .cf-th { cursor:pointer; user-select:none; } .cf-th:hover { color:#0f172a; }
+  @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+  @keyframes dash-fade { from { opacity:0; } to { opacity:1; } }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <span style="position:absolute; top:6px; inset-inline-end:6px; width:6px; height:6px; border-radius:999px; background:#0e8ba0;"></span>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <main class="r-main" style="max-width:1180px; margin:0 auto; padding:28px 28px 64px;">
+    <div style="margin-bottom:20px; display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px;">
+      <div>
+        <div style="font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:#94a3b8; font-family:'Space Grotesk',sans-serif;">Cash Intelligence</div>
+        <h1 style="margin:6px 0 0; font-size:26px; font-weight:600; letter-spacing:-.01em;">תזרים</h1>
+        <p style="margin:7px 0 0; font-size:14.5px; color:#55627a; max-width:44em; line-height:1.55;">תמונת מזומנים חיה מחשבוניות, סליקה והזמנות מהחנות — בלי חיבור לבנק ובלי אקסל.</p>
+      </div>
+      <button onClick="{{ onAddOpen }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:12px; background:#0e8ba0; color:#fff; padding:10px 16px; font-size:14px; font-weight:600;"><span style="font-size:16px; line-height:1;">+</span> תנועה חדשה</button>
+    </div>
+
+    <!-- low balance alert -->
+    <sc-if value="{{ lowBalance }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; align-items:center; gap:12px; border:1px solid rgba(178,106,0,.3); background:rgba(178,106,0,.08); border-radius:14px; padding:13px 16px; margin-bottom:18px;">
+        <span style="flex:none; width:34px; height:34px; border-radius:10px; background:rgba(178,106,0,.14); color:#b26a00; display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg></span>
+        <div style="flex:1; font-size:13.5px; color:#0f172a; line-height:1.5;"><b>שים לב לתזרים.</b> צפי היתרה ב‑9 באוגוסט יורד מתחת לסף שהגדרת (₪20,000). שקול להאיץ גבייה של ₪11,350 שממתינים.</div>
+        <a href="#" style="flex:none; font-size:12.5px; font-weight:600; color:#b26a00;">הגדר סף</a>
+      </div>
+    </sc-if>
+
+    <!-- KPI row -->
+    <div class="r-4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div class="glass-card" style="padding:16px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span style="font-size:12px; color:#55627a;">{{ s.label }}</span>
+            <span style="display:inline-flex; align-items:center; gap:2px; font-size:11px; font-weight:600; color:{{ s.deltaColor }};">{{ s.delta }} <span dangerouslySetInnerHTML="{{ s.arrow }}"></span></span>
+          </div>
+          <div style="margin-top:8px; font-size:24px; font-weight:600; letter-spacing:-.01em;" class="tabular-nums">{{ s.value }}</div>
+          <div style="margin-top:3px; font-size:11px; color:#94a3b8;">{{ s.note }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- chart card -->
+    <div class="glass-card" style="padding:22px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:12px;">
+        <div><div style="font-size:15px; font-weight:600;">הכנסות מול הוצאות</div><div style="font-size:12px; color:#94a3b8;">{{ rangeSub }}</div></div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+          <button onClick="{{ toggleCompare }}" style="{{ compareStyle }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>השווה לתקופה קודמת</button>
+          <div style="display:flex; gap:2px; border-radius:10px; background:#f1f5f9; padding:2px;">
+            <sc-for list="{{ viewToggle }}" as="v" hint-placeholder-count="2"><button onClick="{{ v.onClick }}" title="{{ v.title }}" style="{{ v.style }}"><span dangerouslySetInnerHTML="{{ v.icon }}"></span></button></sc-for>
+          </div>
+          <div style="display:flex; gap:2px; border-radius:10px; background:#f1f5f9; padding:2px; font-size:11px;">
+            <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="4"><button onClick="{{ r.onClick }}" style="{{ r.style }}">{{ r.label }}</button></sc-for>
+          </div>
+          <button onClick="{{ toggleCal }}" style="{{ calBtnStyle }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>{{ calBtnLabel }}</button>
+        </div>
+      </div>
+
+      <sc-if value="{{ calOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid rgba(15,23,42,.1); border-radius:14px; box-shadow:0 8px 24px rgba(15,23,42,.1); padding:14px; margin-bottom:14px; max-width:300px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <button onClick="{{ prevMonth }}" aria-label="חודש קודם" style="cursor:pointer; border:none; background:none; color:#55627a; padding:4px 8px; font-size:18px; line-height:1;">›</button>
+            <span style="font-size:13px; font-weight:600;">{{ calMonthLabel }}</span>
+            <button onClick="{{ nextMonth }}" aria-label="חודש הבא" style="cursor:pointer; border:none; background:none; color:#55627a; padding:4px 8px; font-size:18px; line-height:1;">‹</button>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; font-size:10px; color:#94a3b8; text-align:center;"><span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span>ש׳</span></div>
+          <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px;"><sc-for list="{{ calDays }}" as="d" hint-placeholder-count="35"><button onClick="{{ d.onClick }}" style="{{ d.style }}">{{ d.label }}</button></sc-for></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px; font-size:11px;"><button onClick="{{ clearFrom }}" style="cursor:pointer; border:none; background:none; color:#0b7688; font-weight:600; font-family:inherit;">איפוס</button><span style="color:#94a3b8;">{{ fromLabel }}</span></div>
+        </div>
+      </sc-if>
+
+      <!-- legend (clickable) -->
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:baseline; gap:8px;"><span style="font-size:12px; color:#55627a;">מאזן נטו</span><span style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; color:#0f172a;" class="tabular-nums">{{ hoverNet }}</span></div>
+        <div style="display:flex; align-items:center; gap:8px; margin-inline-start:auto; flex-wrap:wrap;">
+          <sc-for list="{{ legend }}" as="l" hint-placeholder-count="3"><button onClick="{{ l.onClick }}" style="{{ l.style }}"><span style="width:11px; height:11px; border-radius:3px; background:{{ l.swatch }};"></span>{{ l.label }} <b style="font-weight:600;" class="tabular-nums">{{ l.value }}</b></button></sc-for>
+        </div>
+      </div>
+      <div style="font-size:11.5px; color:#94a3b8; margin-bottom:12px;">{{ hoverDate }}</div>
+
+      <!-- LINE view -->
+      <sc-if value="{{ isLine }}" hint-placeholder-val="{{ true }}">
+        <div ref="{{ chartRef }}" onMouseMove="{{ onMove }}" onMouseLeave="{{ onLeave }}" style="position:relative; cursor:crosshair;">
+          <svg viewBox="0 0 900 230" style="width:100%; display:block;">
+            <defs><linearGradient id="cf-in" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#12805c" stop-opacity="0.2"/><stop offset="100%" stop-color="#12805c" stop-opacity="0"/></linearGradient></defs>
+            <sc-for list="{{ grid }}" as="g" hint-placeholder-count="5"><line x1="0" y1="{{ g.y }}" x2="900" y2="{{ g.y }}" stroke="rgba(15,23,42,.07)" stroke-width="1"></line></sc-for>
+            <sc-if value="{{ showCompare }}" hint-placeholder-val="{{ false }}"><path d="{{ prevPath }}" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="5 5" opacity=".7"></path></sc-if>
+            <sc-if value="{{ sIn }}" hint-placeholder-val="{{ true }}"><path d="{{ inArea }}" fill="url(#cf-in)"></path><path class="cf-line" d="{{ inPath }}" fill="none" stroke="#12805c" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" pathLength="1"></path></sc-if>
+            <sc-if value="{{ sOut }}" hint-placeholder-val="{{ true }}"><path class="cf-line" d="{{ outPath }}" fill="none" stroke="#d1453b" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" pathLength="1"></path></sc-if>
+            <sc-if value="{{ sNet }}" hint-placeholder-val="{{ false }}"><path class="cf-line" d="{{ netPath }}" fill="none" stroke="#0e8ba0" stroke-width="2.2" stroke-dasharray="2 3" stroke-linejoin="round" stroke-linecap="round" pathLength="1"></path></sc-if>
+            <sc-if value="{{ hasHover }}" hint-placeholder-val="{{ false }}"><line x1="{{ hoverX }}" y1="8" x2="{{ hoverX }}" y2="216" stroke="#0e8ba0" stroke-width="1.2" stroke-dasharray="4 4"></line></sc-if>
+          </svg>
+          <sc-for list="{{ grid }}" as="g" hint-placeholder-count="5"><span style="position:absolute; top:{{ g.top }}; inset-inline-end:2px; transform:translateY(-50%); font-size:10px; color:#94a3b8; background:rgba(255,255,255,.85); padding:0 4px; border-radius:4px;" class="tabular-nums">{{ g.label }}</span></sc-for>
+          <sc-if value="{{ hasHover }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ sIn }}" hint-placeholder-val="{{ true }}"><span style="position:absolute; left:{{ hoverLeft }}; top:{{ hoverInTop }}; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:999px; background:#12805c; border:2.5px solid #fff; box-shadow:0 1px 4px rgba(18,128,92,.5); pointer-events:none;"></span></sc-if>
+            <sc-if value="{{ sOut }}" hint-placeholder-val="{{ true }}"><span style="position:absolute; left:{{ hoverLeft }}; top:{{ hoverOutTop }}; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:999px; background:#d1453b; border:2.5px solid #fff; box-shadow:0 1px 4px rgba(209,69,59,.5); pointer-events:none;"></span></sc-if>
+            <div style="position:absolute; left:{{ hoverLeft }}; top:{{ hoverInTop }}; transform:translate(-50%,calc(-100% - 14px)); background:#0f172a; color:#fff; border-radius:10px; padding:8px 11px; font-size:11.5px; white-space:nowrap; pointer-events:none; box-shadow:0 8px 20px rgba(15,23,42,.25);">
+              <div style="display:flex; align-items:center; gap:6px;" class="tabular-nums"><span style="width:8px; height:8px; border-radius:2px; background:#31b98a;"></span>הכנסות {{ hoverIn }}</div>
+              <div style="display:flex; align-items:center; gap:6px; margin-top:3px;" class="tabular-nums"><span style="width:8px; height:8px; border-radius:2px; background:#e77;"></span>הוצאות {{ hoverOut }}</div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- BARS view -->
+      <sc-if value="{{ isBars }}" hint-placeholder-val="{{ false }}">
+        <div style="position:relative;">
+          <svg viewBox="0 0 900 230" style="width:100%; display:block;">
+            <sc-for list="{{ grid }}" as="g" hint-placeholder-count="5"><line x1="0" y1="{{ g.y }}" x2="900" y2="{{ g.y }}" stroke="rgba(15,23,42,.07)" stroke-width="1"></line></sc-for>
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="8">
+              <sc-if value="{{ sIn }}" hint-placeholder-val="{{ true }}"><rect x="{{ b.inX }}" y="{{ b.inY }}" width="{{ b.w }}" height="{{ b.inH }}" rx="3" fill="#12805c"><title>{{ b.inTitle }}</title></rect></sc-if>
+              <sc-if value="{{ sOut }}" hint-placeholder-val="{{ true }}"><rect x="{{ b.outX }}" y="{{ b.outY }}" width="{{ b.w }}" height="{{ b.outH }}" rx="3" fill="#d1453b"><title>{{ b.outTitle }}</title></rect></sc-if>
+            </sc-for>
+          </svg>
+          <sc-for list="{{ grid }}" as="g" hint-placeholder-count="5"><span style="position:absolute; top:{{ g.top }}; inset-inline-end:2px; transform:translateY(-50%); font-size:10px; color:#94a3b8; background:rgba(255,255,255,.85); padding:0 4px; border-radius:4px;" class="tabular-nums">{{ g.label }}</span></sc-for>
+        </div>
+      </sc-if>
+
+      <div dir="ltr" style="display:flex; justify-content:space-between; padding:0 4px; margin-top:8px; font-size:11px; color:#94a3b8;"><sc-for list="{{ xLabels }}" as="x" hint-placeholder-count="3"><span>{{ x }}</span></sc-for></div>
+    </div>
+
+    <!-- pie (expenses) + month vs month + forecast -->
+    <div class="r-3" style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; align-items:start;">
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:15px; font-weight:600; margin-bottom:6px;">הוצאות לפי קטגוריה</div>
+        <div style="font-size:12px; color:#94a3b8; margin-bottom:14px;">סה״כ ₪ 29,800 החודש</div>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <svg viewBox="0 0 100 100" width="120" height="120" style="flex:none; transform:rotate(-90deg);">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" stroke-width="16"></circle>
+            <sc-for list="{{ pie }}" as="p" hint-placeholder-count="5"><circle cx="50" cy="50" r="40" fill="none" stroke="{{ p.color }}" stroke-width="16" stroke-dasharray="{{ p.dash }}" stroke-dashoffset="{{ p.offset }}"></circle></sc-for>
+          </svg>
+          <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+            <sc-for list="{{ pieLegend }}" as="p" hint-placeholder-count="5"><div style="display:flex; align-items:center; gap:8px; font-size:12.5px;"><span style="width:9px; height:9px; border-radius:3px; background:{{ p.color }};"></span><span style="flex:1; color:#0f172a;">{{ p.name }}</span><span style="color:#55627a;" class="tabular-nums">{{ p.pct }}%</span></div></sc-for>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:15px; font-weight:600; margin-bottom:6px;">חודש מול חודש</div>
+        <div style="font-size:12px; color:#94a3b8; margin-bottom:16px;">יולי לעומת יוני</div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <sc-for list="{{ mom }}" as="m" hint-placeholder-count="3">
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; font-size:12.5px; margin-bottom:6px;"><span style="color:#55627a;">{{ m.label }}</span><span style="display:inline-flex; align-items:center; gap:4px; font-weight:600; color:{{ m.color }};">{{ m.cur }} <span style="font-size:11px;">{{ m.deltaLabel }}</span></span></div>
+              <div dir="ltr" style="display:flex; align-items:center; gap:6px;"><div style="flex:1; height:8px; border-radius:999px; background:#f1f5f9; overflow:hidden;"><div style="width:{{ m.prevPct }}; height:100%; background:#cbd5e1;"></div></div><div style="flex:1; height:8px; border-radius:999px; background:#f1f5f9; overflow:hidden;"><div style="width:{{ m.curPct }}; height:100%; background:{{ m.bar }};"></div></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:14px; font-size:11px; color:#94a3b8;"><span style="display:flex; align-items:center; gap:5px;"><span style="width:9px; height:9px; border-radius:2px; background:#cbd5e1;"></span>יוני</span><span style="display:flex; align-items:center; gap:5px;"><span style="width:9px; height:9px; border-radius:2px; background:#0e8ba0;"></span>יולי</span></div>
+      </div>
+      <div class="glass-card" style="padding:22px;">
+        <div style="font-size:15px; font-weight:600; margin-bottom:6px;">תחזית תזרים</div>
+        <div style="font-size:12px; color:#94a3b8; margin-bottom:16px;">צפי על בסיס המגמה הנוכחית</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <sc-for list="{{ forecast }}" as="f" hint-placeholder-count="2">
+            <div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:14px;">
+              <div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-size:12.5px; color:#55627a;">{{ f.label }}</span><span style="font-size:11px; font-weight:600; color:{{ f.color }};">{{ f.delta }}</span></div>
+              <div style="margin-top:6px; font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600;" class="tabular-nums">{{ f.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- pending invoices -->
+    <div class="glass-card" style="margin-top:16px; padding:22px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+        <div><div style="font-size:15px; font-weight:600;">חשבוניות שממתינות לתשלום</div><div style="font-size:12px; color:#94a3b8; margin-top:2px;">סה״כ ₪ 11,350 · {{ invoiceCount }} חשבוניות</div></div>
+        <a href="#" style="font-size:12.5px; font-weight:600; color:#0b7688;">כל החשבוניות</a>
+      </div>
+      <div style="display:flex; flex-direction:column;">
+        <sc-for list="{{ invoices }}" as="i" hint-placeholder-count="3">
+          <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(15,23,42,.06);">
+            <span style="flex:none; width:34px; height:34px; border-radius:999px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; background:{{ i.tint }};">{{ i.initials }}</span>
+            <div style="flex:1; min-width:0;"><div style="font-size:13.5px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ i.name }}</div><div style="font-size:11.5px; color:#94a3b8;">חשבונית {{ i.number }} · יעד {{ i.due }}</div></div>
+            <span style="{{ i.pill }}">{{ i.status }}</span>
+            <span style="font-size:14px; font-weight:600; color:#0f172a; min-width:70px; text-align:end;" class="tabular-nums">{{ i.amount }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- transactions table -->
+    <div class="glass-card" style="margin-top:16px; padding:0; overflow:hidden;">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:20px 22px 14px;">
+        <div style="font-size:15px; font-weight:600;">תנועות אחרונות</div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div style="position:relative;"><span style="pointer-events:none; position:absolute; inset-inline-start:10px; top:50%; transform:translateY(-50%); color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg></span><input value="{{ txnSearch }}" onInput="{{ onTxnSearch }}" placeholder="חיפוש…" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:10px; padding:7px 10px 7px 30px; font-family:inherit; font-size:13px; outline:none; width:150px;"></div>
+          <select value="{{ txnType }}" onChange="{{ onTxnType }}" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:10px; padding:7px 10px; font-family:inherit; font-size:13px; color:#0f172a; outline:none;"><option value="all">הכל</option><option value="in">הכנסות</option><option value="out">הוצאות</option></select>
+          <select value="{{ txnCat }}" onChange="{{ onTxnCat }}" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:10px; padding:7px 10px; font-family:inherit; font-size:13px; color:#0f172a; outline:none;"><sc-for list="{{ catOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select>
+          <button onClick="{{ onTxnExport }}" style="cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:10px; padding:7px 11px; font-size:13px; font-weight:600; color:#0f172a;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>CSV</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; min-width:640px; border-collapse:collapse; font-size:14px;">
+          <thead><tr style="border-bottom:1px solid rgba(15,23,42,.08); background:rgba(241,245,249,.5);">
+            <sc-for list="{{ txnCols }}" as="c" hint-placeholder-count="4"><th class="cf-th" onClick="{{ c.onSort }}" style="padding:11px 16px; text-align:start; font-size:12px; font-weight:600; color:#55627a; white-space:nowrap;">{{ c.label }}<span style="margin-inline-start:4px; color:#0e8ba0;">{{ c.arrow }}</span></th></sc-for>
+            <th style="padding:11px 16px; text-align:start; font-size:12px; font-weight:600; color:#55627a;">סכום</th>
+          </tr></thead>
+          <tbody>
+            <sc-for list="{{ txnRows }}" as="t" hint-placeholder-count="8">
+              <tr class="txn-row" onClick="{{ t.onOpen }}" style="border-bottom:1px solid rgba(15,23,42,.06); cursor:pointer; transition:background .15s ease;">
+                <td style="padding:12px 16px;"><span style="display:flex; align-items:center; gap:10px;"><span style="width:8px; height:8px; border-radius:999px; background:{{ t.dot }};"></span><span style="font-weight:500; color:#0f172a;">{{ t.desc }}</span></span></td>
+                <td style="padding:12px 16px; color:#55627a;">{{ t.cat }}</td>
+                <td style="padding:12px 16px; color:#55627a;">{{ t.date }}</td>
+                <td style="padding:12px 16px; color:#55627a;">{{ t.method }}</td>
+                <td style="padding:12px 16px; font-weight:600; color:{{ t.amountColor }};" class="tabular-nums">{{ t.amountLabel }}</td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <sc-if value="{{ txnEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:40px; text-align:center; font-size:14px; color:#55627a;">לא נמצאו תנועות</div></sc-if>
+      <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ false }}"><div style="padding:14px; text-align:center; border-top:1px solid rgba(15,23,42,.06);"><button onClick="{{ onShowMore }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:10px; padding:8px 20px; font-size:13.5px; font-weight:600; color:#0f172a;">הצג עוד ({{ remaining }})</button></div></sc-if>
+    </div>
+
+    <!-- feature cards -->
+    <div class="r-2" style="margin-top:20px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px;">
+      <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+        <div class="glass-card cf-feat" style="padding:20px;">
+          <span style="display:flex; width:38px; height:38px; border-radius:11px; align-items:center; justify-content:center; background:rgba(14,139,160,.1); color:#0e8ba0; margin-bottom:12px;"><span dangerouslySetInnerHTML="{{ f.icon }}"></span></span>
+          <h3 style="margin:0; font-size:15px; font-weight:600;">{{ f.title }}</h3>
+          <p style="margin:6px 0 0; font-size:13px; color:#55627a; line-height:1.55;">{{ f.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+
+  <!-- ADD TXN DRAWER -->
+  <sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onAddClose }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(420px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid rgba(15,23,42,.08);"><div style="font-size:17px; font-weight:600;">תנועה חדשה</div><button onClick="{{ onAddClose }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button></div>
+      <form onSubmit="{{ onAddSubmit }}" style="flex:1; overflow-y:auto; padding:22px; display:flex; flex-direction:column; gap:16px;" class="scrollbar-hide">
+        <div style="display:flex; gap:8px;"><sc-for list="{{ addKindToggle }}" as="k" hint-placeholder-count="2"><button type="button" onClick="{{ k.onClick }}" style="{{ k.style }}">{{ k.label }}</button></sc-for></div>
+        <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">תיאור</span><input value="{{ af.desc }}" onInput="{{ afDesc }}" placeholder="למשל: תשלום ספק" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; outline:none; box-sizing:border-box;"></label>
+        <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">סכום (₪)</span><input value="{{ af.amount }}" onInput="{{ afAmount }}" placeholder="0" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; outline:none; box-sizing:border-box;"></label>
+        <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">קטגוריה</span><input value="{{ af.cat }}" onInput="{{ afCat }}" placeholder="למשל: ספקים" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; outline:none; box-sizing:border-box;"></label>
+        <label style="display:block;"><span style="display:block; font-size:12.5px; font-weight:600; color:#55627a; margin-bottom:6px;">אמצעי</span><select value="{{ af.method }}" onChange="{{ afMethod }}" style="width:100%; border:1px solid rgba(15,23,42,.16); border-radius:11px; padding:10px 12px; font-family:inherit; font-size:14px; color:#0f172a; background:#fff; outline:none; box-sizing:border-box;"><option value="אשראי">אשראי</option><option value="העברה">העברה בנקאית</option><option value="מזומן">מזומן</option><option value="חשבונית">חשבונית</option></select></label>
+        <div style="display:flex; gap:10px; margin-top:6px;"><button type="submit" style="cursor:pointer; font-family:inherit; flex:1; border:none; border-radius:12px; background:#0e8ba0; color:#fff; padding:12px; font-size:14px; font-weight:600;">הוספה</button><button type="button" onClick="{{ onAddClose }}" style="cursor:pointer; font-family:inherit; border:1px solid rgba(15,23,42,.16); border-radius:12px; background:#fff; color:#0f172a; padding:12px 18px; font-size:14px; font-weight:600;">ביטול</button></div>
+      </form>
+    </aside>
+  </sc-if>
+
+  <!-- TXN DETAIL DRAWER -->
+  <sc-if value="{{ txnOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onTxnClose }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(420px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="padding:22px; border-bottom:1px solid rgba(15,23,42,.08); display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div><div style="font-size:12px; color:{{ txn.amountColor }}; font-weight:600;">{{ txn.kindLabel }}</div><div style="font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:600; margin-top:4px; color:{{ txn.amountColor }};" class="tabular-nums">{{ txn.amountLabel }}</div><div style="font-size:14px; color:#0f172a; margin-top:6px;">{{ txn.desc }}</div></div>
+        <button onClick="{{ onTxnClose }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:22px;" class="scrollbar-hide">
+        <div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:9px;">
+          <sc-for list="{{ txn.fields }}" as="f" hint-placeholder-count="4"><div style="display:flex; justify-content:space-between; font-size:13.5px;"><span style="color:#94a3b8;">{{ f.label }}</span><span style="color:#0f172a; font-weight:500;">{{ f.value }}</span></div></sc-for>
+        </div>
+        <div style="margin-top:20px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">מקור</div>
+        <div style="display:flex; align-items:center; gap:11px; border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:12px 14px;"><span style="flex:none; width:36px; height:36px; border-radius:10px; background:rgba(14,139,160,.1); color:#0e8ba0; display:flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/></svg></span><div><div style="font-size:13px; font-weight:600;">{{ txn.source }}</div><div style="font-size:11.5px; color:#94a3b8;">נקלט אוטומטית</div></div></div>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}"><div style="position:fixed; bottom:28px; inset-inline-start:50%; transform:translateX(50%); z-index:80; background:#0f172a; color:#fff; border-radius:12px; padding:12px 20px; font-size:14px; box-shadow:0 12px 32px rgba(15,23,42,.28); animation:dash-fade .25s ease both;">{{ toast }}</div></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    nav: [], range:'3m', hoverIdx:null, calOpen:false, fromDate:null, calMonth:null,
+    chartView:'line', compare:false, series:{in:true,out:true,net:false},
+    txnSearch:'', txnType:'all', txnCat:'all', txnSort:'date', txnDir:-1, txnShow:8, txnId:null,
+    addOpen:false, addForm:{kind:'out',desc:'',amount:'',cat:'',method:'אשראי'}, txns:null, toast:'',
+  };
+
+  _svg(p,w){ return { __html:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="${w||20}" height="${w||20}">${p}</svg>` }; }
+
+  _chart(spec){
+    const n=spec.n, W=900, H=230, pad=14;
+    const inV=Array.from({length:n},(_,i)=>{const t=i/(n-1); return Math.round(40+52*t+6*Math.sin(i*0.8)+3*Math.cos(i*0.4));});
+    const outV=Array.from({length:n},(_,i)=>{const t=i/(n-1); return Math.round(24+26*t+5*Math.sin(i*0.7+1)+2*Math.cos(i*0.5));});
+    const netV=inV.map((v,i)=>v-outV[i]);
+    const prevV=inV.map(v=>Math.round(v*0.85));
+    const axisMax=Math.ceil((Math.max(...inV)+6)/10)*10;
+    const yFor=(v)=>pad+(H-2*pad)*(1-v/axisMax);
+    const stepX=W/(n-1);
+    const pts=(arr)=>arr.map((v,i)=>({x:i*stepX,y:yFor(v)}));
+    const inPts=pts(inV), outPts=pts(outV);
+    const toLine=(a)=>a.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    const inPath=toLine(inPts), outPath=toLine(outPts), netPath=toLine(pts(netV)), prevPath=toLine(pts(prevV));
+    const inArea=`${inPath} L${W},${H} L0,${H} Z`;
+    const grid=[]; for(let k=0;k<=4;k++){const v=axisMax*k/4; const y=yFor(v); grid.push({y:y.toFixed(1),top:(y/H*100).toFixed(2)+'%',label:'₪ '+Math.round(v)+'K'});}
+    // bars: sample to <=12
+    const bstep=Math.max(1,Math.ceil(n/12)); const bidx=[]; for(let i=0;i<n;i+=bstep) bidx.push(i);
+    const bw=W/bidx.length; const barW=Math.min(16,bw/3);
+    const bars=bidx.map((i,k)=>{ const cx=k*bw+bw/2; const inH=(H-2*pad)*inV[i]/axisMax, outH=(H-2*pad)*outV[i]/axisMax;
+      return { w:barW.toFixed(1), inX:(cx-barW-1).toFixed(1), inY:(H-pad-inH).toFixed(1), inH:inH.toFixed(1), outX:(cx+1).toFixed(1), outY:(H-pad-outH).toFixed(1), outH:outH.toFixed(1),
+        inTitle:'הכנסות ₪'+Math.round(inV[i]*1000).toLocaleString('he-IL'), outTitle:'הוצאות ₪'+Math.round(outV[i]*1000).toLocaleString('he-IL') }; });
+    const fmt=(d)=>d.toLocaleDateString('he-IL',{day:'numeric',month:'long'});
+    const start=new Date(spec.start);
+    const dates=inV.map((_,i)=>{const d=new Date(start); d.setDate(start.getDate()+Math.round(i*spec.spanDays/(n-1))); return fmt(d);});
+    return { inV,outV,netV,inPts,outPts,inPath,outPath,netPath,prevPath,inArea,grid,bars,dates,xLabels:spec.xLabels,rangeSub:spec.sub,W,H };
+  }
+
+  _seedTxns(){
+    return [
+      {id:1,date:'23.7',desc:'תשלום מנוי — קליניקת נועה',cat:'מנויים',kind:'in',amount:349,method:'חשבונית',source:'חשבונית ירוקה'},
+      {id:2,date:'22.7',desc:'ספק — חומרי גלם',cat:'ספקים',kind:'out',amount:2140,method:'העברה',source:'העברה בנקאית'},
+      {id:3,date:'22.7',desc:'הזמנה מהחנות #1043',cat:'חנות',kind:'in',amount:1240,method:'אשראי',source:'WooCommerce'},
+      {id:4,date:'21.7',desc:'קמפיין פייסבוק',cat:'שיווק',kind:'out',amount:900,method:'אשראי',source:'Meta Ads'},
+      {id:5,date:'20.7',desc:'פרויקט — רשת אופנה URBAN',cat:'פרויקטים',kind:'in',amount:6400,method:'העברה',source:'חשבונית ירוקה'},
+      {id:6,date:'19.7',desc:'שכירות משרד — יולי',cat:'שכירות',kind:'out',amount:3200,method:'העברה',source:'הוראת קבע'},
+      {id:7,date:'18.7',desc:'מנוי תוכנה — Grow',cat:'תוכנה',kind:'out',amount:190,method:'אשראי',source:'Grow'},
+      {id:8,date:'17.7',desc:'הזמנה מהחנות #1041',cat:'חנות',kind:'in',amount:820,method:'אשראי',source:'WooCommerce'},
+      {id:9,date:'16.7',desc:'תשלום מנוי — בית קפה עלית',cat:'מנויים',kind:'in',amount:349,method:'חשבונית',source:'חשבונית ירוקה'},
+      {id:10,date:'15.7',desc:'משכורת — עובד במשרה חלקית',cat:'שכר',kind:'out',amount:5400,method:'העברה',source:'העברה בנקאית'},
+      {id:11,date:'14.7',desc:'סליקת אשראי — לקוח מזדמן',cat:'חנות',kind:'in',amount:540,method:'אשראי',source:'Grow'},
+      {id:12,date:'12.7',desc:'ספק אריזות',cat:'ספקים',kind:'out',amount:760,method:'אשראי',source:'אשראי עסקי'},
+      {id:13,date:'11.7',desc:'פרויקט — קליניקת נועה',cat:'פרויקטים',kind:'in',amount:4200,method:'העברה',source:'חשבונית ירוקה'},
+      {id:14,date:'10.7',desc:'חשמל ומים',cat:'תפעול',kind:'out',amount:640,method:'הוראת קבע',source:'הוראת קבע'},
+    ];
+  }
+
+  _toast(m){ this.setState({toast:m}); clearTimeout(this._tt); this._tt=setTimeout(()=>this.setState({toast:''}),2600); }
+
+  renderVals(){
+    const svg=this._svg.bind(this);
+    const up=svg('<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5 19.5 4.5m0 0H9m10.5 0V15"/>',12);
+    const down=svg('<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5 4.5 19.5m0 0h10.5m-10.5 0V9"/>',12);
+    const money=(v)=>'₪ '+Math.round(v*1000).toLocaleString('he-IL');
+    const shk=(v)=>'₪ '+v.toLocaleString('he-IL');
+
+    const stats=[
+      {label:'הכנסות החודש',value:'₪ 48,200',delta:'+12.5%',up:true,note:'מגמת עלייה'},
+      {label:'הוצאות החודש',value:'₪ 29,800',delta:'-8%',up:false,note:'ירידה מהחודש שעבר'},
+      {label:'רווחיות (נטו)',value:'₪ 18,400',delta:'+21%',up:true,note:'שולי רווח 38%'},
+      {label:'ממתין לגבייה',value:'₪ 11,350',delta:'',up:true,note:'5 חשבוניות פתוחות'},
+    ].map(s=>({...s,deltaColor:s.up?'#12805c':'#d1453b',arrow:s.up?up:down}));
+
+    const features=[
+      {title:'זיהוי הכנסות אוטומטי',desc:'כל חשבונית, סליקה והזמנה מהחנות נכנסת לתזרים לבד.',icon:svg('<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/>')},
+      {title:'התראות בזמן אמת',desc:'התראה לפני שהיתרה יורדת מתחת לסף שהגדרת.',icon:svg('<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>')},
+    ];
+
+    // ranges + calendar
+    const TODAY=new Date('2026-07-23');
+    const fmtShort=(d)=>d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'});
+    const fmtLong=(d)=>d.toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
+    const R={'30d':{n:30,start:'2026-06-24',spanDays:29,xLabels:['24.6','9.7','24.7'],sub:'ב־30 הימים האחרונים'},'3m':{n:40,start:'2026-04-25',spanDays:89,xLabels:['אפריל','מאי','יוני','יולי'],sub:'ב־3 החודשים האחרונים'},'6m':{n:26,start:'2026-01-23',spanDays:181,xLabels:['ינואר','מרץ','מאי','יולי'],sub:'ב־6 החודשים האחרונים'},'1y':{n:12,start:'2025-07-23',spanDays:364,xLabels:['יולי 25','אוק׳','ינואר','יולי 26'],sub:'ב־12 החודשים האחרונים'}};
+    const from=this.state.fromDate; let spec;
+    if(from){ const span=Math.max(2,Math.round((TODAY-from)/86400000)); let nn=span<=31?Math.min(span,31):span<=95?40:span<=190?26:Math.min(52,Math.round(span/7)); nn=Math.max(6,nn); spec={n:nn,start:from.toISOString().slice(0,10),spanDays:span,xLabels:[fmtShort(from),'',fmtShort(TODAY)],sub:'מ־'+fmtLong(from)}; }
+    else spec=R[this.state.range]||R['3m'];
+    const c=this._chart(spec);
+    const n=c.inPts.length;
+    const hoverActive=this.state.hoverIdx!=null;
+    const idx=hoverActive?Math.max(0,Math.min(n-1,this.state.hoverIdx)):n-1;
+    const inP=c.inPts[idx], outP=c.outPts[idx];
+    const rOn='cursor:pointer; font-family:inherit; border:none; border-radius:8px; background:#fff; padding:4px 11px; font-weight:600; color:#0f172a; box-shadow:0 1px 2px rgba(15,23,42,.06);';
+    const rOff='cursor:pointer; font-family:inherit; border:none; border-radius:8px; background:transparent; padding:4px 11px; color:#94a3b8;';
+    const ranges=[{key:'30d',label:'30 יום'},{key:'3m',label:'3 חודשים'},{key:'6m',label:'חצי שנה'},{key:'1y',label:'שנה'}].map(r=>({label:r.label,style:(!from&&this.state.range===r.key)?rOn:rOff,onClick:()=>this.setState({range:r.key,fromDate:null,hoverIdx:null,calOpen:false})}));
+
+    const cal=this.state.calMonth?new Date(this.state.calMonth):new Date('2026-07-01');
+    const cy=cal.getFullYear(),cm=cal.getMonth();
+    const firstPad=new Date(cy,cm,1).getDay(), dim=new Date(cy,cm+1,0).getDate();
+    const dayBase='cursor:pointer; font-family:inherit; border:none; background:none; border-radius:8px; height:30px; font-size:12px; color:#0f172a;';
+    const calDays=[]; for(let i=0;i<firstPad;i++) calDays.push({label:'',style:'height:30px; visibility:hidden;',onClick:()=>{}});
+    for(let day=1;day<=dim;day++){ const d=new Date(cy,cm,day); const future=d>TODAY; const sel=from&&d.toDateString()===from.toDateString(); const today=d.toDateString()===TODAY.toDateString(); let st=dayBase; if(future)st+='color:#cbd5e1; cursor:default;'; else if(sel)st+='background:#0e8ba0; color:#fff; font-weight:700;'; else if(today)st+='box-shadow:inset 0 0 0 1px rgba(14,139,160,.4); color:#0b7688; font-weight:600;'; calDays.push({label:String(day),style:st,onClick:future?(()=>{}):(()=>this.setState({fromDate:d,range:'custom',calOpen:false,hoverIdx:null}))}); }
+    const shiftMonth=(delta)=>{const b=this.state.calMonth?new Date(this.state.calMonth):new Date('2026-07-01'); this.setState({calMonth:new Date(b.getFullYear(),b.getMonth()+delta,1)});};
+
+    // legend
+    const ser=this.state.series;
+    const legBtn=(on)=>'cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; border:1px solid rgba(15,23,42,.12); border-radius:999px; padding:5px 11px; font-size:12px; color:#55627a; background:#fff; '+(on?'':'opacity:.4;');
+    const legend=[
+      {key:'in',label:'הכנסות',swatch:'#12805c',value:money(c.inV[idx])},
+      {key:'out',label:'הוצאות',swatch:'#d1453b',value:money(c.outV[idx])},
+      {key:'net',label:'נטו',swatch:'#0e8ba0',value:money(c.netV[idx])},
+    ].map(l=>({...l,style:legBtn(ser[l.key]),onClick:()=>this.setState(s=>({series:{...s.series,[l.key]:!s.series[l.key]}}))}));
+
+    // view toggle
+    const vBtn=(on)=>'cursor:pointer; font-family:inherit; border:none; border-radius:8px; padding:5px 9px; display:flex; align-items:center; '+(on?'background:#fff; color:#0f172a; box-shadow:0 1px 2px rgba(15,23,42,.08);':'background:transparent; color:#94a3b8;');
+    const viewToggle=[
+      {title:'קו',icon:svg('<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22"/>',15),onClick:()=>this.setState({chartView:'line'}),style:vBtn(this.state.chartView==='line')},
+      {title:'עמודות',icon:svg('<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/>',15),onClick:()=>this.setState({chartView:'bars'}),style:vBtn(this.state.chartView==='bars')},
+    ];
+
+    // pie (expenses)
+    const expenseCats=[
+      {name:'שכר ועובדים',amount:12400,pct:42,color:'#0e8ba0'},
+      {name:'ספקים ומלאי',amount:6900,pct:23,color:'#1666a8'},
+      {name:'שיווק ופרסום',amount:4200,pct:14,color:'#7c6cf0'},
+      {name:'שכירות',amount:3200,pct:11,color:'#b26a00'},
+      {name:'תוכנה ומנויים',amount:1800,pct:6,color:'#0e7490'},
+      {name:'אחר',amount:1300,pct:4,color:'#94a3b8'},
+    ];
+    const CIRC=2*Math.PI*40; let acc=0;
+    const pie=expenseCats.map(cat=>{ const len=CIRC*cat.pct/100; const seg={color:cat.color,dash:`${len.toFixed(1)} ${(CIRC-len).toFixed(1)}`,offset:(-acc).toFixed(1)}; acc+=len; return seg; });
+    const pieLegend=expenseCats.map(cat=>({name:cat.name,pct:cat.pct,color:cat.color}));
+
+    // month vs month
+    const mom=[
+      {label:'הכנסות',cur:'₪48.2K',prevPct:'72%',curPct:'100%',delta:0.14,bar:'#12805c'},
+      {label:'הוצאות',cur:'₪29.8K',prevPct:'100%',curPct:'92%',delta:-0.08,bar:'#d1453b'},
+      {label:'נטו',cur:'₪18.4K',prevPct:'55%',curPct:'100%',delta:0.21,bar:'#0e8ba0'},
+    ].map(m=>({...m,color:m.delta>=0?'#12805c':'#d1453b',deltaLabel:(m.delta>=0?'▲ ':'▼ ')+Math.abs(Math.round(m.delta*100))+'%'}));
+
+    // forecast
+    const forecast=[
+      {label:'צפי יתרה ב‑30 יום',value:'₪ 96,900',delta:'▲ 12%',color:'#12805c'},
+      {label:'צפי יתרה ב‑60 יום',value:'₪ 108,400',delta:'▲ 19%',color:'#12805c'},
+    ];
+
+    // invoices
+    const okP='border-radius:999px; padding:2px 9px; font-size:10.5px; font-weight:600; background:rgba(178,106,0,.1); color:#b26a00;';
+    const lateP='border-radius:999px; padding:2px 9px; font-size:10.5px; font-weight:600; background:rgba(209,69,59,.1); color:#d1453b;';
+    const tint=(s)=>{const t=['#0e8ba0','#1666a8','#12805c','#b26a00'];let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))|0;return t[Math.abs(h)%t.length];};
+    const ini=(s)=>s.replace(/[״׳"]/g,'').split(' ').slice(0,2).map(w=>w[0]).join('');
+    const invRaw=[
+      {name:'רשת אופנה URBAN',number:'#2041',due:'26.7',amount:6400,late:false},
+      {name:'חברת שיפוצים',number:'#2038',due:'22.7',amount:3200,late:true},
+      {name:'קליניקת נועה',number:'#2044',due:'31.7',amount:1750,late:false},
+    ];
+    const invoices=invRaw.map(i=>({name:i.name,number:i.number,due:i.due,initials:ini(i.name),tint:tint(i.name),amount:shk(i.amount),status:i.late?'באיחור':'ממתין',pill:i.late?lateP:okP}));
+
+    // transactions table
+    let txns=this.state.txns||this._seedTxns();
+    const catOptions=['all',...new Set(txns.map(t=>t.cat))];
+    let filtered=txns.filter(t=>(this.state.txnType==='all'||t.kind===this.state.txnType)&&(this.state.txnCat==='all'||t.cat===this.state.txnCat));
+    const tq=this.state.txnSearch.trim(); if(tq) filtered=filtered.filter(t=>[t.desc,t.cat,t.method].some(v=>v.includes(tq)));
+    const sk=this.state.txnSort, sd=this.state.txnDir;
+    const parseDate=(s)=>{const[d,m]=s.split('.').map(Number); return m*100+d;};
+    filtered=[...filtered].sort((a,b)=>{ let x,y; if(sk==='amount'){x=a.amount;y=b.amount;} else if(sk==='date'){x=parseDate(a.date);y=parseDate(b.date);} else {x=a[sk];y=b[sk];} if(typeof x==='number') return (x-y)*sd; return String(x).localeCompare(String(y),'he')*sd; });
+    const totalF=filtered.length;
+    const shown=filtered.slice(0,this.state.txnShow);
+    const txnCols=[['desc','תיאור'],['cat','קטגוריה'],['date','תאריך'],['method','אמצעי']].map(([key,label])=>({label,arrow:sk===key?(sd>0?'↑':'↓'):'',onSort:()=>this.setState(s=>({txnSort:key,txnDir:s.txnSort===key?-s.txnDir:1}))}));
+    const txnRows=shown.map(t=>({desc:t.desc,cat:t.cat,date:t.date,method:t.method,dot:t.kind==='in'?'#12805c':'#d1453b',amountColor:t.kind==='in'?'#12805c':'#d1453b',amountLabel:(t.kind==='in'?'+ ':'− ')+shk(t.amount),onOpen:()=>this.setState({txnId:t.id})}));
+
+    // txn drawer
+    const txnOpen=this.state.txnId!=null; let txn=null;
+    if(txnOpen){ const t=txns.find(x=>x.id===this.state.txnId)||txns[0]; txn={desc:t.desc,kindLabel:t.kind==='in'?'הכנסה':'הוצאה',amountColor:t.kind==='in'?'#12805c':'#d1453b',amountLabel:(t.kind==='in'?'+ ':'− ')+shk(t.amount),source:t.source,fields:[{label:'קטגוריה',value:t.cat},{label:'תאריך',value:t.date+'.2026'},{label:'אמצעי',value:t.method},{label:'סטטוס',value:'נרשם'}]}; }
+
+    // add form
+    const af=this.state.addForm;
+    const kToggle=[{k:'out',label:'הוצאה'},{k:'in',label:'הכנסה'}].map(o=>({label:o.label,style:'cursor:pointer; font-family:inherit; flex:1; border-radius:11px; padding:10px; font-size:14px; font-weight:600; border:1px solid '+(af.kind===o.k?(o.k==='in'?'#12805c':'#d1453b'):'rgba(15,23,42,.16)')+'; background:'+(af.kind===o.k?(o.k==='in'?'rgba(18,128,92,.1)':'rgba(209,69,59,.09)'):'#fff')+'; color:'+(af.kind===o.k?(o.k==='in'?'#12805c':'#d1453b'):'#55627a')+';',onClick:()=>this.setState(s=>({addForm:{...s.addForm,kind:o.k}}))}));
+    const setAf=(k)=>(e)=>this.setState(s=>({addForm:{...s.addForm,[k]:e.target.value}}));
+
+    return {
+      navItems:this.state.nav, stats, features, lowBalance:true,
+      grid:c.grid, inPath:c.inPath, outPath:c.outPath, netPath:c.netPath, prevPath:c.prevPath, inArea:c.inArea, bars:c.bars, xLabels:c.xLabels, rangeSub:c.rangeSub, ranges,
+      isLine:this.state.chartView==='line', isBars:this.state.chartView==='bars',
+      sIn:ser.in, sOut:ser.out, sNet:ser.net, showCompare:this.state.compare, legend, viewToggle,
+      compareStyle:'cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; border-radius:10px; padding:6px 11px; font-size:11px; font-weight:600; '+(this.state.compare?'border:1px solid #0e8ba0; background:rgba(14,139,160,.1); color:#0b7688;':'border:1px solid rgba(15,23,42,.16); background:#fff; color:#55627a;'),
+      toggleCompare:()=>this.setState(s=>({compare:!s.compare})),
+      hasHover:hoverActive, hoverX:inP.x.toFixed(1), hoverLeft:(inP.x/c.W*100).toFixed(2)+'%', hoverInTop:(inP.y/c.H*100).toFixed(2)+'%', hoverOutTop:(outP.y/c.H*100).toFixed(2)+'%',
+      hoverIn:money(c.inV[idx]), hoverOut:money(c.outV[idx]), hoverNet:money(c.netV[idx]), hoverDate:(hoverActive?'':'עדכני · ')+c.dates[idx],
+      chartRef:(el)=>{this.chart=el;},
+      onMove:(e)=>{ if(!this.chart)return; const r=this.chart.getBoundingClientRect(); let i=Math.round((e.clientX-r.left)/r.width*(n-1)); i=Math.max(0,Math.min(n-1,i)); if(i!==this.state.hoverIdx) this.setState({hoverIdx:i}); },
+      onLeave:()=>this.setState({hoverIdx:null}),
+      calOpen:this.state.calOpen, toggleCal:()=>this.setState(s=>({calOpen:!s.calOpen})),
+      calBtnLabel:from?fmtShort(from):'בחר תאריך',
+      calBtnStyle:'cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; border-radius:10px; padding:6px 11px; font-size:11px; font-weight:600; '+(from?'border:1px solid #0e8ba0; background:rgba(14,139,160,.1); color:#0b7688;':'border:1px solid rgba(15,23,42,.16); background:#fff; color:#55627a;'),
+      calMonthLabel:cal.toLocaleDateString('he-IL',{month:'long',year:'numeric'}), calDays, prevMonth:()=>shiftMonth(-1), nextMonth:()=>shiftMonth(1),
+      clearFrom:()=>this.setState({fromDate:null,range:'3m',calOpen:false,hoverIdx:null}), fromLabel:from?'מ־'+fmtLong(from):'לא נבחר תאריך',
+      pie, pieLegend, mom, forecast, invoices, invoiceCount:5,
+      // transactions
+      catOptions, txnSearch:this.state.txnSearch, txnType:this.state.txnType, txnCat:this.state.txnCat, txnCols, txnRows, txnEmpty:totalF===0,
+      onTxnSearch:(e)=>this.setState({txnSearch:e.target.value,txnShow:8}), onTxnType:(e)=>this.setState({txnType:e.target.value,txnShow:8}), onTxnCat:(e)=>this.setState({txnCat:e.target.value,txnShow:8}),
+      hasMore:totalF>this.state.txnShow, remaining:totalF-this.state.txnShow, onShowMore:()=>this.setState(s=>({txnShow:s.txnShow+6})),
+      onTxnExport:()=>this._exportTxns(filtered),
+      txnOpen, txn, onTxnClose:()=>this.setState({txnId:null}),
+      // add
+      addOpen:this.state.addOpen, af, addKindToggle:kToggle, afDesc:setAf('desc'), afAmount:setAf('amount'), afCat:setAf('cat'), afMethod:setAf('method'),
+      onAddOpen:()=>this.setState({addOpen:true,addForm:{kind:'out',desc:'',amount:'',cat:'',method:'אשראי'}}), onAddClose:()=>this.setState({addOpen:false}),
+      onAddSubmit:(e)=>{ e.preventDefault(); this._addTxn(); },
+      rootRef:(el)=>{this.root=el;}, toast:this.state.toast,
+    };
+  }
+
+  _addTxn(){ const f=this.state.addForm; const cur=this.state.txns||this._seedTxns(); const rec={id:Date.now()%100000,date:'24.7',desc:f.desc||'תנועה חדשה',cat:f.cat||'אחר',kind:f.kind,amount:parseInt(f.amount)||0,method:f.method,source:'הזנה ידנית'}; this.setState({txns:[rec,...cur],addOpen:false}); this._toast('התנועה נוספה בהצלחה'); }
+  _exportTxns(rows){ try{ const head=['תיאור','קטגוריה','תאריך','אמצעי','סוג','סכום']; const lines=[head.join(',')]; rows.forEach(t=>lines.push([t.desc,t.cat,t.date,t.method,t.kind==='in'?'הכנסה':'הוצאה',t.amount].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','))); const csv='\uFEFF'+lines.join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='easylife-txns.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000); this._toast('יוצאו '+rows.length+' תנועות'); }catch(e){ this._toast('הייצוא נכשל בסביבה הזו'); } }
+
+  componentDidMount(){ this.setState({txns:this._seedTxns()}); import('./crmChrome.js').then(m=>this.setState({nav:m.navItems('תזרים')})); }
+}
+</script>
+</body>
+</html>

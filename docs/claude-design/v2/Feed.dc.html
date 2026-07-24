@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/colors.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/typography.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/tokens/motion.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/components.css">
+<link rel="stylesheet" href="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/styles.css">
+<script src="_ds/easy-life-design-system-f48ab4a9-5daf-4a34-9543-90445e442c1f/_ds_bundle.js"></script>
+<style>
+@media (max-width:760px){ .r-main{padding-inline:14px !important;} .r-3{grid-template-columns:1fr !important;} }
+  body { margin:0; background:#f5f7fb; color:#0f172a; font-family:"Heebo",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#0b7688; text-decoration:none; } a:hover { color:#0e8ba0; }
+  .scrollbar-hide::-webkit-scrollbar { display:none; } .scrollbar-hide { scrollbar-width:none; }
+  .fe-row:hover .glass-card { box-shadow:0 4px 12px rgba(15,23,42,.1); }
+  @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+  @keyframes dash-fade { from { opacity:0; } to { opacity:1; } }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="he" style="min-height:100vh; background:#f5f7fb;">
+  <header style="position:sticky; top:0; z-index:40; display:flex; flex-direction:column; border-bottom:1px solid rgba(15,23,42,.08); background:rgba(255,255,255,.95); backdrop-filter:blur(8px);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 28px 12px;">
+      <a href="Landing.dc.html" style="display:flex; align-items:center; gap:10px;">
+        <span style="width:32px; height:32px; border-radius:9px; background:#0e8ba0; display:flex; align-items:center; justify-content:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; letter-spacing:.02em;">Easy<span style="color:#0e8ba0;"> Life</span></span>
+      </a>
+      <div style="flex:1; max-width:560px; display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:#f5f7fb; border-radius:10px; padding:9px 14px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.8" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+        <input placeholder="חיפוש עסקאות, לידים, אנשי קשר…" style="flex:1; border:none; background:transparent; outline:none; font-family:inherit; font-size:14px; color:#0f172a;">
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button style="position:relative; border:1px solid rgba(15,23,42,.08); background:#fff; border-radius:10px; padding:8px; cursor:pointer;" aria-label="התראות">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#55627a" stroke-width="1.7" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg>
+          <span style="position:absolute; top:6px; inset-inline-end:6px; width:6px; height:6px; border-radius:999px; background:#0e8ba0;"></span>
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="position:relative;">
+            <div style="width:32px; height:32px; border-radius:999px; border:1px solid rgba(15,23,42,.08); background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600;">י</div>
+            <span style="position:absolute; bottom:-2px; inset-inline-end:-2px; width:10px; height:10px; border-radius:999px; border:2px solid #fff; background:#12805c;"></span>
+          </div>
+          <div style="line-height:1.2;"><div style="font-size:12.5px; font-weight:600;">ישראל</div><div style="font-size:10.5px; color:#94a3b8;">בעלים</div></div>
+        </div>
+      </div>
+    </div>
+    <nav style="display:flex; align-items:center; gap:2px; padding:0 20px; overflow-x:auto;" class="scrollbar-hide">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="8">
+        <a href="{{ n.href }}" style="{{ n.style }}"><span dangerouslySetInnerHTML="{{ n.icon }}"></span><span style="white-space:nowrap;">{{ n.label }}</span>
+          <sc-if value="{{ n.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; inset-inline:8px; bottom:0; height:2px; border-radius:999px; background:#0e8ba0;"></span></sc-if>
+        </a>
+      </sc-for>
+    </nav>
+  </header>
+
+  <main class="r-main" style="max-width:900px; margin:0 auto; padding:28px 28px 64px;">
+    <div style="margin-bottom:20px; display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px;">
+      <div>
+        <div style="font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:#94a3b8; font-family:'Space Grotesk',sans-serif;">Live Stream</div>
+        <h1 style="margin:6px 0 0; font-size:26px; font-weight:600; letter-spacing:-.01em;">פיד חי</h1>
+        <p style="margin:7px 0 0; font-size:14.5px; color:#55627a; max-width:34em; line-height:1.55;">כל מה שקורה בעסק — סוכנים, אנשים ולקוחות — בזרם אחד, ברגע שזה קורה.</p>
+      </div>
+      <button onClick="{{ togglePause }}" style="{{ pauseStyle }}"><span dangerouslySetInnerHTML="{{ pauseIcon }}"></span>{{ pauseLabel }}</button>
+    </div>
+
+    <!-- summary cards -->
+    <div class="r-3" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;">
+      <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
+        <div class="glass-card" style="padding:16px; display:flex; align-items:center; gap:13px;">
+          <span style="flex:none; width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:{{ s.tint }}; color:{{ s.color }};"><span dangerouslySetInnerHTML="{{ s.icon }}"></span></span>
+          <div><div style="font-size:12px; color:#55627a;">{{ s.label }}</div><div style="font-size:24px; font-weight:600; letter-spacing:-.01em; margin-top:2px;" class="tabular-nums">{{ s.value }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- toolbar -->
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+      <div style="position:relative; flex:1; min-width:180px;">
+        <span style="pointer-events:none; position:absolute; inset-inline-start:11px; top:50%; transform:translateY(-50%); color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg></span>
+        <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="חיפוש באירועים…" style="width:100%; border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:11px; padding:9px 12px 9px 34px; font-family:inherit; font-size:13.5px; outline:none; box-sizing:border-box;">
+      </div>
+      <select value="{{ agentFilter }}" onChange="{{ onAgentFilter }}" style="border:1px solid rgba(15,23,42,.16); background:#fff; border-radius:11px; padding:9px 12px; font-family:inherit; font-size:13.5px; color:#0f172a; outline:none;"><sc-for list="{{ agentOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.val }}">{{ o.label }}</option></sc-for></select>
+    </div>
+
+    <!-- filter chips -->
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:22px;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5"><button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}<span style="margin-inline-start:6px; opacity:.7;">{{ f.count }}</span></button></sc-for>
+    </div>
+
+    <!-- grouped timeline -->
+    <sc-for list="{{ groups }}" as="grp" hint-placeholder-count="2">
+      <div style="margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:10px; margin:6px 0 14px;"><span style="font-size:12px; font-weight:700; letter-spacing:.06em; color:#94a3b8;">{{ grp.label }}</span><span style="flex:1; height:1px; background:rgba(15,23,42,.08);"></span></div>
+        <div style="position:relative;">
+          <div style="pointer-events:none; position:absolute; top:8px; bottom:8px; inset-inline-start:25px; width:1px; background:linear-gradient(to bottom, rgba(14,139,160,.4) 0%, rgba(15,23,42,.07) 100%);"></div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <sc-for list="{{ grp.events }}" as="ev" hint-placeholder-count="6">
+              <article class="fe-row" onClick="{{ ev.onOpen }}" style="position:relative; display:flex; align-items:flex-start; gap:16px; padding-inline-start:8px; cursor:pointer; {{ ev.anim }}">
+                <div style="position:relative; z-index:1; margin-top:12px; flex:none; width:36px; height:36px; border-radius:999px; background:#fff; box-shadow:0 1px 2px rgba(15,23,42,.04); border:1px solid rgba(15,23,42,.08); display:flex; align-items:center; justify-content:center; color:{{ ev.tint }};"><span dangerouslySetInnerHTML="{{ ev.icon }}"></span></div>
+                <div class="glass-card" style="flex:1; min-width:0; padding:15px 16px; transition:box-shadow .15s ease;">
+                  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+                    <span style="font-size:14px; font-weight:600;">{{ ev.label }}</span>
+                    <span style="{{ ev.actorStyle }}">{{ ev.actorLabel }}</span>
+                    <span style="font-size:12px; color:#94a3b8;">{{ ev.actorId }}</span>
+                    <time style="margin-inline-start:auto; flex:none; font-size:12px; color:#94a3b8;" class="tabular-nums">{{ ev.time }}</time>
+                  </div>
+                  <p style="margin:6px 0 0; font-size:13.5px; color:#55627a; line-height:1.5;">{{ ev.summary }}</p>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}"><div class="glass-card" style="padding:44px; text-align:center; font-size:14px; color:#55627a;">אין אירועים שתואמים את הסינון</div></sc-if>
+  </main>
+
+  <!-- EVENT DRAWER -->
+  <sc-if value="{{ evOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onClose }}" style="position:fixed; inset:0; z-index:60; background:rgba(15,23,42,.28); animation:dash-fade .2s ease both;"></div>
+    <aside style="position:fixed; top:0; inset-inline-start:0; z-index:61; width:min(420px,94vw); height:100vh; background:#fff; box-shadow:0 12px 40px rgba(15,23,42,.2); display:flex; flex-direction:column; animation:dash-drawer-in .28s cubic-bezier(.22,1,.36,1) both;" dir="rtl">
+      <div style="padding:22px; border-bottom:1px solid rgba(15,23,42,.08); display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;"><span style="flex:none; width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; background:{{ det.tint }}18; color:{{ det.tint }};"><span dangerouslySetInnerHTML="{{ det.icon }}"></span></span><div><div style="font-size:16px; font-weight:600;">{{ det.label }}</div><div style="font-size:12.5px; color:#94a3b8;">{{ det.time }}</div></div></div>
+        <button onClick="{{ onClose }}" aria-label="סגור" style="cursor:pointer; border:none; background:none; color:#94a3b8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:22px;" class="scrollbar-hide">
+        <p style="margin:0 0 20px; font-size:15px; color:#0f172a; line-height:1.6;">{{ det.summary }}</p>
+        <div style="border:1px solid rgba(15,23,42,.08); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:9px; margin-bottom:20px;">
+          <sc-for list="{{ det.fields }}" as="f" hint-placeholder-count="3"><div style="display:flex; justify-content:space-between; font-size:13.5px;"><span style="color:#94a3b8;">{{ f.label }}</span><span style="color:#0f172a; font-weight:500;">{{ f.value }}</span></div></sc-for>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <sc-for list="{{ det.links }}" as="l" hint-placeholder-count="2"><a href="{{ l.href }}" style="display:flex; align-items:center; justify-content:space-between; border:1px solid rgba(15,23,42,.08); border-radius:11px; padding:12px 14px; font-size:13.5px; font-weight:600; color:#0f172a;">{{ l.label }}<svg viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg></a></sc-for>
+        </div>
+      </div>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { nav:[], filter:'all', agentFilter:'all', search:'', events:null, paused:false, evId:null, tick:0 };
+
+  _svg(p,w){ return { __html:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="${w||16}" height="${w||16}">${p}</svg>` }; }
+
+  _verbMeta(){
+    return {
+      won:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0"/>',label:'עסקה נסגרה בזכייה',tint:'#12805c'},
+      message:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>',label:'הודעה נכנסת',tint:'#0e7490'},
+      lead:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8"/>',label:'ליד חדש',tint:'#0e8ba0'},
+      payment:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>',label:'תשלום התקבל',tint:'#12805c'},
+      memory:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/>',label:'זיכרון נשמר',tint:'#7c6cf0'},
+      order:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>',label:'הזמנה חדשה',tint:'#b26a00'},
+      approval:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>',label:'החלטת אישור',tint:'#12805c'},
+      leadstage:{icon:'<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941"/>',label:'שלב ליד עודכן',tint:'#6d8bf0'},
+    };
+  }
+  _actorMeta(){
+    return {
+      agent:{label:'סוכן',style:'border:1px solid rgba(14,139,160,.4); background:rgba(14,139,160,.1); color:#0b7688;'},
+      human:{label:'אדם',style:'border:1px solid rgba(15,23,42,.16); background:#f1f5f9; color:#0f172a;'},
+      system:{label:'מערכת',style:'border:1px solid rgba(15,23,42,.08); background:#fff; color:#55627a;'},
+      contact:{label:'לקוח',style:'border:1px solid rgba(18,128,92,.4); background:rgba(18,128,92,.1); color:#12805c;'},
+    };
+  }
+  _cat(v){ if(v==='won'||v==='payment'||v==='order')return 'sales'; if(v==='lead'||v==='leadstage')return 'leads'; if(v==='message')return 'messages'; return 'system'; }
+
+  _seed(){
+    const m=60000,h=3600000,base=Date.now();
+    return [
+      {id:101,verb:'won',actor:'agent',actorId:'סוכן מכירות',ts:base-4*m,summary:'חברת שיפוצים · חבילת פרו — ₪84,000',amount:'₪84,000',account:'חברת שיפוצים'},
+      {id:102,verb:'message',actor:'agent',actorId:'סוכן וואטסאפ',ts:base-11*m,summary:'לקוח שאל על שעות פעילות — נענה אוטומטית',account:'מוסך דהן'},
+      {id:103,verb:'lead',actor:'agent',actorId:'סוכן לידים',ts:base-23*m,summary:'ליד מאינסטגרם — מעוניין בחבילת וידאו',account:'דנה — ליד חדש'},
+      {id:104,verb:'payment',actor:'contact',actorId:'קליניקת נועה',ts:base-38*m,summary:'מנוי חודשי — ₪349',amount:'₪349',account:'קליניקת נועה'},
+      {id:105,verb:'memory',actor:'system',actorId:'מוח מרכזי',ts:base-52*m,summary:'המוח למד: הרשת מעדיפה פגישות בימי ג׳'},
+      {id:106,verb:'order',actor:'contact',actorId:'בית קפה עלית',ts:base-1*h,summary:'הזמנה חדשה מהחנות — ₪1,240',amount:'₪1,240',account:'בית קפה עלית'},
+      {id:107,verb:'leadstage',actor:'human',actorId:'ישראל',ts:base-1*h-20*m,summary:'ליד «סטודיו מיכל» הועבר לשלב «מוכשר»',account:'סטודיו מיכל'},
+      {id:108,verb:'approval',actor:'human',actorId:'ישראל',ts:base-26*h,summary:'אושר פרסום פוסט אינסטגרם שהכין סוכן התוכן'},
+      {id:109,verb:'message',actor:'contact',actorId:'מוסך דהן',ts:base-28*h,summary:'«אפשר לקבוע תור לשבוע הבא?»',account:'מוסך דהן'},
+      {id:110,verb:'won',actor:'agent',actorId:'סוכן מכירות',ts:base-30*h,summary:'סוכנות נדל״ן — ₪38,000',amount:'₪38,000',account:'סוכנות נדל״ן'},
+    ];
+  }
+
+  renderVals(){
+    const S=this._svg.bind(this);
+    const navBase='position:relative; display:flex; align-items:center; gap:6px; padding:11px 14px; font-size:13.5px; white-space:nowrap;';
+    const navDefs=[
+      ['סקירה','Dashboard.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/>'],
+      ['פיד חי','#','<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>',true],
+      ['אינבוקס','Inbox.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z"/>'],
+      ['סוכנים','Agents.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/>'],
+      ['CRM','CRM.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z"/>'],
+      ['חיבורים','Connections.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8"/>'],
+      ['תזרים','Cashflow.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22"/>'],
+      ['הגדרות','Settings.dc.html','<path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.03 7.03 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.988 6.988 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>'],
+    ];
+    const navItems=navDefs.map(([label,href,icon,active])=>({label,href,active:!!active,icon:S(icon,16),style:navBase+(active?'color:#0f172a; font-weight:600;':'color:#55627a;')}));
+
+    const VERB=this._verbMeta(), ACTOR=this._actorMeta();
+    const pill=(a)=>'border-radius:999px; padding:2px 9px; font-size:11px; font-weight:600; line-height:1.4; '+ACTOR[a].style;
+    const raw=this.state.events||this._seed();
+    const now=Date.now();
+    const rel=(ms)=>{ const s=Math.round((now-ms)/1000); if(s<60)return 'ממש עכשיו'; const m=Math.round(s/60); if(m<60)return `לפני ${m} דק׳`; const h=Math.round(m/60); if(h<24)return `לפני ${h} שע׳`; return `לפני ${Math.round(h/24)} ימים`; };
+
+    // filters
+    const f=this.state.filter, af=this.state.agentFilter, q=this.state.search.trim();
+    let list=raw;
+    if(f==='agents') list=list.filter(e=>e.actor==='agent');
+    else if(f!=='all') list=list.filter(e=>this._cat(e.verb)===f);
+    if(af!=='all') list=list.filter(e=>e.actorId===af);
+    if(q) list=list.filter(e=>e.summary.includes(q)||e.actorId.includes(q)||VERB[e.verb].label.includes(q));
+
+    // day grouping
+    const dayOf=(ms)=>{ const d=new Date(ms), t=new Date(now); const diff=Math.floor((new Date(t.getFullYear(),t.getMonth(),t.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/86400000); if(diff<=0)return 'היום'; if(diff===1)return 'אתמול'; return 'מוקדם יותר'; };
+    const buckets={};
+    list.forEach((e,i)=>{ const dl=dayOf(e.ts); (buckets[dl]=buckets[dl]||[]).push({e,i}); });
+    const order=['היום','אתמול','מוקדם יותר'];
+    const groups=order.filter(k=>buckets[k]).map(k=>({ label:k, events:buckets[k].map(({e,i})=>{ const meta=VERB[e.verb]; return {
+      icon:S(meta.icon,16),tint:meta.tint,label:meta.label,actorLabel:ACTOR[e.actor].label,actorStyle:pill(e.actor),actorId:e.actorId,time:rel(e.ts),summary:e.summary,
+      anim:e.fresh?'animation:feed-in .45s cubic-bezier(.22,1,.36,1) both;':'animation:feed-in .4s cubic-bezier(.22,1,.36,1) both; animation-delay:'+(Math.min(i,8)*40)+'ms;',
+      onOpen:()=>this.setState({evId:e.id}),
+    }; }) }));
+
+    // summary
+    const todayEv=raw.filter(e=>dayOf(e.ts)==='היום');
+    const summary=[
+      {label:'אירועים היום',value:String(todayEv.length),color:'#0e8ba0',tint:'rgba(14,139,160,.1)',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>',20)},
+      {label:'לידים חדשים',value:String(raw.filter(e=>this._cat(e.verb)==='leads').length),color:'#1666a8',tint:'rgba(22,102,168,.1)',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z"/>',20)},
+      {label:'מכירות',value:String(raw.filter(e=>this._cat(e.verb)==='sales').length),color:'#12805c',tint:'rgba(18,128,92,.1)',icon:S('<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941"/>',20)},
+    ];
+
+    // filter chips
+    const cnt={all:raw.length,agents:raw.filter(e=>e.actor==='agent').length,sales:raw.filter(e=>this._cat(e.verb)==='sales').length,leads:raw.filter(e=>this._cat(e.verb)==='leads').length,messages:raw.filter(e=>this._cat(e.verb)==='messages').length};
+    const chipOn='cursor:pointer; font-family:inherit; border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; border:1px solid #0e8ba0; background:#0e8ba0; color:#fff;';
+    const chipOff='cursor:pointer; font-family:inherit; border-radius:999px; padding:8px 15px; font-size:13px; font-weight:500; border:1px solid rgba(15,23,42,.16); background:#fff; color:#55627a;';
+    const filters=[['all','הכל'],['agents','סוכנים'],['sales','מכירות'],['leads','לידים'],['messages','הודעות']].map(([k,l])=>({label:l,count:cnt[k],style:this.state.filter===k?chipOn:chipOff,onClick:()=>this.setState({filter:k})}));
+
+    // agent options
+    const agentIds=[...new Set(raw.filter(e=>e.actor==='agent').map(e=>e.actorId))];
+    const agentOptions=[{val:'all',label:'כל הסוכנים'},...agentIds.map(a=>({val:a,label:a}))];
+
+    // drawer
+    const evOpen=this.state.evId!=null; let det=null;
+    if(evOpen){ const e=raw.find(x=>x.id===this.state.evId)||raw[0]; const meta=VERB[e.verb]; const fields=[{label:'סוג',value:meta.label},{label:'מבצע',value:ACTOR[e.actor].label+' · '+e.actorId},{label:'זמן',value:rel(e.ts)}]; if(e.amount) fields.push({label:'סכום',value:e.amount}); const links=[]; if(e.account) links.push({label:'פתח לקוח: '+e.account,href:'CRM.dc.html'}); if(this._cat(e.verb)==='sales') links.push({label:'צפה בעסקה',href:'Dashboard.dc.html'}); if(e.verb==='message') links.push({label:'פתח שיחה באינבוקס',href:'Inbox.dc.html'}); det={label:meta.label,tint:meta.tint,icon:S(meta.icon,22),time:rel(e.ts),summary:e.summary,fields,links}; }
+
+    return {
+      navItems, summary, filters, groups, empty:list.length===0,
+      search:this.state.search, onSearch:(e)=>this.setState({search:e.target.value}),
+      agentFilter:af, agentOptions, onAgentFilter:(e)=>this.setState({agentFilter:e.target.value}),
+      paused:this.state.paused, togglePause:()=>this.setState(s=>({paused:!s.paused})),
+      pauseLabel:this.state.paused?'הפעל זרימה':'השהה זרימה',
+      pauseIcon:this.state.paused?S('<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/>',14):S('<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"/>',14),
+      pauseStyle:'cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; '+(this.state.paused?'border:1px solid rgba(15,23,42,.16); background:#fff; color:#55627a;':'border:1px solid rgba(18,128,92,.25); background:rgba(18,128,92,.1); color:#12805c;'),
+      evOpen, det, onClose:()=>this.setState({evId:null}),
+      rootRef:(el)=>{this.root=el;},
+    };
+  }
+
+  componentDidMount(){
+    this.setState({events:this._seed()});
+    import('./crmChrome.js').then(m=>this.setState({nav:m.navItems('פיד חי')}));
+    const templates=[
+      {verb:'lead',actor:'agent',actorId:'סוכן לידים',summary:'ליד חדש מפייסבוק — בקשת הצעת מחיר',account:'ליד פייסבוק'},
+      {verb:'message',actor:'agent',actorId:'סוכן וואטסאפ',summary:'נשלחה תזכורת תור ללקוח אוטומטית',account:'מוסך דהן'},
+      {verb:'payment',actor:'contact',actorId:'רשת אופנה',summary:'תשלום התקבל — ₪2,900',amount:'₪2,900',account:'רשת אופנה URBAN'},
+      {verb:'won',actor:'agent',actorId:'סוכן מכירות',summary:'סוכנות נדל״ן · סוכן לידים + דוחות — ₪38,000',amount:'₪38,000',account:'סוכנות נדל״ן'},
+      {verb:'memory',actor:'system',actorId:'מוח מרכזי',summary:'המוח עדכן פרופיל לקוח לפי שיחה אחרונה'},
+      {verb:'order',actor:'contact',actorId:'בית קפה עלית',summary:'הזמנה חדשה מהחנות — ₪860',amount:'₪860',account:'בית קפה עלית'},
+    ];
+    let n=0, uid=900;
+    this._live=setInterval(()=>{ if(this.state.paused) return; const t=templates[n%templates.length]; n++; const ev={...t,id:++uid,ts:Date.now(),fresh:true}; this.setState(s=>({events:[ev,...(s.events||this._seed()).map(e=>({...e,fresh:false}))].slice(0,60)})); },7000);
+    this._timer=setInterval(()=>this.forceUpdate(),30000);
+  }
+  componentWillUnmount(){ clearInterval(this._live); clearInterval(this._timer); }
+}
+</script>
+</body>
+</html>
