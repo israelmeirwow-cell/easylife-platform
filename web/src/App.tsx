@@ -1,7 +1,9 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
 import { Spinner } from './components/ui';
+import { IS_DEMO } from './lib/api';
+import { me } from './lib/auth';
 import Login from './pages/Login';
 import Feed from './pages/Feed';
 import Inbox from './pages/Inbox';
@@ -31,6 +33,33 @@ const lazyFallback = (
   </div>
 );
 
+/**
+ * Route guard for the app shell. In a demo build there is no backend, so it
+ * renders immediately. Otherwise it probes GET /api/auth/me: while pending it
+ * shows the spinner, on success it renders the nested routes, and on 401 it
+ * redirects to /login.
+ */
+function RequireAuth() {
+  const [status, setStatus] = useState<'checking' | 'authed' | 'anon'>(
+    IS_DEMO ? 'authed' : 'checking',
+  );
+
+  useEffect(() => {
+    if (IS_DEMO) return;
+    let alive = true;
+    me()
+      .then(() => alive && setStatus('authed'))
+      .catch(() => alive && setStatus('anon'));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  if (status === 'checking') return lazyFallback;
+  if (status === 'anon') return <Navigate to="/login" replace />;
+  return <Outlet />;
+}
+
 export default function App() {
   return (
     <Routes>
@@ -43,6 +72,7 @@ export default function App() {
         element={<Suspense fallback={lazyFallback}><Landing /></Suspense>}
       />
 
+      <Route element={<RequireAuth />}>
       <Route element={<Layout />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route
@@ -77,6 +107,7 @@ export default function App() {
         <Route path="/cashflow" element={<Cashflow />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Route>
       </Route>
     </Routes>
   );

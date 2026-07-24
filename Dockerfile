@@ -1,7 +1,16 @@
-# Easy Life brain (FastAPI) — production image for Railway.
-# Lives at the REPO ROOT (not api/) so the build works regardless of whether
-# Railway's "root directory" service setting is honored — this Dockerfile
-# explicitly scopes its build context to api/ via COPY.
+# Easy Life — one image serving BOTH the React site and the FastAPI brain on
+# the same origin (site at /, API at /api). Lives at the repo root.
+
+# ---- stage 1: build the React frontend ----
+FROM node:20-slim AS web
+WORKDIR /web
+COPY web/package.json web/package-lock.json ./
+RUN npm ci
+COPY web/ ./
+# Default (non-demo) build → the app hits the real /api on the same origin.
+RUN npm run build
+
+# ---- stage 2: python API + baked frontend ----
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
@@ -11,15 +20,15 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Install deps first (cached layer)
 COPY api/requirements.txt .
 RUN pip install -r requirements.txt
 
-# App code + alembic (only the api/ subtree)
 COPY api/ .
+# Bake the built site in and point FastAPI at it (main.py serves it when set).
+COPY --from=web /web/dist ./web_dist
+ENV WEB_DIST=/app/web_dist
 
-# Railway injects $PORT; default to 8000 locally.
 EXPOSE 8000
 
-# Run DB migrations then boot the API.
+# Migrate the DB to head, then serve the API + SPA.
 CMD ["sh", "start.sh"]

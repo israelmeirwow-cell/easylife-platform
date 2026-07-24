@@ -82,3 +82,33 @@ app.include_router(webhooks.router)
 @app.get("/api/health")
 async def health() -> dict:
     return {"status": "ok", "env": settings.APP_ENV}
+
+
+# --- Serve the built React SPA (same origin) when WEB_DIST is present ---------
+# In production the Docker image bakes web/dist and sets WEB_DIST; FastAPI then
+# serves the site at / and the API at /api on ONE origin (no CORS, cookies just
+# work). Registered LAST so /api/* and /webhooks/* always match first.
+import os  # noqa: E402
+
+from fastapi import HTTPException  # noqa: E402
+from starlette.responses import FileResponse  # noqa: E402
+from starlette.staticfiles import StaticFiles  # noqa: E402
+
+_WEB_DIST = os.environ.get("WEB_DIST")
+if _WEB_DIST and os.path.isdir(_WEB_DIST):
+    _assets = os.path.join(_WEB_DIST, "assets")
+    if os.path.isdir(_assets):
+        app.mount("/assets", StaticFiles(directory=_assets), name="assets")
+    _index = os.path.join(_WEB_DIST, "index.html")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def spa(full_path: str) -> FileResponse:
+        # API/webhook misses should 404 as such, not fall back to the SPA.
+        if full_path.startswith(("api/", "webhooks/")):
+            raise HTTPException(status_code=404, detail="Not Found")
+        # Serve a real static file if it exists (favicon, manifest, sw.js, art/…),
+        # otherwise the SPA shell so client-side routes (/dashboard, …) load.
+        candidate = os.path.normpath(os.path.join(_WEB_DIST, full_path))
+        if full_path and candidate.startswith(_WEB_DIST) and os.path.isfile(candidate):
+            return FileResponse(candidate)
+        return FileResponse(_index)

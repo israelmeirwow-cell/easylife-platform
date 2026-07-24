@@ -1,16 +1,21 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { api } from '../lib/api';
+import { IS_DEMO } from '../lib/api';
+import { login, register } from '../lib/auth';
 import { FrameSequence } from '../components/FrameSequence';
 
 /* Split login: form on the right (RTL first), a rendered-3D brand animation
    panel on the left. The art panel hides on mobile — form stays first-class. */
 
+type Mode = 'login' | 'register';
+
 export default function Login() {
   const navigate = useNavigate();
+  const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [businessName, setBusinessName] = useState('');
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -24,13 +29,19 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api('/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
+      if (mode === 'register') {
+        // Registration bootstraps the tenant + owner but does NOT log in —
+        // follow it with login to obtain the auth cookie.
+        await register(email, password, businessName);
+      }
+      await login(email, password);
       navigate('/dashboard');
     } catch {
-      setToast('ההתחברות נכשלה — בדקו את האימייל והסיסמה ונסו שוב');
+      setToast(
+        mode === 'register'
+          ? 'ההרשמה נכשלה — ייתכן שהאימייל כבר רשום'
+          : 'ההתחברות נכשלה — בדקו את האימייל והסיסמה ונסו שוב',
+      );
     } finally {
       setLoading(false);
     }
@@ -85,26 +96,61 @@ export default function Login() {
                 type="password"
                 required
                 dir="ltr"
-                autoComplete="current-password"
+                autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                 placeholder="••••••••"
               />
             </div>
+            {mode === 'register' && (
+              <div>
+                <label htmlFor="businessName" className="mb-1.5 block text-sm text-muted">
+                  שם העסק
+                </label>
+                <input
+                  id="businessName"
+                  type="text"
+                  required
+                  autoComplete="organization"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  className="w-full rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-sm text-ink placeholder:text-faint transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                  placeholder="שם העסק שלך"
+                />
+              </div>
+            )}
             <button
               type="submit"
               disabled={loading}
               className="w-full cursor-pointer rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-gold-hover active:scale-[0.99] disabled:opacity-60"
             >
-              {loading ? 'מתחברים...' : 'כניסה'}
+              {mode === 'register'
+                ? loading
+                  ? 'נרשמים...'
+                  : 'יצירת חשבון'
+                : loading
+                  ? 'מתחברים...'
+                  : 'כניסה'}
             </button>
+            {IS_DEMO && (
+              <button
+                type="button"
+                onClick={() => navigate('/dashboard')}
+                className="w-full cursor-pointer rounded-xl border border-border-strong px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-raised active:scale-[0.99]"
+              >
+                כניסת דמו
+              </button>
+            )}
             <button
               type="button"
-              onClick={() => navigate('/dashboard')}
-              className="w-full cursor-pointer rounded-xl border border-border-strong px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-surface-raised active:scale-[0.99]"
+              onClick={() => {
+                setMode((m) => (m === 'login' ? 'register' : 'login'));
+                setToast(null);
+              }}
+              className="w-full cursor-pointer text-center text-xs text-muted transition hover:text-ink"
             >
-              כניסת דמו
+              {mode === 'login' ? 'אין לך חשבון? הרשמה' : 'כבר יש לך חשבון? כניסה'}
             </button>
           </form>
 
