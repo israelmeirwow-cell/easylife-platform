@@ -49,8 +49,11 @@ async def stream_feed(
             async for event in subscription:
                 if await request.is_disconnected():
                     break
+                # Default (unnamed) SSE event so a catch-all consumer's
+                # EventSource.onmessage receives every event regardless of verb
+                # (named events only fire matching addEventListener handlers).
+                # The verb travels inside `data` for client-side filtering.
                 yield {
-                    "event": event.get("verb", "event"),
                     "id": str(event.get("id", "")),
                     "data": json.dumps(event, ensure_ascii=False, default=str),
                 }
