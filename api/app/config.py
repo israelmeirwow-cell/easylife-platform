@@ -33,6 +33,11 @@ class Settings(BaseSettings):
     META_APP_ID: str = ""
     META_APP_SECRET: str = ""
     META_WEBHOOK_VERIFY_TOKEN: str = ""
+    # WhatsApp Cloud API (official). Stage A uses the test number's temp token;
+    # production uses a permanent System User token per connected tenant.
+    WHATSAPP_PHONE_NUMBER_ID: str = ""
+    WHATSAPP_ACCESS_TOKEN: str = ""
+    WHATSAPP_API_VERSION: str = "v21.0"
 
     # --- Connections aggregator (Composio) — breadth layer for IG/FB/TikTok/Gmail/... ---
     COMPOSIO_API_KEY: str = ""
