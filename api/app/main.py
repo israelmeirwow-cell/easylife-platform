@@ -27,6 +27,7 @@ from app.routers import (
     leads,
     tasks,
     tickets,
+    video,
     webhooks,
 )
 
@@ -74,6 +75,7 @@ app.include_router(activities.router)
 app.include_router(dashboard.router)
 app.include_router(ceo.router)
 app.include_router(connections.router)
+app.include_router(video.router)
 
 # Inbound channel webhooks (public — Meta/etc. deliver here; NOT tenant-scoped)
 app.include_router(webhooks.router)
