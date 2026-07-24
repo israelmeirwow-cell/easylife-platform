@@ -69,6 +69,42 @@ export interface Approval {
 }
 
 /* ------------------------------------------------------------------ */
+/* Inbox — conversations + messages (tenant-scoped)                    */
+/* ------------------------------------------------------------------ */
+
+export type ConversationStatus = 'open' | 'pending' | 'closed';
+export type ConversationAssignee = 'agent' | 'human';
+
+/** GET /api/conversations */
+export interface ConversationOut {
+  id: string;
+  contact_id: string;
+  channel_id: string | null;
+  status: ConversationStatus;
+  assignee: ConversationAssignee;
+  last_msg_at: string | null;
+  created_at: string;
+  contact_name: string | null;
+  preview: string | null;
+  channel_kind: string | null;
+}
+
+export type MessageDirection = 'in' | 'out';
+export type MessageSenderType = 'contact' | 'agent' | 'human';
+
+/** GET /api/conversations/{id}/messages */
+export interface MessageOut {
+  id: string;
+  conversation_id: string;
+  direction: MessageDirection;
+  sender_type: MessageSenderType;
+  body: string | null;
+  media: Record<string, unknown>;
+  channel_msg_id: string | null;
+  ts: string;
+}
+
+/* ------------------------------------------------------------------ */
 /* CRM models                                                          */
 /* ------------------------------------------------------------------ */
 

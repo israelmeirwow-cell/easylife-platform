@@ -62,6 +62,8 @@ class ConversationOut(BaseModel):
     last_msg_at: datetime | None = None
     created_at: datetime
     contact_name: str | None = None
+    preview: str | None = None
+    channel_kind: str | None = None
 
 
 class MessageOut(BaseModel):

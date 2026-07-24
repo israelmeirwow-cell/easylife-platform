@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
 from app.deps import get_tenant_id
-from app.models import Contact, Conversation, Message
+from app.models import Channel, Contact, Conversation, Message
 from app.schemas import ConversationOut, MessageOut
 
 router = APIRouter(prefix="/api/conversations", tags=["conversations"])
@@ -31,10 +31,28 @@ async def list_conversations(
     result = await session.execute(
         query.order_by(Conversation.last_msg_at.desc().nullslast()).limit(limit)
     )
+    rows = result.all()
+
+    # channel_id -> kind (whatsapp/instagram/...) for the channel badge
+    channels = (
+        await session.execute(select(Channel.id, Channel.kind).where(Channel.tenant_id == tenant_id))
+    ).all()
+    kind_by_channel = {cid: kind for cid, kind in channels}
+
     out: list[ConversationOut] = []
-    for conversation, contact_name in result.all():
+    for conversation, contact_name in rows:
         item = ConversationOut.model_validate(conversation)
         item.contact_name = contact_name
+        item.channel_kind = kind_by_channel.get(conversation.channel_id)
+        last = (
+            await session.execute(
+                select(Message.body)
+                .where(Message.conversation_id == conversation.id)
+                .order_by(Message.ts.desc())
+                .limit(1)
+            )
+        ).scalar_one_or_none()
+        item.preview = last
         out.append(item)
     return out
 

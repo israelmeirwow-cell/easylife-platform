@@ -1,12 +1,21 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { api, IS_DEMO } from '../lib/api';
+import type { ConversationOut, MessageOut } from '../lib/types';
 
 /* אינבוקס — Unified Inbox, ported 1:1 from the Claude Design v2 handoff
    (docs/claude-design/v2/Inbox.dc.html). THREE-pane layout:
    conversation list | thread | customer info panel.
-   Layout, copy, seed conversations/messages, tint colors, selection state,
-   filters (status + channel), search, AI suggestions, quick replies, agent
-   toggle, archive / mark-unread, toast and composer are verbatim from the
-   design's DCLogic. Colors are the design's literal values (= our tokens).
+   Layout, copy, tint colors, selection state, filters (status + channel),
+   search, AI suggestions, quick replies, agent toggle, archive / mark-unread,
+   toast and composer are verbatim from the design's DCLogic. Colors are the
+   design's literal values (= our tokens).
+
+   DATA SOURCE: the demo build (IS_DEMO) still renders the baked-in SEED so the
+   static Netlify demo works with no backend. In a real deploy the page instead
+   loads live conversations from the brain — GET /api/conversations for the list,
+   GET /api/conversations/{id}/messages for the open thread — and subscribes to
+   /api/feed/stream (SSE, same auto-reconnect as Feed.tsx) so a new WhatsApp
+   message appears live. Only the data source changed; the render is untouched.
    The top nav/app chrome is provided by <Layout>; only the page root is here.
    Responsive: the design's exact r-inbox @media system is injected verbatim. */
 
@@ -146,6 +155,88 @@ const SEED: Conversation[] = [
   },
 ];
 
+/* ---------- real-API → Conversation mapping (non-demo) ---------- */
+
+/* deterministic avatar tint: hash the name into a fixed palette so a contact
+   keeps the same color across reloads (design uses per-row tints). */
+const NAME_TINTS = ['#0e8ba0', '#1666a8', '#12805c', '#b26a00', '#7c6cf0', '#0e7490'];
+function tintForName(name: string): string {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return NAME_TINTS[h % NAME_TINTS.length];
+}
+
+/* initials from up to the first two words of the name (fallback '?') */
+function initialsOf(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean).slice(0, 2);
+  const s = words.map((w) => w[0]).join('');
+  return s || '?';
+}
+
+/* channel presentation by channel_kind. DEFAULT (null/unknown) → whatsapp,
+   since most inbound is WhatsApp. */
+interface ChannelMeta { channel: string; ch: string; chEmoji: string; chTint: string }
+const WHATSAPP_META: ChannelMeta = { channel: 'WhatsApp', ch: 'whatsapp', chEmoji: '💬', chTint: '#12805c' };
+const CHANNEL_META: Record<string, ChannelMeta> = {
+  whatsapp: WHATSAPP_META,
+  instagram: { channel: 'Instagram', ch: 'instagram', chEmoji: '📸', chTint: '#7c6cf0' },
+  facebook: { channel: 'Facebook', ch: 'facebook', chEmoji: '👍', chTint: '#1666a8' },
+  email: { channel: 'Email', ch: 'email', chEmoji: '✉️', chTint: '#0e7490' },
+};
+function channelMeta(kind: string | null): ChannelMeta {
+  return (kind && CHANNEL_META[kind]) || WHATSAPP_META;
+}
+
+/* HH:MM in Asia/Jerusalem (used for message stamps + today's convo time). */
+const hhmmFmt = new Intl.DateTimeFormat('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jerusalem' });
+const shortDateFmt = new Intl.DateTimeFormat('he-IL', { day: '2-digit', month: '2-digit', timeZone: 'Asia/Jerusalem' });
+function hhmm(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? '' : hhmmFmt.format(d);
+}
+/* convo list time: HH:MM if today, else a short he date; '' if null. */
+function convoTime(iso: string | null): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  const sameDay = d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  return sameDay ? hhmmFmt.format(d) : shortDateFmt.format(d);
+}
+
+function mapConversation(c: ConversationOut): Conversation {
+  const name = c.contact_name || 'ללא שם';
+  const cm = channelMeta(c.channel_kind);
+  return {
+    id: String(c.id),
+    name,
+    initials: initialsOf(name),
+    tint: tintForName(name),
+    channel: cm.channel,
+    ch: cm.ch,
+    chEmoji: cm.chEmoji,
+    chTint: cm.chTint,
+    phone: '',
+    time: convoTime(c.last_msg_at),
+    preview: c.preview || '',
+    unread: 0,
+    byAgent: c.assignee === 'agent',
+    status: c.status,
+    role: '',
+    deals: [],
+    msgs: [],
+  };
+}
+
+function mapMessage(m: MessageOut): Msg {
+  const text = m.body || '';
+  const t = hhmm(m.ts);
+  if (m.direction === 'in') return { from: 'them', text, t };
+  // direction 'out': agent vs human/me
+  if (m.sender_type === 'agent') return { from: 'agent', text, t };
+  return { from: 'me', text, t };
+}
+
 /* ---------- filter / pill tint tables (verbatim from the design) ---------- */
 const stTint: Record<Status, [string, string, string]> = {
   open: ['rgba(14,139,160,.1)', '#0b7688', 'פתוח'],
@@ -180,8 +271,10 @@ const suggBank = [
 const quickReplyDefs = ['תודה על הפנייה!', 'אחזור אליך בהקדם', 'אפשר לתאם שיחה?', 'שלחתי הצעת מחיר'];
 
 export default function Inbox() {
-  const [convos, setConvos] = useState<Conversation[]>(SEED);
-  const [activeId, setActiveId] = useState('c1');
+  // Demo build keeps the baked-in SEED (static Netlify demo, no backend).
+  // Real deploy starts empty and loads live conversations on mount.
+  const [convos, setConvos] = useState<Conversation[]>(IS_DEMO ? SEED : []);
+  const [activeId, setActiveId] = useState(IS_DEMO ? 'c1' : '');
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -191,6 +284,9 @@ export default function Inbox() {
   const [mobileView, setMobileView] = useState<'list' | 'thread'>('list');
   const threadRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
+  /* activeId in a ref so the SSE handler (bound once) reads the live value. */
+  const activeIdRef = useRef(activeId);
+  activeIdRef.current = activeId;
 
   function fireToast(m: string) {
     setToast(m);
@@ -198,7 +294,104 @@ export default function Inbox() {
     toastTimer.current = setTimeout(() => setToast(''), 2400);
   }
 
-  const active = convos.find((c) => c.id === activeId) || convos[0];
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight, behavior: 'smooth' }), 50);
+  }, []);
+
+  /* fetch messages for a conversation and store them into that convo's msgs. */
+  const loadMessages = useCallback(async (id: string, scroll = false) => {
+    try {
+      const rows = await api<MessageOut[]>(`/api/conversations/${id}/messages`);
+      const msgs = rows.map(mapMessage);
+      setConvos((s) => s.map((c) => (c.id === id ? { ...c, msgs } : c)));
+      if (scroll) scrollToBottom();
+    } catch {
+      /* leave existing msgs on error */
+    }
+  }, [scrollToBottom]);
+
+  /* fetch the conversation list (refreshes order + previews), preserving the
+     locally-cleared unread + already-loaded msgs of the active conversation. */
+  const loadConversations = useCallback(async () => {
+    try {
+      const rows = await api<ConversationOut[]>('/api/conversations');
+      const mapped = rows.map(mapConversation);
+      let firstId = '';
+      setConvos((prev) => {
+        const prevById = new Map(prev.map((c) => [c.id, c]));
+        const next = mapped.map((c) => {
+          const old = prevById.get(c.id);
+          // keep locally-cleared unread + lazily-loaded thread across refreshes
+          return old ? { ...c, unread: old.unread, msgs: old.msgs } : c;
+        });
+        firstId = next[0]?.id ?? '';
+        return next;
+      });
+      // pick a first active conversation once, if none is selected yet
+      if (!activeIdRef.current && firstId) {
+        setActiveId(firstId);
+        activeIdRef.current = firstId;
+        void loadMessages(firstId);
+      }
+    } catch {
+      /* keep whatever is currently shown */
+    }
+  }, [loadMessages]);
+
+  // initial load (non-demo only)
+  useEffect(() => {
+    if (IS_DEMO) return;
+    void loadConversations();
+  }, [loadConversations]);
+
+  /* live SSE — mirrors Feed.tsx (IS_DEMO-guarded, onmessage, auto-reconnect). */
+  useEffect(() => {
+    if (IS_DEMO) return;
+    let es: EventSource | null = null;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let disposed = false;
+
+    const open = () => {
+      if (disposed) return;
+      es = new EventSource('/api/feed/stream', { withCredentials: true });
+      es.onmessage = (msg) => {
+        let data: { verb?: string; payload?: { conversation_id?: string } };
+        try {
+          data = JSON.parse(msg.data);
+        } catch {
+          return; // ignore keep-alive pings / malformed frames
+        }
+        if (data.verb !== 'message.received') return;
+        // refresh the list (order + previews) — simplest correct approach here
+        void loadConversations();
+        // if the inbound belongs to the open thread, refresh it live
+        const convId = data.payload?.conversation_id;
+        if (convId && String(convId) === activeIdRef.current) {
+          void loadMessages(String(convId), true);
+        }
+      };
+      es.onerror = () => {
+        es?.close();
+        timer = setTimeout(open, 3000);
+      };
+    };
+
+    open();
+    return () => {
+      disposed = true;
+      if (timer) clearTimeout(timer);
+      es?.close();
+    };
+  }, [loadConversations, loadMessages]);
+
+  /* Empty placeholder so the thread/info panes render safely before any
+     conversation exists (non-demo, list still loading or genuinely empty).
+     The list pane shows its own "no conversations" empty state. */
+  const EMPTY_CONV: Conversation = {
+    id: '', name: '', initials: '', tint: '#94a3b8', channel: '', ch: '', chEmoji: '', chTint: '#94a3b8',
+    phone: '', time: '', preview: '', unread: 0, byAgent: false, status: 'open', role: '', deals: [], msgs: [],
+  };
+  const active = convos.find((c) => c.id === activeId) || convos[0] || EMPTY_CONV;
   const agentOn = !!active.byAgent;
   const stC = agentOn ? '#0e8ba0' : '#94a3b8';
   const agentState = agentOn ? 'סוכן עונה' : 'מענה ידני';
@@ -218,15 +411,24 @@ export default function Inbox() {
   function selectConv(id: string) {
     setConvos((s) => s.map((c) => (c.id === id ? { ...c, unread: 0 } : c)));
     setActiveId(id);
+    activeIdRef.current = id;
     setMobileView('thread');
+    // real deploy: lazily fetch the thread the first time it's opened
+    if (!IS_DEMO) {
+      const conv = convos.find((c) => c.id === id);
+      if (conv && conv.msgs.length === 0) void loadMessages(id, true);
+    }
   }
 
   function send(text: string) {
     const id = activeId;
+    // optimistic local append (matches the design). The real outbound send
+    // endpoint doesn't exist yet.
+    // TODO: POST outbound via connector
     setConvos((s) => s.map((c) => (c.id === id
       ? { ...c, msgs: [...c.msgs, { from: 'me', text, t: 'עכשיו' }], preview: text, status: c.status === 'closed' ? 'open' : c.status }
       : c)));
-    setTimeout(() => threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight, behavior: 'smooth' }), 50);
+    scrollToBottom();
   }
 
   function onSend(e: FormEvent) {
