@@ -34,6 +34,7 @@ import {
 
 const AGENTS_CSS = `
 @media (max-width:860px){ .r-split{grid-template-columns:1fr !important; height:auto !important;} .r-main{padding-inline:16px !important;} }
+@media (max-width:600px){ .ag-head{ flex-wrap:wrap !important; } .ag-head-actions{ width:100% !important; order:3 !important; justify-content:flex-end !important; } }
 .ag-row:hover { background:rgba(14,139,160,.05); }
 .qa:hover { background:#eef2f7; }
 @keyframes dash-drawer-in { from { transform:translateX(-100%); } to { transform:translateX(0); } }
@@ -1058,6 +1059,7 @@ export default function Agents() {
         {/* chat */}
         <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0 }}>
           <div
+            className="ag-head"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -1082,58 +1084,61 @@ export default function Agents() {
               <AgentGlyph agentKey={active} size={22} />
             </span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 600 }}>{def.name}</div>
-              <div style={{ fontSize: 12, color: '#55627a' }}>{def.cap}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{def.name}</div>
+              <div style={{ fontSize: 12, color: '#55627a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{def.cap}</div>
             </div>
-            <select
-              value={activeConvId}
-              onChange={(e) => setActiveConv((s) => ({ ...s, [active]: e.target.value }))}
-              title="היסטוריית שיחות"
-              style={{
-                border: '1px solid rgba(15,23,42,.14)',
-                background: '#fff',
-                borderRadius: 10,
-                padding: '7px 10px',
-                fontFamily: 'inherit',
-                fontSize: 12.5,
-                color: '#0f172a',
-                outline: 'none',
-                maxWidth: 150,
-              }}
-            >
-              {convList.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.title}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={() => setProfileOpen(true)}
-              style={{
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                border: '1px solid rgba(15,23,42,.14)',
-                background: '#fff',
-                borderRadius: 10,
-                padding: '7px 11px',
-                fontSize: 12.5,
-                fontWeight: 600,
-                color: '#0f172a',
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} width={14} height={14}>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-              </svg>
-              פרופיל
-            </button>
+            <div className="ag-head-actions" style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 'none' }}>
+              <select
+                value={activeConvId}
+                onChange={(e) => setActiveConv((s) => ({ ...s, [active]: e.target.value }))}
+                title="היסטוריית שיחות"
+                style={{
+                  border: '1px solid rgba(15,23,42,.14)',
+                  background: '#fff',
+                  borderRadius: 10,
+                  padding: '7px 10px',
+                  fontFamily: 'inherit',
+                  fontSize: 12.5,
+                  color: '#0f172a',
+                  outline: 'none',
+                  maxWidth: 150,
+                }}
+              >
+                {convList.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.title}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => setProfileOpen(true)}
+                style={{
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 5,
+                  border: '1px solid rgba(15,23,42,.14)',
+                  background: '#fff',
+                  borderRadius: 10,
+                  padding: '7px 11px',
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  color: '#0f172a',
+                  flex: 'none',
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} width={14} height={14}>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+                פרופיל
+              </button>
+            </div>
           </div>
 
           <div

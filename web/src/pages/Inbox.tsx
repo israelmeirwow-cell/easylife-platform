@@ -49,7 +49,7 @@ const P = {
 /* ---------- responsive system — verbatim from the design's <style> block ---------- */
 const INBOX_MEDIA = `
 @media (max-width:1080px){ .r-inbox{grid-template-columns:minmax(0,2fr) minmax(0,3fr) !important;} .inbox-info{display:none !important;} }
-@media (max-width:760px){ .r-inbox{grid-template-columns:1fr !important; height:auto !important;} .r-main{padding-inline:14px !important;} }
+@media (max-width:760px){ .r-inbox{grid-template-columns:1fr !important; height:auto !important;} .r-main{padding-inline:14px !important;} .inbox-agent-pill{display:none !important;} }
 `;
 
 /* ---------- seed data (verbatim from the design's DCLogic._data) ---------- */
@@ -382,9 +382,9 @@ export default function Inbox() {
             </button>
             <span style={{ width: 38, height: 38, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, color: '#fff', background: active.tint }}>{active.initials}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 600 }}>{active.name}</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#55627a' }}>
-                <span>{active.channel}</span><span style={{ color: '#cbd5e1' }}>·</span><span>{active.phone}</span>
+              <div style={{ fontSize: 15, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{active.name}</div>
+              <div style={{ fontSize: 12, color: '#55627a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {active.channel} <span style={{ color: '#cbd5e1' }}>·</span> {active.phone}
               </div>
             </div>
             <button onClick={onToggleRead} title="סמן כלא נקרא" style={{ cursor: 'pointer', border: '1px solid rgba(15,23,42,.1)', background: '#fff', borderRadius: 9, padding: 7, color: '#55627a', display: 'flex' }}>
@@ -393,7 +393,7 @@ export default function Inbox() {
             <button onClick={onArchive} title="ארכוב" style={{ cursor: 'pointer', border: '1px solid rgba(15,23,42,.1)', background: '#fff', borderRadius: 9, padding: 7, color: '#55627a', display: 'flex' }}>
               <Ico inner={P.archive} size={16} width={1.6} />
             </button>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${stC}22`, background: `${stC}14`, color: stC, borderRadius: 999, padding: '4px 11px', fontSize: 11.5, fontWeight: 600 }}>
+            <span className="inbox-agent-pill" style={{ display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${stC}22`, background: `${stC}14`, color: stC, borderRadius: 999, padding: '4px 11px', fontSize: 11.5, fontWeight: 600, flex: 'none' }}>
               <span className="animate-pulse-dot" style={{ width: 6, height: 6, borderRadius: 999, background: stC }} />{agentState}
             </span>
           </div>
