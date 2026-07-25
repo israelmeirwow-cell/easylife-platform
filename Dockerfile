@@ -18,16 +18,32 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# The video agent PLANS the reel, writes its HyperFrames composition and previews
-# it live in the browser — none of which needs extra runtime deps here.
-#
-# MP4 export is deliberately OFF in this image. HyperFrames renders by driving its
-# own Chromium (~256 MB per worker) plus ffmpeg; running that in the container that
-# also serves the website risks OOM-killing the site, and the CLI + browser are not
-# baked in, so a first render would fetch ~400 MB at request time onto an ephemeral
-# disk. Export therefore belongs in a dedicated render worker (RQ/Redis are already
-# provisioned) — until then the API reports can_render=false and the UI hides export.
-ENV VIDEO_RENDER_ENABLED=0
+# ---- video agent: HyperFrames renders the reel to MP4, in-process ----
+# ffmpeg does the encode; chromium supplies the browser (and, just as importantly,
+# every shared lib a downloaded Chrome would need); the Noto fonts are what make
+# the Hebrew actually render instead of tofu boxes.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ffmpeg unzip chromium \
+      fonts-noto-core fonts-noto-color-emoji fonts-liberation \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node 22 runtime lifted from the official image (no separate download).
+COPY --from=node:22-slim /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:22-slim /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
+# Bake the CLI *and* resolve its browser at BUILD time. Without this the first
+# export would fetch ~400 MB inside the request, on an ephemeral 1 GB disk.
+# `browser ensure` reuses the chromium installed above when it can.
+RUN npm install -g hyperframes@0.7.71 \
+    && hyperframes browser ensure \
+    && hyperframes browser path
+
+# The container has 1 GB and also serves the site (idle ~85 MB). One Chrome worker
+# (~256 MB) is the safe budget; app/video/renderer.py additionally allows only one
+# render at a time and returns 429 rather than queueing.
+ENV VIDEO_RENDER_WORKERS=1
 
 WORKDIR /app
 

@@ -36,11 +36,25 @@ _HYPERFRAMES_JSON = """{
 """
 
 
+def _render_argv() -> list[str] | None:
+    """How to invoke the renderer here.
+
+    Prefer the globally installed CLI (baked into the production image, so no
+    network at request time); fall back to npx for dev machines that only have
+    Node. Returns None when this host cannot render at all.
+    """
+    if shutil.which("hyperframes"):
+        return ["hyperframes", "render"]
+    if shutil.which("npx") and shutil.which("node"):
+        return ["npx", "--yes", HYPERFRAMES_PKG, "render"]
+    return None
+
+
 def available() -> bool:
-    """True when this host can actually render (node + npx + ffmpeg present)."""
+    """True when this host can actually render (CLI or npx, plus ffmpeg)."""
     if os.environ.get("VIDEO_RENDER_ENABLED", "").lower() in ("0", "false", "no"):
         return False
-    return bool(shutil.which("npx") and shutil.which("node") and shutil.which("ffmpeg"))
+    return bool(_render_argv() and shutil.which("ffmpeg"))
 
 
 class RenderError(RuntimeError):
@@ -56,9 +70,11 @@ async def render_mp4(composition_html: str, out_dir: str | os.PathLike) -> Path:
 
     Runs in an isolated temp project so concurrent renders can't collide.
     """
-    if not available():
+    argv = _render_argv()
+    if not available() or argv is None:
         raise RenderError(
-            "rendering is not available on this host (needs node>=22, npx and ffmpeg)"
+            "rendering is not available on this host (needs the hyperframes CLI "
+            "or node>=22 + npx, plus ffmpeg)"
         )
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -78,8 +94,7 @@ async def render_mp4(composition_html: str, out_dir: str | os.PathLike) -> Path:
             # group, so a timeout/cancel can kill the WHOLE tree. Killing just the
             # npx pid would orphan the Chromium workers (~256 MB each) forever.
             proc = await asyncio.create_subprocess_exec(
-                "npx", "--yes", HYPERFRAMES_PKG, "render",
-                "--workers", str(RENDER_WORKERS), "--quiet",
+                *argv, "--workers", str(RENDER_WORKERS), "--quiet",
                 cwd=str(project),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
