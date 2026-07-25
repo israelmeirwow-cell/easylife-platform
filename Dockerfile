@@ -43,7 +43,13 @@ RUN npm install -g hyperframes@0.7.71 \
 # The container has 1 GB and also serves the site (idle ~85 MB). One Chrome worker
 # (~256 MB) is the safe budget; app/video/renderer.py additionally allows only one
 # render at a time and returns 429 rather than queueing.
-ENV VIDEO_RENDER_WORKERS=1
+#
+# VIDEO_RENDER_SOFTWARE: there is no GPU here, and HyperFrames' default BeginFrame
+# capture silently produces ZERO frames without one (ffmpeg then dies on "frame= 0").
+# This switches it to software GL + screenshot capture — slower, but it works.
+ENV VIDEO_RENDER_WORKERS=1 \
+    VIDEO_RENDER_SOFTWARE=1 \
+    VIDEO_RENDER_TIMEOUT=900
 
 WORKDIR /app
 
