@@ -27,3 +27,7 @@ dev-dist/
 *.sqlite3
 *.db
 pgdata/
+
+# Rendered video output (HyperFrames) — generated artifacts, never committed
+api/var/
+var/renders/
