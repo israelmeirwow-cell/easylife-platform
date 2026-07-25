@@ -28,6 +28,13 @@ RENDER_TIMEOUT_S = int(os.environ.get("VIDEO_RENDER_TIMEOUT", "600"))
 RENDER_WORKERS = os.environ.get("VIDEO_RENDER_WORKERS", "2")
 _render_slot = asyncio.Semaphore(int(os.environ.get("VIDEO_RENDER_CONCURRENCY", "1")))
 
+# Headless containers have no GPU. HyperFrames' default capture path drives the
+# compositor's BeginFrame, which silently yields ZERO frames there — ffmpeg then
+# fails with "frame= 0". Forcing software GL + the screenshot capture path fixes
+# it (slower, but it actually produces a video). On a dev machine with a GPU the
+# fast path is kept.
+RENDER_SOFTWARE = os.environ.get("VIDEO_RENDER_SOFTWARE", "").lower() in ("1", "true", "yes")
+
 _HYPERFRAMES_JSON = """{
   "$schema": "https://hyperframes.heygen.com/schema/hyperframes.json",
   "paths": {"blocks": "compositions", "components": "compositions/components", "assets": "assets"},
@@ -93,9 +100,16 @@ async def render_mp4(composition_html: str, out_dir: str | os.PathLike) -> Path:
             # start_new_session puts npx -> node -> chromium in their own process
             # group, so a timeout/cancel can kill the WHOLE tree. Killing just the
             # npx pid would orphan the Chromium workers (~256 MB each) forever.
+            flags = ["--workers", str(RENDER_WORKERS), "--quiet"]
+            env = None
+            if RENDER_SOFTWARE:
+                flags.append("--no-browser-gpu")
+                env = {**os.environ, "PRODUCER_FORCE_SCREENSHOT": "1"}
+
             proc = await asyncio.create_subprocess_exec(
-                *argv, "--workers", str(RENDER_WORKERS), "--quiet",
+                *argv, *flags,
                 cwd=str(project),
+                env=env,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
                 start_new_session=True,
