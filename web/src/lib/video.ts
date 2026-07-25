@@ -26,6 +26,11 @@ export interface VideoJob {
   product_ref: Record<string, unknown>;
   final_video_url: string | null;
   created_at: string | null;
+  /** A HyperFrames composition has been written for this reel. */
+  has_composition: boolean;
+  composition_source: 'llm' | 'rules' | null;
+  /** This server has the toolchain (node + ffmpeg) to export an MP4. */
+  can_render: boolean;
   scenes: VideoScene[];
 }
 
@@ -51,4 +56,25 @@ export function listVideoJobs(): Promise<VideoJobSummary[]> {
 
 export function getVideoJob(id: string): Promise<VideoJob> {
   return api<VideoJob>(`/api/video/jobs/${id}`);
+}
+
+/** Write the HyperFrames composition (the actual video) for a planned reel. */
+export function composeVideoJob(
+  id: string,
+): Promise<{ id: string; composition_source: string; can_render: boolean }> {
+  return api(`/api/video/jobs/${id}/compose`, { method: 'POST' });
+}
+
+/** Render the composition to a real MP4 (HyperFrames, local, no per-video cost). */
+export function renderVideoJob(id: string): Promise<{ id: string; final_video_url: string }> {
+  return api(`/api/video/jobs/${id}/render`, { method: 'POST' });
+}
+
+/** Self-playing composition — embed in an iframe to preview the reel live. */
+export function videoPreviewUrl(id: string): string {
+  return `/api/video/jobs/${id}/preview`;
+}
+
+export function videoMp4Url(id: string): string {
+  return `/api/video/jobs/${id}/mp4`;
 }

@@ -1,10 +1,15 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Clapperboard, Film, Sparkles } from 'lucide-react';
+import { Clapperboard, Download, Film, Play, Sparkles } from 'lucide-react';
 import { Spinner } from '@/components/ui';
+import { ApiError } from '@/lib/api';
 import {
+  composeVideoJob,
   createVideoJob,
   getVideoJob,
   listVideoJobs,
+  renderVideoJob,
+  videoMp4Url,
+  videoPreviewUrl,
   type SceneRole,
   type VideoJob,
   type VideoJobSummary,
@@ -33,6 +38,10 @@ export default function VideoStudio() {
   const [error, setError] = useState('');
   const [job, setJob] = useState<VideoJob | null>(null);
   const [recent, setRecent] = useState<VideoJobSummary[]>([]);
+  // HyperFrames stage
+  const [composing, setComposing] = useState(false);
+  const [rendering, setRendering] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0); // bump to restart the reel
 
   async function refreshRecent() {
     try {
@@ -70,8 +79,44 @@ export default function VideoStudio() {
       const j = await getVideoJob(id);
       setJob(j);
       setBrief(j.brief);
+      setPreviewKey((k) => k + 1);
     } catch {
       setError('לא הצלחתי לטעון את הפרויקט.');
+    }
+  }
+
+  /** Turn the plan into an actual HyperFrames video (free, local). */
+  async function build() {
+    if (!job || composing) return;
+    setComposing(true);
+    setError('');
+    try {
+      await composeVideoJob(job.id);
+      setJob(await getVideoJob(job.id));
+      setPreviewKey((k) => k + 1);
+    } catch {
+      setError('לא הצלחתי לבנות את הסרטון — נסו שוב.');
+    } finally {
+      setComposing(false);
+    }
+  }
+
+  /** Export the composition to a downloadable MP4. */
+  async function exportMp4() {
+    if (!job || rendering) return;
+    setRendering(true);
+    setError('');
+    try {
+      await renderVideoJob(job.id);
+      setJob(await getVideoJob(job.id));
+    } catch (e) {
+      setError(
+        e instanceof ApiError && e.status === 429
+          ? 'השרת מרנדר סרטון אחר כרגע — נסו שוב בעוד רגע.'
+          : 'הייצוא ל-MP4 נכשל — נסו שוב.',
+      );
+    } finally {
+      setRendering(false);
     }
   }
 
@@ -158,12 +203,18 @@ export default function VideoStudio() {
                   <span className="text-[11px] text-muted">{s.duration}ש׳</span>
                 </div>
 
-                {/* keyframe placeholder — real still renders when the engine is wired */}
-                <div className="mt-3 flex aspect-[9/16] items-center justify-center rounded-xl border border-dashed border-border bg-surface-raised">
+                {/* keyframe strip — a real still appears here once a cinematic
+                    engine (Higgsfield) is connected; until then keep it slim so
+                    the prompts stay readable. */}
+                <div
+                  className={`mt-3 flex items-center justify-center rounded-xl border border-dashed border-border bg-surface-raised ${
+                    s.keyframe_url ? 'aspect-[9/16]' : 'h-16'
+                  }`}
+                >
                   {s.keyframe_url ? (
                     <img src={s.keyframe_url} alt="" className="h-full w-full rounded-xl object-cover" />
                   ) : (
-                    <Film className="h-7 w-7 text-faint" />
+                    <Film className="h-5 w-5 text-faint" />
                   )}
                 </div>
 
@@ -195,10 +246,89 @@ export default function VideoStudio() {
             ))}
           </div>
 
-          {/* render-pending note (honest about what's next) */}
-          <div className="mt-4 rounded-xl border border-border bg-surface-raised px-4 py-3 text-xs text-muted">
-            ✅ התוכנית מוכנה. <span className="text-ink">ג׳נרוט הווידאו עצמו</span> (הפיכת כל סצנה לסרטון קולנועי)
-            יתחבר כאן ברגע שנחבר את מנוע הרינדור — HyperFrames לשכבת המיתוג ו-Higgsfield לצילום הקולנועי.
+          {/* ---------- HyperFrames: build the actual video ---------- */}
+          <div className="mt-6 rounded-2xl border border-border bg-surface p-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-sm font-semibold text-ink">הסרטון</h2>
+                <p className="mt-0.5 text-xs text-muted">
+                  {job.has_composition
+                    ? 'הסרטון מוכן — רץ כאן למטה. אפשר לייצא אותו כקובץ MP4.'
+                    : 'הפכו את התסריט לסרטון אמיתי — נוצר אצלנו, בלי עלות לכל סרטון.'}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={build}
+                  disabled={composing}
+                  className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-[#0e8ba0] to-[#22b8cf] px-4 py-2 text-sm font-semibold text-white transition disabled:opacity-40"
+                >
+                  {composing ? <Spinner className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                  {composing ? 'בונה…' : job.has_composition ? 'בנה מחדש' : 'צרו את הסרטון'}
+                </button>
+
+                {job.has_composition && job.can_render && (
+                  <button
+                    onClick={exportMp4}
+                    disabled={rendering}
+                    className="flex items-center gap-2 rounded-xl border border-border bg-surface-raised px-4 py-2 text-sm font-semibold text-ink transition disabled:opacity-40"
+                  >
+                    {rendering ? <Spinner className="h-4 w-4" /> : <Film className="h-4 w-4" />}
+                    {rendering ? 'מייצא…' : 'ייצוא MP4'}
+                  </button>
+                )}
+
+                {job.final_video_url && (
+                  <a
+                    href={videoMp4Url(job.id)}
+                    download
+                    className="flex items-center gap-2 rounded-xl border border-border bg-surface-raised px-4 py-2 text-sm font-semibold text-gold-strong transition"
+                  >
+                    <Download className="h-4 w-4" />
+                    הורדה
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {job.has_composition && (
+              <div className="mt-5 flex justify-center">
+                {/* 1080x1920 composition scaled into a phone-sized frame */}
+                <div
+                  className="relative overflow-hidden rounded-2xl border border-border bg-black"
+                  style={{ width: 270, height: 480 }}
+                >
+                  <iframe
+                    key={previewKey}
+                    src={videoPreviewUrl(job.id)}
+                    title="תצוגה מקדימה של הסרטון"
+                    sandbox="allow-scripts"
+                    scrolling="no"
+                    style={{
+                      width: 1080,
+                      height: 1920,
+                      border: 0,
+                      transform: 'scale(0.25)',
+                      transformOrigin: 'top right',
+                      position: 'absolute',
+                      top: 0,
+                      insetInlineEnd: 0,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {rendering && (
+              <p className="mt-3 text-center text-xs text-muted">
+                מרנדר את הסרטון — זה לוקח בערך חצי דקה.
+              </p>
+            )}
+            {!job.can_render && job.has_composition && (
+              <p className="mt-3 text-center text-xs text-muted">
+                הסרטון רץ כאן חי. ייצוא לקובץ MP4 יופעל בשלב הבא (שרת רינדור ייעודי).
+              </p>
+            )}
           </div>
         </div>
       )}
