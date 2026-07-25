@@ -50,10 +50,15 @@ plan for a vertical ad reel of an Israeli small business, and you write the
 on-screen HEBREW copy for each scene.
 
 Return ONLY a JSON array, one object per scene, in the given order:
-  kicker    short label, ~2-4 words (business name, category or teaser). May be "".
-  headline  the punchy line, 2-6 words. This is the star — make it sell.
-  sub       one supporting line, up to ~8 words. May be "".
-  cta       ONLY on the last (cta) scene: the button text, 2-4 words. Else "".
+  kicker     short label, ~2-4 words (business name, category or teaser). May be "".
+  headline   the punchy line, 2-6 words. This is the star — make it sell.
+  highlight  ONE word or short phrase copied EXACTLY from this scene's headline,
+             which gets an accent highlight. Pick the word carrying the punch.
+             Must appear verbatim in headline, or "".
+  sub        one supporting line, up to ~8 words. May be "".
+  chips      0-3 very short proof points, 1-3 words each (e.g. "משלוח חינם",
+             "פתוח 24/7", "עבודת יד"). Use on the middle scene mostly. May be [].
+  cta        ONLY on the last (cta) scene: the button text, 2-4 words. Else "".
 
 Rules:
 - Hebrew only, natural marketing Hebrew for THIS business — never translate or
@@ -61,25 +66,25 @@ Rules:
 - Short. Text is rendered huge on a phone; long lines break the design.
 - No emoji, no quotes around the text, no markdown, no explanations.
 - Vary the scenes: hook grabs attention, middle sells the product, last drives action.
+- The reel must read like a premium Instagram ad: a bold claim, concrete proof,
+  then one clear action.
 """
 
 
 def _fallback_copy(scenes: list[dict], product_name: str, business: str) -> list[dict]:
+    base = {"kicker": "", "headline": "", "highlight": "", "sub": "", "chips": [], "cta": ""}
     out = []
     for s in scenes:
         role = s.get("role")
         if role == "hook":
-            out.append({"kicker": business, "headline": product_name, "sub": "", "cta": ""})
+            out.append({**base, "kicker": business, "headline": product_name,
+                        "highlight": product_name})
         elif role == "cta":
-            out.append({
-                "kicker": "", "headline": "בואו לטעום",
-                "sub": "", "cta": (s.get("overlay_text") or "").strip() or "הזמינו עכשיו",
-            })
+            out.append({**base, "headline": "רוצים לשמוע עוד?",
+                        "cta": (s.get("overlay_text") or "").strip() or "דברו איתנו"})
         else:
-            out.append({
-                "kicker": "", "headline": product_name,
-                "sub": "איכות שמדברת בעד עצמה", "cta": "",
-            })
+            out.append({**base, "headline": product_name, "highlight": product_name,
+                        "sub": "איכות שמדברת בעד עצמה"})
     return out
 
 
@@ -128,10 +133,21 @@ def _parse_copy(raw: str | None, n: int) -> list[dict] | None:
     for item in data[:n]:
         if not isinstance(item, dict):
             return None
+        headline = str(item.get("headline") or "")[:60]
+        highlight = str(item.get("highlight") or "")[:40].strip()
+        # only accept a highlight the template can actually find in the headline
+        if highlight and highlight not in headline:
+            highlight = ""
+        raw_chips = item.get("chips")
+        chips = [
+            str(c)[:20] for c in raw_chips[:3] if str(c or "").strip()
+        ] if isinstance(raw_chips, list) else []
         out.append({
             "kicker": str(item.get("kicker") or "")[:40],
-            "headline": str(item.get("headline") or "")[:60],
+            "headline": headline,
+            "highlight": highlight,
             "sub": str(item.get("sub") or "")[:80],
+            "chips": chips,
             "cta": str(item.get("cta") or "")[:30],
         })
     if not any(c["headline"] for c in out):
@@ -150,6 +166,19 @@ _CAMERA_MOTION = {
     "whip_reveal": "{scale:1.22, duration:%(d)g, ease:'power2.out'}",
     "top_down_descend": "{scale:1.15, y:60, duration:%(d)g, ease:'sine.inOut'}",
 }
+
+
+def _headline_html(c: dict) -> str:
+    """Headline with the key phrase wrapped in an accent highlight (Manychat-style)."""
+    headline, highlight = c.get("headline", ""), c.get("highlight", "")
+    if not highlight or highlight not in headline:
+        return html.escape(headline)
+    before, _, after = headline.partition(highlight)
+    return (
+        f"{html.escape(before)}"
+        f'<span class="hl">{html.escape(highlight)}</span>'
+        f"{html.escape(after)}"
+    )
 
 
 def build_composition(scenes: list[dict], copy: list[dict], business: str) -> str:
@@ -171,9 +200,12 @@ def build_composition(scenes: list[dict], copy: list[dict], business: str) -> st
         if c.get("kicker"):
             parts.append(f'<div class="kicker">{html.escape(c["kicker"])}</div>')
         if c.get("headline"):
-            parts.append(f'<div class="headline">{html.escape(c["headline"])}</div>')
+            parts.append(f'<div class="headline">{_headline_html(c)}</div>')
         if c.get("sub"):
             parts.append(f'<div class="sub">{html.escape(c["sub"])}</div>')
+        if c.get("chips"):
+            chips = "".join(f'<span class="chip">{html.escape(ch)}</span>' for ch in c["chips"])
+            parts.append(f'<div class="chips">{chips}</div>')
         if c.get("cta"):
             parts.append(f'<div class="cta">{html.escape(c["cta"])}</div>')
         if (s.get("role") or "") == "cta" and business:
@@ -196,8 +228,17 @@ def build_composition(scenes: list[dict], copy: list[dict], business: str) -> st
             line.append(
                 f'.from("#{sid} .headline", {{opacity:0, scale:.86, duration:.9, ease:"power2.out"}}, {t + 0.25:g})'
             )
+        if c.get("highlight"):
+            # the accent block wipes in behind the word — the reference ads' signature
+            line.append(
+                f'.from("#{sid} .hl", {{clipPath:"inset(0 0 0 100%)", duration:.55, ease:"power3.out"}}, {t + 0.7:g})'
+            )
         if c.get("sub"):
             line.append(f'.from("#{sid} .sub", {{opacity:0, y:26, duration:.7}}, {t + 0.6:g})')
+        if c.get("chips"):
+            line.append(
+                f'.from("#{sid} .chip", {{opacity:0, y:24, duration:.5, stagger:.12}}, {t + 0.95:g})'
+            )
         if c.get("cta"):
             line.append(f'.from("#{sid} .cta", {{opacity:0, y:40, duration:.7, ease:"back.out(1.6)"}}, {t + 0.9:g})')
         if (s.get("role") or "") == "cta" and business:
@@ -219,17 +260,32 @@ def build_composition(scenes: list[dict], copy: list[dict], business: str) -> st
 html,body{{width:{WIDTH}px;height:{HEIGHT}px;overflow:hidden;background:{BRAND['bg']};
 font-family:"Arial Hebrew","Heebo","Noto Sans Hebrew","Noto Sans",
 "DejaVu Sans",Arial,sans-serif}}
+/* backdrop: layered mesh + vignette so it reads as a designed ad, not a flat gradient */
+body::after{{content:"";position:absolute;inset:0;pointer-events:none;
+background:radial-gradient(ellipse at 50% 12%,rgba(255,255,255,.05),transparent 55%),
+radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.55),transparent 60%)}}
 .scene{{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-justify-content:center;text-align:center;padding:90px}}
-.kicker{{font-size:34px;letter-spacing:.3em;color:{BRAND['accent']};margin-bottom:28px;font-weight:700}}
-.headline{{font-size:96px;font-weight:800;color:{BRAND['ink']};line-height:1.15}}
-.sub{{font-size:44px;color:{BRAND['muted']};margin-top:32px}}
-.cta{{margin-top:54px;padding:30px 64px;border-radius:999px;
+justify-content:center;text-align:center;padding:96px 84px}}
+.kicker{{font-size:32px;letter-spacing:.34em;color:{BRAND['accent']};margin-bottom:34px;
+font-weight:800;text-transform:uppercase}}
+.headline{{font-size:112px;font-weight:900;color:{BRAND['ink']};line-height:1.06;
+letter-spacing:-.02em;text-wrap:balance;max-width:900px}}
+/* the accent highlight — the single strongest device in the reference ads */
+.hl{{position:relative;display:inline-block;color:{BRAND['bg']};padding:0 .12em;
+background:linear-gradient(135deg,{BRAND['accent']},#7ee3f2);
+border-radius:14px;box-decoration-break:clone;-webkit-box-decoration-break:clone}}
+.sub{{font-size:42px;color:{BRAND['muted']};margin-top:34px;line-height:1.35;max-width:820px}}
+.chips{{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:44px}}
+.chip{{border:2px solid rgba(255,255,255,.22);border-radius:999px;padding:16px 34px;
+font-size:32px;font-weight:700;color:{BRAND['ink']};background:rgba(255,255,255,.06)}}
+.cta{{margin-top:58px;padding:32px 72px;border-radius:999px;
 background:linear-gradient(135deg,{BRAND['accent_deep']},{BRAND['accent']});
-color:#fff;font-size:52px;font-weight:800}}
-.brand{{position:absolute;bottom:90px;font-size:34px;color:{BRAND['faint']};letter-spacing:.2em}}
-.glow{{position:absolute;width:900px;height:900px;border-radius:50%;
-background:radial-gradient(circle,rgba(34,184,207,.28),transparent 70%)}}
+color:#fff;font-size:54px;font-weight:900;
+box-shadow:0 0 70px rgba(34,184,207,.55),0 18px 40px rgba(0,0,0,.45)}}
+.brand{{position:absolute;bottom:96px;font-size:32px;color:{BRAND['faint']};
+letter-spacing:.28em;font-weight:700;text-transform:uppercase}}
+.glow{{position:absolute;width:1000px;height:1000px;border-radius:50%;
+background:radial-gradient(circle,rgba(34,184,207,.30),transparent 68%)}}
 </style>
 </head>
 <body>
