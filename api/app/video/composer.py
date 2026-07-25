@@ -350,16 +350,34 @@ async def compose(
 _PLAY_SCRIPT = """
 <script>
 (function () {
+  // The reel is previewed inside a small, often off-screen iframe. Browsers
+  // throttle requestAnimationFrame there — and GSAP's ticker rides on rAF — so
+  // tl.play() would leave the timeline frozen at time 0. Since every element
+  // animates in with .from(), "frozen at 0" means EVERY caption is opacity 0:
+  // the user sees an empty box and assumes no video was made.
+  //
+  // So we never rely on the ticker: keep the timeline paused and SEEK it from a
+  // wall clock on an interval, which keeps running when rAF is throttled.
   function start() {
     var tl = (window.__timelines || {})["main"];
-    if (!tl) return;
     var root = document.getElementById("root");
+    if (!tl) {
+      // GSAP never loaded — show the copy rather than a blank frame.
+      var els = document.querySelectorAll(".scene, .scene *");
+      for (var i = 0; i < els.length; i++) els[i].style.opacity = 1;
+      return;
+    }
     var total = parseFloat((root && root.dataset.duration) || "0") || tl.duration();
-    function run() { tl.time(0); tl.play(); setTimeout(run, (total + 0.6) * 1000); }
-    run();
+    var cycle = total + 0.6;              // brief hold before it loops
+    var t0 = (window.performance || Date).now();
+    tl.pause(0);
+    setInterval(function () {
+      var elapsed = (((window.performance || Date).now() - t0) / 1000) % cycle;
+      tl.time(elapsed > total ? total : elapsed);
+    }, 1000 / 30);
   }
-  if (document.readyState === "complete") setTimeout(start, 60);
-  else window.addEventListener("load", function () { setTimeout(start, 60); });
+  if (document.readyState === "complete") setTimeout(start, 80);
+  else window.addEventListener("load", function () { setTimeout(start, 80); });
 })();
 </script>
 """

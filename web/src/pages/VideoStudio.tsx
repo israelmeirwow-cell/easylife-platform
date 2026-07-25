@@ -181,10 +181,12 @@ export default function VideoStudio() {
         {error && <p className="mt-3 text-sm text-danger">{error}</p>}
       </form>
 
-      {/* result storyboard */}
+      {/* Result. The finished video comes FIRST — the storyboard is three tall
+          cards of English prompt text, and burying the player under them meant
+          people scrolled past it and concluded nothing had been generated. */}
       {job && (
-        <div className="mt-6">
-          <div className="mb-3 flex items-center justify-between">
+        <div className="mt-6 flex flex-col">
+          <div className="order-2 mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-ink">התסריט של הסוכן</h2>
             {job.source === 'llm' && (
               <span className="flex items-center gap-1.5 rounded-full bg-gold-soft px-2.5 py-0.5 text-[11px] text-gold-strong">
@@ -193,7 +195,7 @@ export default function VideoStudio() {
             )}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="order-3 grid gap-4 md:grid-cols-3">
             {job.scenes.map((s) => (
               <div key={s.id} className="flex flex-col rounded-2xl border border-border bg-surface p-4">
                 <div className="flex items-center justify-between">
@@ -247,7 +249,7 @@ export default function VideoStudio() {
           </div>
 
           {/* ---------- HyperFrames: build the actual video ---------- */}
-          <div className="mt-6 rounded-2xl border border-border bg-surface p-5">
+          <div className="order-1 mb-6 rounded-2xl border border-border bg-surface p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 className="text-sm font-semibold text-ink">הסרטון</h2>
@@ -308,11 +310,15 @@ export default function VideoStudio() {
                       width: 1080,
                       height: 1920,
                       border: 0,
+                      // Physical top/left + a matching origin on purpose: logical
+                      // properties (insetInlineEnd) resolve against the RTL page
+                      // while the transform does not, which parked the scaled
+                      // iframe ~800px outside its frame — a permanently blank box.
                       transform: 'scale(0.25)',
-                      transformOrigin: 'top right',
+                      transformOrigin: 'top left',
                       position: 'absolute',
                       top: 0,
-                      insetInlineEnd: 0,
+                      left: 0,
                     }}
                   />
                 </div>
